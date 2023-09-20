@@ -20,7 +20,6 @@ public abstract class Telelib extends OpMode {
     public DcMotor br;
     public DcMotor motorLift;
     public DcMotor horizontalLift;
-
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
 
@@ -28,6 +27,7 @@ public abstract class Telelib extends OpMode {
     public void init(){
         // Difficulty: EASY
         // All: Hardware map your motors and servos
+
         fl = hardwareMap.get(DcMotor.class, "fl");
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
