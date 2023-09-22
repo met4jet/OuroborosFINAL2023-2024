@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ThreadHandler;
@@ -20,6 +21,10 @@ public abstract class Telelib extends OpMode {
     public DcMotor br;
     public DcMotor motorLift;
     public DcMotor horizontalLift;
+
+    public Servo outtakeLeft;
+    public Servo outtakeRight;
+
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
 
@@ -129,6 +134,23 @@ public abstract class Telelib extends OpMode {
             fr.setPower(0);
             br.setPower(0);
             bl.setPower(0);
+        }
+    }
+
+    public void outtake(){
+        if (gamepad2.left_bumper){
+            outtakeLeft.setPosition(1);
+            while (outtakeLeft.getPosition() != 1){
+                // do nothing
+            }
+            outtakeLeft.setPosition(0);
+        }
+        if (gamepad2.right_bumper){
+            outtakeRight.setPosition(1);
+            while (outtakeRight.getPosition() != 1){
+                // do nothing
+            }
+            outtakeRight.setPosition(0);
         }
     }
 
