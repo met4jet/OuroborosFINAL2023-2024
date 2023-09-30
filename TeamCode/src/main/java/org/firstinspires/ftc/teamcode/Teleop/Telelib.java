@@ -146,7 +146,7 @@ public abstract class Telelib extends OpMode {
             outtakeLeft.setPosition(0);
         }
         if (gamepad2.right_bumper){
-            outtakeRight.setPosition(1);
+            outtakeRight.setPosition(1);  
             while (outtakeRight.getPosition() != 1){
                 // do nothing
             }
