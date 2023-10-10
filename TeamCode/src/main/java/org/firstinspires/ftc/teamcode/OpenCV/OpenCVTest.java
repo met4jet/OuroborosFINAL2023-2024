@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.OpenCV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "OpeCV Testing")
+@Autonomous(group = "Auto", name = "OpenCVTest")
 
 public class OpenCVTest extends LinearOpMode {
 
@@ -63,6 +63,24 @@ public class OpenCVTest extends LinearOpMode {
         controlHubCam.stopStreaming();
     }
 
+    public String getPos(){
+
+        String output = "";
+
+        if(cX < 200){
+            output = "LEFT";
+        }
+        else if(cX < 400){
+            output = "MIDDLE";
+        }
+        else{
+            output = "RIGHT";
+        }
+        telemetry.addData("Coordinate", "(" + (int) cX + ")");
+        telemetry.addData("Output", "(" + (int) cX + ", " + (int) cY + ")");
+        return output;
+    }
+
     private void initOpenCV() {
 
         // Create an instance of the camera
@@ -78,7 +96,7 @@ public class OpenCVTest extends LinearOpMode {
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
     }
-    class YellowBlobDetectionPipeline extends OpenCvPipeline {
+    public class YellowBlobDetectionPipeline extends OpenCvPipeline {
         @Override
         public Mat processFrame(Mat input) {
             // Preprocess the frame to detect yellow regions
@@ -93,6 +111,7 @@ public class OpenCVTest extends LinearOpMode {
             MatOfPoint largestContour = findLargestContour(contours);
 
             if (largestContour != null) {
+
                 // Draw a red outline around the largest detected object
                 Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
                 // Calculate the width of the bounding box
@@ -115,7 +134,6 @@ public class OpenCVTest extends LinearOpMode {
                 Imgproc.circle(input, new Point(cX, cY), 5, new Scalar(0, 255, 0), -1);
 
             }
-
             return input;
         }
 
