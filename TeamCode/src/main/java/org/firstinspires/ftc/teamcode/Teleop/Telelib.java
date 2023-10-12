@@ -25,6 +25,9 @@ public abstract class Telelib extends OpMode {
     public Servo outtakeLeft;
     public Servo outtakeRight;
 
+    public Servo planeLauncher;
+    public Servo planeAngler;
+
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
 
@@ -134,6 +137,23 @@ public abstract class Telelib extends OpMode {
             fr.setPower(0);
             br.setPower(0);
             bl.setPower(0);
+        }
+    }
+
+    public void planeLauncher(){
+        if (gamepad1.left_trigger > 0.3){
+            if (planeLauncher.getPosition() != 1.0) {
+                planeLauncher.setPosition(1.0);
+            } else {
+                planeLauncher.setPosition(0.0);
+            }
+        }
+        if (gamepad1.right_trigger > 0.3){
+            if (planeAngler.getPosition() != 1.0){
+                planeAngler.setPosition(1.0);
+            } else {
+                planeAngler.setPosition(0.0);
+            }
         }
     }
 
