@@ -44,6 +44,32 @@ public class DriveTrain {
         fl.setDirection(DcMotor.Direction.REVERSE);
 
     }
+    public void initalize(LinearOpMode opMode){
+        this.opMode = opMode;
+
+        // Difficulty: EASY
+        // Krish: Hardware map the motors
+        // Assume we are using a four motor drivetrain
+        br = opMode.hardwareMap.dcMotor.get("br");
+        bl = opMode.hardwareMap.dcMotor.get("bl");
+        fr = opMode.hardwareMap.dcMotor.get("fr");
+        fl = opMode.hardwareMap.dcMotor.get("fl");
+
+        // Difficulty: EASY
+        // Krish: Set motors' zero power behavior
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        // Difficulty: EASY
+
+        // Krish: Set motors' direction
+        br.setDirection(DcMotor.Direction.FORWARD);
+        bl.setDirection(DcMotor.Direction.REVERSE);
+        fr.setDirection(DcMotor.Direction.FORWARD);
+        fl.setDirection(DcMotor.Direction.REVERSE);
+
+    }
 
     public void resetEncoders(){
         // Difficulty: EASY
@@ -59,6 +85,13 @@ public class DriveTrain {
 
         fl.setMode(DcMotor.RunMode.RESET_ENCODERS);
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void power(double output){
+        fl.setPower(-output);
+        bl.setPower(-output);
+        fr.setPower(output);
+        br.setPower(output);
     }
 
     public void encoderMove(boolean isForward, double power, double distance, double runtime){

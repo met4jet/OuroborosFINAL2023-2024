@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -26,9 +24,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(group = "Auto", name = "OpenCVTest")
+@Autonomous(group = "Auto", name = "OpenCVBlue")
 
-public class OpenCVTest extends LinearOpMode {
+public class OpenCVBlue extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
@@ -43,10 +41,10 @@ public class OpenCVTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
 
-        drive.setPoseEstimate(startPose);
+        //drive.setPoseEstimate(startPose);
 
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -54,37 +52,37 @@ public class OpenCVTest extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
 
-            sleep(300);
+        sleep(300);
 
-            telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.update();
+        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+        telemetry.update();
 
-            sleep(3000);
+        sleep(3000);
 
-        TrajectorySequence trajSeq;
+        /*TrajectorySequence trajSeq;
 
-            if(getPos().equals("LEFT")){
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
-                        .forward(28)
-                        .build();
-            }
-            else if(getPos().equals("MIDDLE")){
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
-                        .back(28)
-                        .build();
-            }
-            else{
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
+        if(getPos().equals("LEFT")){
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .forward(28)
+                    .build();
+        }
+        else if(getPos().equals("MIDDLE")){
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .back(28)
+                    .build();
+        }
+        else{
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .splineTo(new Vector2d(5,5),Math.toRadians(180))
+                    .build();
+        }*/
 
-                        .build();
-            }
-
-            // The OpenCV pipeline automatically processes frames and handles detection
+        // The OpenCV pipeline automatically processes frames and handles detection
 
         waitForStart();
 
         if (!isStopRequested())
-            drive.followTrajectorySequence(trajSeq);
+            //drive.followTrajectorySequence(trajSeq);
 
 
         // Release resources
@@ -111,7 +109,7 @@ public class OpenCVTest extends LinearOpMode {
 
         String output = "";
 
-        if(cX < 200){
+        if(cX < 150){
             output = "LEFT";
         }
         else if(cX < 400){
@@ -125,9 +123,6 @@ public class OpenCVTest extends LinearOpMode {
         telemetry.update();
         return output;
     }
-
-
-
     public class YellowBlobDetectionPipeline extends OpenCvPipeline {
         @Override
         public Mat processFrame(Mat input) {
@@ -171,8 +166,10 @@ public class OpenCVTest extends LinearOpMode {
             Mat hsvFrame = new Mat();
             Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
-            Scalar lowerYellow = new Scalar(100, 100, 100);
+            Scalar lowerYellow = new Scalar(130, 50, 50);
             Scalar upperYellow = new Scalar(180, 255, 255);
+
+            // 105-125
 
 
             Mat yellowMask = new Mat();
