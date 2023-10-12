@@ -166,8 +166,13 @@ public class OpenCVBlue extends LinearOpMode {
             Mat hsvFrame = new Mat();
             Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
-            Scalar lowerYellow = new Scalar(130, 50, 50);
-            Scalar upperYellow = new Scalar(180, 255, 255);
+            Scalar lowerYellow = new Scalar(0, 50, 100);
+            Scalar upperYellow = new Scalar(30, 255, 255);
+
+            //0-30 PERFECT
+            //30-60 detect light blue
+            //120-125, yellow to red
+            //sat 120-255
 
             // 105-125
 
