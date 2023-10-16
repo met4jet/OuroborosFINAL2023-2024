@@ -3,10 +3,13 @@ package org.firstinspires.ftc.teamcode.OpenCV;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -41,10 +44,10 @@ public class OpenCVBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
 
-        //drive.setPoseEstimate(startPose);
+        drive.setPoseEstimate(startPose);
 
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -59,7 +62,7 @@ public class OpenCVBlue extends LinearOpMode {
 
         sleep(3000);
 
-        /*TrajectorySequence trajSeq;
+        TrajectorySequence trajSeq;
 
         if(getPos().equals("LEFT")){
             trajSeq = drive.trajectorySequenceBuilder(startPose)
@@ -75,14 +78,14 @@ public class OpenCVBlue extends LinearOpMode {
             trajSeq = drive.trajectorySequenceBuilder(startPose)
                     .splineTo(new Vector2d(5,5),Math.toRadians(180))
                     .build();
-        }*/
+        }
 
         // The OpenCV pipeline automatically processes frames and handles detection
 
         waitForStart();
 
         if (!isStopRequested())
-            //drive.followTrajectorySequence(trajSeq);
+            drive.followTrajectorySequence(trajSeq);
 
 
         // Release resources

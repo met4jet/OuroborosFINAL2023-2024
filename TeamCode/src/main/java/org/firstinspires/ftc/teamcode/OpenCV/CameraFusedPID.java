@@ -11,14 +11,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.Auto.DriveTrain;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -37,7 +30,7 @@ public class CameraFusedPID extends LinearOpMode {
     double Ki = PIDConstants.Ki;
     double Kd = PIDConstants.Kd;
 
-    DriveTrain drivetrain = new DriveTrain(this);
+    Drivetrain drivetrain = new Drivetrain();
 
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
@@ -51,16 +44,17 @@ public class CameraFusedPID extends LinearOpMode {
     /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
     private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
-    private static final double FOV = 40;
+    private static final double FOV = 19.535751;
 
     // Calculate the distance using the formula
     public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
     public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
+    //43.456mm
 
 
     @Override
     public void runOpMode() {
-        drivetrain.initalize(this);
+        drivetrain.init(hardwareMap);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -73,6 +67,8 @@ public class CameraFusedPID extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
+
+        telemetry.addData("IMU", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
 
         waitForStart();
 
@@ -142,6 +138,9 @@ public class CameraFusedPID extends LinearOpMode {
                 String label = "(" + (int) cX + ", " + (int) cY + ")";
                 Imgproc.putText(input, label, new Point(cX + 10, cY), Imgproc.FONT_HERSHEY_COMPLEX, 0.5, new Scalar(0, 255, 0), 2);
                 Imgproc.circle(input, new Point(cX, cY), 5, new Scalar(0, 255, 0), -1);
+
+                Imgproc.putText(input, "" + imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle, new Point(50,50), Imgproc.FONT_HERSHEY_COMPLEX, 1, new Scalar(0, 255, 0), 1);
+                // right:19.535751
 
             }
 
