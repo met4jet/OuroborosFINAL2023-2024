@@ -28,7 +28,7 @@ import java.util.List;
 
 @Autonomous(group = "Auto", name = "OpenCVTest")
 
-public class OpenCVTest extends LinearOpMode {
+public class OpenCVRed extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
@@ -54,32 +54,32 @@ public class OpenCVTest extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
 
-            sleep(300);
+        sleep(300);
 
-            telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.update();
+        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+        telemetry.update();
 
-            sleep(3000);
+        sleep(3000);
 
         TrajectorySequence trajSeq;
 
-            if(getPos().equals("LEFT")){
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
-                        .forward(28)
-                        .build();
-            }
-            else if(getPos().equals("MIDDLE")){
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
-                        .back(28)
-                        .build();
-            }
-            else{
-                trajSeq = drive.trajectorySequenceBuilder(startPose)
+        if(getPos().equals("LEFT")){
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .forward(28)
+                    .build();
+        }
+        else if(getPos().equals("MIDDLE")){
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .back(28)
+                    .build();
+        }
+        else{
+            trajSeq = drive.trajectorySequenceBuilder(startPose)
 
-                        .build();
-            }
+                    .build();
+        }
 
-            // The OpenCV pipeline automatically processes frames and handles detection
+        // The OpenCV pipeline automatically processes frames and handles detection
 
         waitForStart();
 
