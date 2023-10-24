@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.OpenCV.OpenCVRed;
-
 @Autonomous(group = "Auto", name = "RedLeft")
 
 public class RedLeft extends LinearOpMode {
@@ -14,11 +12,12 @@ public class RedLeft extends LinearOpMode {
 
         waitForStart();
 
-        OpenCVRed openCVTest = new OpenCVRed();
+        //AprilTagDetectionPipeline ap = new AprilTagDetectionPipeline(0.0508, 370, 370);
+        /*OpenCVRed openCVTest = new OpenCVRed();
 
         String output = openCVTest.getPos();
         if(output.equals("LEFT")){
 
-        }
+        }*/
     }
 }

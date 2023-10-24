@@ -35,10 +35,10 @@ public abstract class Telelib2 extends OpMode {
 
         // Difficulty: EASY
         // All: Set your motors' directions
-        fl.setDirection(DcMotorSimple.Direction.REVERSE);
-        fr.setDirection(DcMotorSimple.Direction.FORWARD);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.FORWARD);
+        fl.setDirection(DcMotorSimple.Direction.FORWARD); //f
+        bl.setDirection(DcMotorSimple.Direction.FORWARD); //r
+        fr.setDirection(DcMotorSimple.Direction.REVERSE); //f
+        br.setDirection(DcMotorSimple.Direction.REVERSE); //r
     }
 
     public void arcadeDrive(){
@@ -50,10 +50,14 @@ public abstract class Telelib2 extends OpMode {
 
         if (Math.abs(left_stick_x) > 0.1 ||
                 Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1){
-            fr.setPower((left_stick_y + left_stick_x) + right_stick_x);
+            fr.setPower((left_stick_y - left_stick_x) + right_stick_x);
             fl.setPower((left_stick_y - left_stick_x) - right_stick_x);
-            br.setPower((left_stick_y - left_stick_x) + right_stick_x);
+            br.setPower((left_stick_y + left_stick_x) + right_stick_x);
             bl.setPower((left_stick_y + left_stick_x) - right_stick_x);
+            /*fr.setPower(((left_stick_y - left_stick_x) + right_stick_x));
+            fl.setPower(((left_stick_y - left_stick_x) - right_stick_x));
+            br.setPower((left_stick_y + left_stick_x) + right_stick_x);
+            bl.setPower((left_stick_y + left_stick_x) - right_stick_x);*/
         }
         else{
             fl.setPower(0);
@@ -72,7 +76,7 @@ public abstract class Telelib2 extends OpMode {
         bl.setPower(0);
         br.setPower(0);
 
-        // sophia: I pushed pheonix's code for the lift, so you should be able to see it now.
+        // sophia: I pushed phoenix's code for the lift, so you should be able to see it now.
         // can you also shut off the power for the lift motor as well.
     }
 

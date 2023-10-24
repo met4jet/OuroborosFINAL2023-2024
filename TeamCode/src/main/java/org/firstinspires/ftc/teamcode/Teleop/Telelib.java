@@ -30,7 +30,8 @@ public abstract class Telelib extends OpMode {
 
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
-
+    public  ThreadHandler th_planeLauncher;
+    public ThreadHandler th_outtake;
     @Override
     public void init(){
         // Difficulty: EASY
@@ -45,6 +46,8 @@ public abstract class Telelib extends OpMode {
 
         th_horiLift = new ThreadHandler();
         th_arcadeDrive = new ThreadHandler();
+        th_planeLauncher = new ThreadHandler();
+        th_outtake = new ThreadHandler();
 
         // Difficulty: EASY
         // All: Set your motors' zero power behavior
@@ -104,6 +107,85 @@ public abstract class Telelib extends OpMode {
         }
     });
 
+    Thread plane_launcher_launch = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            planeLauncher.setPosition(1.0);
+        }
+    });
+
+    Thread plane_launcher_ready = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            planeLauncher.setPosition(0.0);
+        }
+    });
+
+    Thread plane_angler_up = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            planeAngler.setPosition(1.0);
+        }
+    });
+
+    Thread plane_angler_down = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            planeAngler.setPosition(0.0);
+        }
+    });
+
+    Thread left_Outtake = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 300){
+
+            }
+            outtakeLeft.setPosition(1);
+            while (outtakeLeft.getPosition() != 1){
+                // do nothing
+            }
+            outtakeLeft.setPosition(0);
+        }
+    });
+
+    Thread right_Outtake = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 300){
+
+            }
+            outtakeRight.setPosition(1);
+            while (outtakeRight.getPosition() != 1){
+                // do nothing
+            }
+            outtakeRight.setPosition(0);
+        }
+    });
     public void horizontalLift() {
 
         if(gamepad2.left_stick_y > .1){
@@ -143,34 +225,26 @@ public abstract class Telelib extends OpMode {
     public void planeLauncher(){
         if (gamepad1.left_trigger > 0.3){
             if (planeLauncher.getPosition() != 1.0) {
-                planeLauncher.setPosition(1.0);
+                th_planeLauncher.queue(plane_launcher_launch);
             } else {
-                planeLauncher.setPosition(0.0);
+                th_planeLauncher.queue(plane_launcher_ready);
             }
         }
         if (gamepad1.right_trigger > 0.3){
             if (planeAngler.getPosition() != 1.0){
-                planeAngler.setPosition(1.0);
+                th_planeLauncher.queue(plane_angler_up);
             } else {
-                planeAngler.setPosition(0.0);
+                th_planeLauncher.queue(plane_angler_down);
             }
         }
     }
 
     public void outtake(){
         if (gamepad2.left_bumper){
-            outtakeLeft.setPosition(1);
-            while (outtakeLeft.getPosition() != 1){
-                // do nothing
-            }
-            outtakeLeft.setPosition(0);
+            th_outtake.queue(left_Outtake);
         }
         if (gamepad2.right_bumper){
-            outtakeRight.setPosition(1);  
-            while (outtakeRight.getPosition() != 1){
-                // do nothing
-            }
-            outtakeRight.setPosition(0);
+            th_outtake.queue(right_Outtake);
         }
     }
 
