@@ -10,8 +10,6 @@ public class RedLeft extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        waitForStart();
-
         //AprilTagDetectionPipeline ap = new AprilTagDetectionPipeline(0.0508, 370, 370);
         /*OpenCVRed openCVTest = new OpenCVRed();
 

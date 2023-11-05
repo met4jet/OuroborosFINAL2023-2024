@@ -129,8 +129,8 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         // TODO: CHANGE
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         if (USE_WEBCAM)
@@ -154,6 +154,7 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
                     ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID))  ){
                     targetFound = true;
                     desiredTag = detection;
+                    telemetry.addData("Target Found", "Tag ID %d is \n", detection.id);
                     break;  // don't look any further.
                 } else {
                     telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
@@ -187,6 +188,9 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             } else {
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
+                drive = 0;
+                strafe = 0;
+                turn = 0;
                 rightFrontDrive.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x) + gamepad1.right_stick_x)/2.0);
                 leftFrontDrive.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) - gamepad1.right_stick_x)/2.0);
                 rightBackDrive.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x) + gamepad1.right_stick_x)/2.0);
@@ -196,7 +200,7 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             telemetry.update();
 
             // Apply desired axes motions to the drivetrain.
-            //moveRobot(drive, strafe, turn);
+            moveRobot(drive, strafe, turn);
             sleep(10);
         }
     }
