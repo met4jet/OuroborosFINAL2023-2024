@@ -94,6 +94,25 @@ public class DriveTrain {
         br.setPower(output);
     }
 
+    public void timeMove(double power, double runtime){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        if(time.seconds() < runtime){
+            br.setPower(power);
+            bl.setPower(power);
+            fr.setPower(power);
+            fl.setPower(power);
+            opMode.telemetry.addData("time", time.seconds());
+            opMode.telemetry.update();
+        }
+        else{
+            br.setPower(0);
+            bl.setPower(0);
+            fr.setPower(0);
+            fl.setPower(0);
+        }
+    }
+
     public void encoderMove(boolean isForward, double power, double distance, double runtime){
         // Difficulty: MEDIUM
         // Krish

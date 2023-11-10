@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import java.util.HashMap;
 
 public abstract class Telelib2 extends OpMode {
 
@@ -13,6 +16,7 @@ public abstract class Telelib2 extends OpMode {
 
     boolean halfToggle = false;
     public DcMotor fl;
+    HashMap<String, Boolean> buttons = new HashMap<String, Boolean>();
     public DcMotor fr;
     public DcMotor bl;
     public DcMotor br;
@@ -24,6 +28,7 @@ public abstract class Telelib2 extends OpMode {
     public Servo shoomShoomDom;
     public Servo shoomShoomSub;
     public Servo box;
+    public Servo linac;
 
     public DcMotor horizontalLiftRight;
     public DcMotor horizontalLiftLeft;
@@ -35,8 +40,8 @@ public abstract class Telelib2 extends OpMode {
         // Difficulty: EASY
         // All: Hardware map your motors and servos
 
-        //linearAct = hardwareMap.get(Servo.class, "linearAct");
-        //
+        linac = hardwareMap.get(Servo.class, "linac");
+
         rflip = hardwareMap.get(Servo.class, "rflip");
         lflip = hardwareMap.get(Servo.class, "lflip");
         intake = hardwareMap.get(CRServo.class, "intake");
@@ -58,10 +63,10 @@ public abstract class Telelib2 extends OpMode {
 
         // Difficulty: EASY
         // All: Set your motors' zero power behavior
-        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         horizontalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         horizontalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -81,32 +86,92 @@ public abstract class Telelib2 extends OpMode {
 
         verticalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
         verticalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        resetEncoders();
     }
 
-    public void vertical_lift(){
-        if(gamepad2.right_stick_y > .2) {
+    public void resetEncoders(){
+        verticalLiftLeft.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        verticalLiftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        horizontalLiftRight.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        horizontalLiftRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public boolean isPressed(String str, boolean button) {
+        ElapsedTime time = new ElapsedTime();
+        boolean output = false;
+        if(!buttons.containsKey(str)) {
+            buttons.put(str, false);
+            output = false;
+        }
+        boolean buttonPrev = buttons.get(str);
+        if(button != buttonPrev) {
+            output = true;
+        }
+        buttons.put(str,output);
+
+        return output;
+    }
+    public void vertical_lift_right() {
+        if (gamepad2.right_stick_y > .2) {
             verticalLiftRight.setPower(-1);
-            verticalLiftLeft.setPower(1);
-        }
-        else if(gamepad2.right_stick_y < -.2){
+            telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
+            telemetry.addData("vRight encoders", verticalLiftRight.getCurrentPosition());
+            telemetry.update();
+        } else if (gamepad2.right_stick_y < -.2) {
             verticalLiftRight.setPower(1);
-            verticalLiftLeft.setPower(-1);
+            telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
+            telemetry.addData("vRight encoders", verticalLiftRight.getCurrentPosition());
+            telemetry.update();
         }
-        else{
+        else {
             verticalLiftRight.setPower(0);
             verticalLiftLeft.setPower(0);
         }
     }
-    public void horizontal_lift(){
-        if(gamepad2.left_stick_y > .2) {
-            horizontalLiftRight.setPower(.5);
-            horizontalLiftLeft.setPower(.5);
+    public void vertical_lift_left(){
+        if (gamepad2.left_stick_y > .2) {
+            verticalLiftLeft.setPower(1);
+            telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
+            telemetry.addData("vRight encoders", verticalLiftRight.getCurrentPosition());
+            telemetry.update();
         }
-        else if(gamepad2.left_stick_y < -.2){
-            horizontalLiftRight.setPower(-.5);
-            horizontalLiftLeft.setPower(-.5);
+        else if (gamepad2.left_stick_y < -.2) {
+            verticalLiftLeft.setPower(-1);
+            telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
+            telemetry.addData("vRight encoders", verticalLiftRight.getCurrentPosition());
+            telemetry.update();
+        }
+    }
+
+    public void horizontal_lift(){
+        if(gamepad2.left_stick_x > .2) {
+            horizontalLiftRight.setPower(.75);
+            horizontalLiftLeft.setPower(.75);
+            telemetry.addData("EncoderPosLeft: ", horizontalLiftLeft.getCurrentPosition());
+            telemetry.addData("LeftPwr: ", horizontalLiftLeft.getPower());
+            telemetry.update();
+        }
+        else if(gamepad2.left_stick_x < -.2// && horizontalLiftLeft.getCurrentPosition() <= -100
+        ){
+            horizontalLiftRight.setPower(-.75);
+            horizontalLiftLeft.setPower(-.75);
+            telemetry.addData("EncoderPosLeft: ", horizontalLiftLeft.getCurrentPosition());
+            telemetry.addData("LeftPwr: ", horizontalLiftLeft.getPower());
+            telemetry.update();
         }
         else{
+            horizontalLiftRight.setPower(0);
+            horizontalLiftLeft.setPower(0);
+        }
+    }
+    public void bringback(){
+        if(gamepad2.dpad_down) {
+            while (horizontalLiftLeft.getCurrentPosition() < -20) {
+                horizontalLiftRight.setPower(-.75);
+                horizontalLiftLeft.setPower(-.75);
+            }
             horizontalLiftRight.setPower(0);
             horizontalLiftLeft.setPower(0);
         }
@@ -143,14 +208,29 @@ public abstract class Telelib2 extends OpMode {
             intake.setPower(0);
         }
     }
-    public void box(){
-        if(gamepad2.b && box.getPosition() != 1) {
-            box.setPosition(1);
-            telemetry.addLine("box:" + box.getPosition());
+    public void linac(){
+        if(isPressed("x", gamepad2.x)) //&& linac.getPosition() != 1
+        {
+            linac.setPosition(1);
+            telemetry.addLine("linac:" + linac.getPosition());
         }
-        else if(gamepad2.b && box.getPosition() != 0) {
+        else //if(!isPressed("x", gamepad2.x)) //&& linac.getPosition() != 0
+        {
+            linac.setPosition(0);
+            telemetry.addLine("linac:" + linac.getPosition());
+        }
+    }
+
+    public void box(){
+        if(isPressed("a", gamepad2.a)) {
+            box.setPosition(.62); //down linac
+            telemetry.addLine("box:" + box.getPosition());
+            //sleep(100);
+        }
+        else{
             box.setPosition(0);
             telemetry.addLine("box:" + box.getPosition());
+            //sleep(100);
         }
     }
 
@@ -181,26 +261,24 @@ public abstract class Telelib2 extends OpMode {
         }
     }
     public void shoomShoom(){
-        if(gamepad2.x){
-            shoomShoomSub.setPosition(0);
-            shoomShoomDom.setPosition(0); // correct
-        }
-        if(gamepad2.y){
-            shoomShoomSub.setPosition(1);
-            shoomShoomDom.setPosition(1); // correct
 
-        }
-        if(gamepad1.left_bumper && shoomShoomSub.getPosition() != 0){
+        if(isPressed("left_bumper", gamepad1.left_bumper)){
             shoomShoomSub.setPosition(0);
+            //sleep(250);
         }
-        else if(gamepad1.left_bumper){
+        else{
             shoomShoomSub.setPosition(1);
+            //sleep(250);
         }
-        if(gamepad1.right_bumper && shoomShoomDom.getPosition() != 0){
-            shoomShoomDom.setPosition(0);
+        if(isPressed("right_bumper", gamepad1.right_bumper)) {
+            shoomShoomDom.setPosition(.53); //deliver
+            telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
+            //sleep(250);
         }
-        else if(gamepad1.right_bumper){
-            shoomShoomDom.setPosition(1);
+        else {
+            shoomShoomDom.setPosition(.2); //resting
+            telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
+            //sleep(250);
         }
     }
 

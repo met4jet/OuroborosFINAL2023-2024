@@ -9,11 +9,14 @@ public class Teleop extends Telelib2{
         intake();
         arcadeDrive();
         horizontal_lift();
-        //vertical_lift();
+        vertical_lift_right();
+        vertical_lift_left();
         rflip();
         lflip();
         shoomShoom();
         box();
+        linac();
+        bringback();
     }
     @Override
     public void stop(){
