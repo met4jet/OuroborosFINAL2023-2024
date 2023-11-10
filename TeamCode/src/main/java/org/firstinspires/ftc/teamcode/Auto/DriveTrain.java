@@ -97,7 +97,7 @@ public class DriveTrain {
     public void timeMove(double power, double runtime){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        if(time.seconds() < runtime){
+        while(time.milliseconds() < runtime){
             br.setPower(power);
             bl.setPower(power);
             fr.setPower(power);
@@ -105,12 +105,28 @@ public class DriveTrain {
             opMode.telemetry.addData("time", time.seconds());
             opMode.telemetry.update();
         }
-        else{
+
             br.setPower(0);
             bl.setPower(0);
             fr.setPower(0);
             fl.setPower(0);
+    }
+    public void timeStrafeLeft(double power, double runtime){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        while(time.milliseconds() < runtime){
+            br.setPower(-power);
+            bl.setPower(power);
+            fr.setPower(power);
+            fl.setPower(-power);
+            opMode.telemetry.addData("time", time.seconds());
+            opMode.telemetry.update();
         }
+
+        br.setPower(0);
+        bl.setPower(0);
+        fr.setPower(0);
+        fl.setPower(0);
     }
 
     public void encoderMove(boolean isForward, double power, double distance, double runtime){

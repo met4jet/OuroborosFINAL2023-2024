@@ -40,6 +40,8 @@ public abstract class Telelib2 extends OpMode {
         // Difficulty: EASY
         // All: Hardware map your motors and servos
 
+        halfToggle = false;
+
         linac = hardwareMap.get(Servo.class, "linac");
 
         rflip = hardwareMap.get(Servo.class, "rflip");
@@ -178,16 +180,28 @@ public abstract class Telelib2 extends OpMode {
     }
 
     public void arcadeDrive(){
+        if(gamepad1.right_trigger > .5){
+            halfToggle = true;
+        }
+        if(gamepad1.left_trigger > .5) {
+            halfToggle = false;
+        }
         double left_stick_x = gamepad1.left_stick_x;
         double left_stick_y = gamepad1.left_stick_y;
         double right_stick_x = gamepad1.right_stick_x;
 
-        if (Math.abs(left_stick_x) > 0.1 ||
+        if (halfToggle && Math.abs(left_stick_x) > 0.1 ||
                 Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1){
-            fr.setPower((left_stick_y + left_stick_x) + right_stick_x);
-            fl.setPower((left_stick_y - left_stick_x) - right_stick_x);
-            br.setPower((left_stick_y - left_stick_x) + right_stick_x);
-            bl.setPower((left_stick_y + left_stick_x) - right_stick_x);
+            fr.setPower(((left_stick_y + left_stick_x) + right_stick_x));
+            fl.setPower(((left_stick_y - left_stick_x) - right_stick_x));
+            br.setPower(((left_stick_y - left_stick_x) + right_stick_x));
+            bl.setPower(((left_stick_y + left_stick_x) - right_stick_x));
+        } else if(!halfToggle && Math.abs(left_stick_x) > 0.1 ||
+                Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1) {
+            fr.setPower(.5*((left_stick_y + left_stick_x) + right_stick_x));
+            fl.setPower(.5*((left_stick_y - left_stick_x) - right_stick_x));
+            br.setPower(.5*((left_stick_y - left_stick_x) + right_stick_x));
+            bl.setPower(.5*((left_stick_y + left_stick_x) - right_stick_x));
         }
         else{
             fl.setPower(0);
@@ -221,33 +235,33 @@ public abstract class Telelib2 extends OpMode {
         }
     }
 
-    public void box(){
+    public void box() {
         if(isPressed("a", gamepad2.a)) {
-            box.setPosition(.62); //down linac
+            box.setPosition(0);
             telemetry.addLine("box:" + box.getPosition());
             //sleep(100);
         }
         else{
-            box.setPosition(0);
+            box.setPosition(.62);
             telemetry.addLine("box:" + box.getPosition());
             //sleep(100);
         }
     }
 
     public void rflip(){
-        if(gamepad2.right_bumper && rflip.getPosition() != 1){
+        if(isPressed("right_bumper2", gamepad2.right_bumper)){
             rflip.setPosition(1);
         }
-        else if(gamepad2.right_bumper) {
+        else {
             rflip.setPosition(0);
         }
     }
     public void lflip(){
-        if(gamepad2.left_bumper && lflip.getPosition() != 1){
-            lflip.setPosition(1);
-        }
-        else if(gamepad2.left_bumper) {
+        if(isPressed("left_bumper2", gamepad2.left_bumper)){
             lflip.setPosition(0);
+        }
+        else {
+            lflip.setPosition(1);
         }
     }
 
@@ -261,22 +275,23 @@ public abstract class Telelib2 extends OpMode {
         }
     }
     public void shoomShoom(){
-
         if(isPressed("left_bumper", gamepad1.left_bumper)){
             shoomShoomSub.setPosition(0);
+            telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
         }
         else{
             shoomShoomSub.setPosition(1);
+            telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
         }
-        if(isPressed("right_bumper", gamepad1.right_bumper)) {
-            shoomShoomDom.setPosition(.53); //deliver
+        if(isPressed("right_bumper1", gamepad1.right_bumper)) {
+            shoomShoomDom.setPosition(.2); //rest
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }
         else {
-            shoomShoomDom.setPosition(.2); //resting
+            shoomShoomDom.setPosition(.56); //deliver
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }
