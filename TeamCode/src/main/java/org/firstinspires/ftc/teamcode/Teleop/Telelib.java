@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import static android.os.SystemClock.sleep;
 
 import org.firstinspires.ftc.teamcode.ThreadHandler;
 
@@ -20,13 +22,22 @@ public abstract class Telelib extends OpMode {
     public DcMotor bl;
     public DcMotor br;
     public DcMotor motorLift;
+    public DcMotor motorLift2;
     public DcMotor horizontalLift;
+    public DcMotor horizontalLift2;
+
 
     public Servo outtakeLeft;
     public Servo outtakeRight;
-
+    public Servo intakeBox;
+    public Servo shoomShoomTop;
+    public Servo shoomShoomBottom;
     public Servo planeLauncher;
     public Servo planeAngler;
+    public Servo flipPad;
+    public Servo flipPad2;
+
+    public CRServo intakeWheels;
 
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
@@ -41,8 +52,24 @@ public abstract class Telelib extends OpMode {
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
+
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
+        motorLift2 = hardwareMap.get(DcMotor.class, "motorLift2");
         horizontalLift = hardwareMap.get(DcMotor.class, "horizontalLift");
+        horizontalLift2 = hardwareMap.get(DcMotor.class, "horizontalLift2");
+
+        outtakeLeft = hardwareMap.get(Servo.class, "outtakeLeft");
+        outtakeRight = hardwareMap.get(Servo.class, "outtakeRight");
+        intakeBox = hardwareMap.get(Servo.class, "intakeBox");
+        shoomShoomTop = hardwareMap.get(Servo.class, "shoomShoomTop");
+        shoomShoomBottom = hardwareMap.get(Servo.class, "shoomShoomBottom");
+
+        planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
+        planeAngler = hardwareMap.get(Servo.class, "planeAngler");
+        flipPad = hardwareMap.get(Servo.class, "flipPad");
+        flipPad2 = hardwareMap.get(Servo.class, "flipPad2");
+
+        intakeWheels = hardwareMap.get(CRServo.class, "intakeWheels");
 
         th_horiLift = new ThreadHandler();
         th_arcadeDrive = new ThreadHandler();
@@ -56,7 +83,9 @@ public abstract class Telelib extends OpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         horizontalLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        horizontalLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Difficulty: EASY
         // All: Set your motors' directions
@@ -65,7 +94,32 @@ public abstract class Telelib extends OpMode {
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         motorLift.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorLift2.setDirection(DcMotorSimple.Direction.FORWARD);
         horizontalLift.setDirection(DcMotorSimple.Direction.FORWARD);
+        horizontalLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+    public void resetEncoders() {
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        horizontalLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontalLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        horizontalLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontalLift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     Thread horizontal_lift_move = new Thread(new Runnable() {
@@ -73,10 +127,13 @@ public abstract class Telelib extends OpMode {
         public void run() {
             ElapsedTime time = new ElapsedTime();
             time.reset();
+            resetEncoders();
+
             while(time.milliseconds() < 300){
             }
             while(Math.abs(horizontalLift.getCurrentPosition()) < 10){
                 horizontalLift.setPower(hPower);
+                horizontalLift2.setPower(hPower);
             }
         }
     });
@@ -106,6 +163,49 @@ public abstract class Telelib extends OpMode {
             halfToggle = true;
         }
     });
+    Thread intake_extension = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            resetEncoders();
+            while (time.milliseconds() < 300) {
+            }
+            while(Math.abs(horizontalLift.getCurrentPosition()) > 10) {
+                horizontalLift.setPower(-1);
+                horizontalLift2.setPower(-1);
+            }
+            intakeBox.setPosition(1);
+            intakeBox.setPosition(0);
+            sleep(50);
+            shoomShoomTop.setPosition(0);
+            shoomShoomBottom.setPosition(1);
+            sleep(100);
+            shoomShoomBottom.setPosition(0);
+            shoomShoomTop.setPosition(1);
+        }
+    });
+
+    Thread outtake_extension = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            while(Math.abs(motorLift.getCurrentPosition()) < 100) {
+                motorLift.setPower(1);
+                motorLift2.setPower(1);
+            }
+            flipPad.setPosition(1);
+            flipPad2.setPosition(1);
+            sleep(100);
+            flipPad.setPosition(0);
+            flipPad.setPosition(0);
+        }
+    });
+
 
     Thread plane_launcher_launch = new Thread(new Runnable() {
         @Override
@@ -186,12 +286,29 @@ public abstract class Telelib extends OpMode {
             outtakeRight.setPosition(0);
         }
     });
-    public void horizontalLift() {
-
+    public void intake() {
+        //horizontal lift movement
         if(gamepad2.left_stick_y > .1){
+            hPower = 1;
+            th_horiLift.queue(horizontal_lift_move);
+        }
+        if (gamepad2.left_stick_y < -.1) {
+            hPower = -1;
             th_horiLift.queue(horizontal_lift_move);
         }
 
+        //Intake Spoked Wheels
+        if(gamepad2.right_trigger > .1) {
+            intakeWheels.setPower(1);
+        }
+        else if (gamepad2.left_trigger > .1) {
+            intakeWheels.setPower(-1);
+        }
+
+        //Returning intake macro
+        if(gamepad2.b) {
+            th_horiLift.queue(intake_extension);
+        }
     }
 
     public void arcadeDrive(){
@@ -245,6 +362,9 @@ public abstract class Telelib extends OpMode {
         }
         if (gamepad2.right_bumper){
             th_outtake.queue(right_Outtake);
+        }
+        if(gamepad2.x) {
+            th_outtake.queue(outtake_extension);
         }
     }
 

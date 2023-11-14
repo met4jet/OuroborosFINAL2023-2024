@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -27,7 +28,7 @@ public abstract class Telelib2 extends OpMode {
     public Servo linearAct;
     public Servo shoomShoomDom;
     public Servo shoomShoomSub;
-    public Servo box;
+    public CRServo box;
     public Servo linac;
 
     public DcMotor horizontalLiftRight;
@@ -49,7 +50,7 @@ public abstract class Telelib2 extends OpMode {
         intake = hardwareMap.get(CRServo.class, "intake");
         shoomShoomDom = hardwareMap.get(Servo.class, "shoomShoomDom");
         shoomShoomSub = hardwareMap.get(Servo.class, "shoomShoomSub");
-        box = hardwareMap.get(Servo.class, "box");
+        box = hardwareMap.get(CRServo.class, "box");
 
         fl = hardwareMap.get(DcMotor.class, "fl");
         fr = hardwareMap.get(DcMotor.class, "fr");
@@ -70,11 +71,11 @@ public abstract class Telelib2 extends OpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        horizontalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        horizontalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        horizontalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        horizontalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        verticalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        verticalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        verticalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        verticalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Difficulty: EASY
         // All: Set your motors' directions
@@ -236,21 +237,26 @@ public abstract class Telelib2 extends OpMode {
     }
 
     public void box() {
-        if(isPressed("a", gamepad2.a)) {
-            box.setPosition(0);
-            telemetry.addLine("box:" + box.getPosition());
+        if(gamepad2.b){ //isPressed("a", gamepad2.a)) {
+            //box.setPosition(0);
+            box.setPower(1);
+            telemetry.addLine("box:" + box.getPower());
             //sleep(100);
         }
-        else{
-            box.setPosition(.62);
-            telemetry.addLine("box:" + box.getPosition());
+        else if(gamepad2.a){
+            //box.setPosition(.62);
+            box.setPower(-1);
+            telemetry.addLine("box:" + box.getPower());
             //sleep(100);
+        }
+        else {
+            box.setPower(0);
         }
     }
 
     public void rflip(){
         if(isPressed("right_bumper2", gamepad2.right_bumper)){
-            rflip.setPosition(1);
+            rflip.setPosition(.7);
         }
         else {
             rflip.setPosition(0);
@@ -258,7 +264,7 @@ public abstract class Telelib2 extends OpMode {
     }
     public void lflip(){
         if(isPressed("left_bumper2", gamepad2.left_bumper)){
-            lflip.setPosition(0);
+            lflip.setPosition(.25);
         }
         else {
             lflip.setPosition(1);
@@ -291,7 +297,7 @@ public abstract class Telelib2 extends OpMode {
             //sleep(250);
         }
         else {
-            shoomShoomDom.setPosition(.56); //deliver
+            shoomShoomDom.setPosition(.53); //deliver
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }

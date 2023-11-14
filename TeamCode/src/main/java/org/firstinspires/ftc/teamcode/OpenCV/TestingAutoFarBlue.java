@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.Auto.DriveTrain;
 import org.firstinspires.ftc.teamcode.Auto.Flip;
 import org.firstinspires.ftc.teamcode.Auto.VerticalLift;
 
-@Autonomous(group = "Auto", name = "TestingAutoFar")
-public class TestingAutoFar extends LinearOpMode {
+@Autonomous(group = "Auto", name = "TestingAutoFarBlue")
+public class TestingAutoFarBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -20,6 +20,7 @@ public class TestingAutoFar extends LinearOpMode {
         waitForStart();
         //if(opModeIsActive()) {
         //dt.timeMove(-.5, 1500);
+        sleep(10000);
         dt.timeMove(.5, 2500);
         dt.timeStrafeLeft(.5,8000);
         dt.timeMove(-.5, 300);

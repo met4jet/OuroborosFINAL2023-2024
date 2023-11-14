@@ -51,10 +51,24 @@ public class VerticalLift {
         ElapsedTime time = new ElapsedTime();
         resetEncoders(); // positive
         time.reset();
-        while (verticalLiftRight.getCurrentPosition() < distance && opMode.opModeIsActive() && time.seconds() < 1){
+        while (verticalLiftRight.getCurrentPosition() < distance && opMode.opModeIsActive() && time.seconds() < .33){
             verticalLiftRight.setPower(1);
             //verticalLiftLeft.setPower(1);
             opMode.telemetry.addLine("verticalLiftRight pos:" + verticalLiftRight.getCurrentPosition());
+            opMode.telemetry.update();
+        }
+        verticalLiftRight.setPower(0);
+        //verticalLiftLeft.setPower(0);
+    }
+    public void moveEncoderLiftUpLeft(double distance){
+        ElapsedTime time = new ElapsedTime();
+        resetEncoders(); // positive
+        time.reset();
+        while (verticalLiftRight.getCurrentPosition() < distance && opMode.opModeIsActive() && time.seconds() < .33){
+            verticalLiftRight.setPower(1);
+            //verticalLiftLeft.setPower(1);
+            opMode.telemetry.addLine("verticalLiftRight pos:" + verticalLiftRight.getCurrentPosition());
+            opMode.telemetry.addLine("time:" + time.seconds());
             opMode.telemetry.update();
         }
         verticalLiftRight.setPower(0);

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class HorizontalLift {
     public LinearOpMode opMode;
     public DcMotor hLift;
+    public DcMotor hLift2;
 
     public double kp, ki, kd;
     public double a;
@@ -17,6 +18,8 @@ public class HorizontalLift {
     public HorizontalLift(LinearOpMode opMode){
         this.opMode = opMode;
         hLift = opMode.hardwareMap.dcMotor.get("hLift");
+        hLift2 = opMode.hardwareMap.dcMotor.get("hLift2");
+
         opMode.telemetry.addLine("hlift :))))))))))))))");
         hLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
@@ -118,6 +121,7 @@ public class HorizontalLift {
             d = currFilterEst/timer.seconds();
             power = p * kp + i * ki + d * kd;
             hLift.setPower(power);
+            hLift2.setPower(power);
 
             prevP = p;
 
