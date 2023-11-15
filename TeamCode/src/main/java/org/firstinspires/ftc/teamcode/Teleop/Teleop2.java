@@ -5,37 +5,42 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @TeleOp(name = "Testing Switch")
 public class Teleop2 extends LinearOpMode {
-    public Servo linac;
+    public Servo shoomShoomDom;
     HashMap<String, Boolean> buttons = new HashMap<String, Boolean>();
     @Override
     public void runOpMode() throws InterruptedException {
 
-        linac = hardwareMap.get(Servo.class, "linac");
+        shoomShoomDom = hardwareMap.get(Servo.class, "shoomShoomDom");
 
-        /*enum Box{
-            DELIVER,
-            REST
-        }*/
+        ArrayList Box = new ArrayList<String>();
+
 
         waitForStart();
-
+        String switchDom = "CLOSE";
+        ElapsedTime time = new ElapsedTime();
         while(opModeIsActive()){
-
-
-            if(isPressed("x", gamepad2.x)) //&& linac.getPosition() != 1
-            {
-                linac.setPosition(1);
-                telemetry.addLine("linac:" + linac.getPosition());
+            switch(switchDom) {
+                case "CLOSE":
+                    if(gamepad1.a){
+                        shoomShoomDom.setPosition(1);
+                        switchDom = "OPEN";
+                    }
+                    break;
+                case "OPEN":
+                    if(gamepad1.a){
+                        shoomShoomDom.setPosition(0);
+                        switchDom = "CLOSE";
+                    }
+                    break;
+                default:
+                    switchDom = "CLOSE";
             }
-            else //if(!isPressed("x", gamepad2.x)) //&& linac.getPosition() != 0
-            {
-                linac.setPosition(0);
-                telemetry.addLine("linac:" + linac.getPosition());
-            }
+
         }
     }
     public boolean isPressed(String str, boolean button) {

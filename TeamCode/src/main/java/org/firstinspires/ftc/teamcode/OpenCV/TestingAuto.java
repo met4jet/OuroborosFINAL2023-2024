@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.OpenCV;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Auto.DriveTrain;
-import org.firstinspires.ftc.teamcode.Auto.Flip;
 import org.firstinspires.ftc.teamcode.Auto.VerticalLift;
 
 @Autonomous(group = "Auto", name = "TestingAutoClose")
@@ -12,7 +10,13 @@ public class TestingAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DriveTrain dt = new DriveTrain(this);
+        VerticalLift vl = new VerticalLift(this);
+
+        waitForStart();
+        vl.movePID(-100,.005,0,0);
+        sleep(1000);
+
+        /*DriveTrain dt = new DriveTrain(this);
         Flip flip = new Flip(this);
         VerticalLift vl = new VerticalLift(this);
 

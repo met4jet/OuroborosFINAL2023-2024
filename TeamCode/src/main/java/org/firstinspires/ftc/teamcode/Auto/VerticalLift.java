@@ -93,13 +93,13 @@ public class VerticalLift {
         double currFilterEst;
         double prevFilterEst = 0;
 
-        int currPos = verticalLiftLeft.getCurrentPosition();
+        //int currPos = verticalLiftRight.getCurrentPosition();
 
         timer.reset();
 
-        while(Math.abs(verticalLiftLeft.getCurrentPosition() - position) > 10 && opMode.opModeIsActive()){
+        while(Math.abs(verticalLiftRight.getCurrentPosition() - position) > 10 && opMode.opModeIsActive()){
 
-            p = verticalLiftLeft.getCurrentPosition() - position;
+            p = verticalLiftRight.getCurrentPosition() - position;
 
             i += (p - prevP) * timer.seconds();
 
@@ -111,7 +111,6 @@ public class VerticalLift {
             prevFilterEst = currFilterEst;
             d = currFilterEst/timer.seconds();
             power = p * kp + i * ki + d * kd;
-            verticalLiftLeft.setPower(power);
             verticalLiftRight.setPower(power);
 
             prevP = p;
@@ -122,6 +121,8 @@ public class VerticalLift {
             opMode.telemetry.addData("i :: ", i * ki);
             opMode.telemetry.addData("d :: ", d * kd);
             opMode.telemetry.addData("power", power);
+            opMode.telemetry.addData("Current Position", verticalLiftRight.getCurrentPosition());
+            opMode.telemetry.addData("Target Position", position);
             opMode.telemetry.update();
         }
     }
