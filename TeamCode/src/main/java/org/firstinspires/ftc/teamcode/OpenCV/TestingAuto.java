@@ -13,7 +13,7 @@ public class TestingAuto extends LinearOpMode {
         VerticalLift vl = new VerticalLift(this);
 
         waitForStart();
-        vl.movePID(-100,.005,0,0);
+        vl.movePID(100,.005,0,0);
         sleep(1000);
 
         /*DriveTrain dt = new DriveTrain(this);
