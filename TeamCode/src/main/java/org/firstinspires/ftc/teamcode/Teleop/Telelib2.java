@@ -197,18 +197,31 @@ public abstract class Telelib2 extends OpMode {
             fl.setPower(((left_stick_y - left_stick_x) - right_stick_x));
             br.setPower(((left_stick_y - left_stick_x) + right_stick_x));
             bl.setPower(((left_stick_y + left_stick_x) - right_stick_x));
+            telemetry.addData("fr:", fr.getPower());
+            telemetry.addData("br:", br.getPower());
+            telemetry.addData("fl:", fl.getPower());
+            telemetry.addData("bl:", bl.getPower());
+
         } else if(!halfToggle && Math.abs(left_stick_x) > 0.1 ||
                 Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1) {
             fr.setPower(.5*((left_stick_y + left_stick_x) + right_stick_x));
             fl.setPower(.5*((left_stick_y - left_stick_x) - right_stick_x));
             br.setPower(.5*((left_stick_y - left_stick_x) + right_stick_x));
             bl.setPower(.5*((left_stick_y + left_stick_x) - right_stick_x));
+            telemetry.addData("fr:", fr.getPower());
+            telemetry.addData("br:", br.getPower());
+            telemetry.addData("fl:", fl.getPower());
+            telemetry.addData("bl:", bl.getPower());
         }
         else{
             fl.setPower(0);
             fr.setPower(0);
             br.setPower(0);
             bl.setPower(0);
+            telemetry.addData("fr:", fr.getPower());
+            telemetry.addData("br:", br.getPower());
+            telemetry.addData("fl:", fl.getPower());
+            telemetry.addData("bl:", bl.getPower());
         }
     }
 
