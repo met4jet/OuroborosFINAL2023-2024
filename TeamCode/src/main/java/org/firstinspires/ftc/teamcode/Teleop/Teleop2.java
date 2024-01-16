@@ -12,6 +12,8 @@ import java.util.HashMap;
 @TeleOp(name = "Testing Switch")
 public class Teleop2 extends LinearOpMode {
     public Servo shoomShoomDom;
+    public Servo shoomShoomSub;
+
     public DcMotor fl;
     public DcMotor fr;
     public DcMotor bl;
@@ -21,6 +23,8 @@ public class Teleop2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         shoomShoomDom = hardwareMap.get(Servo.class, "shoomShoomDom");
+        shoomShoomSub= hardwareMap.get(Servo.class, "shoomShoomSub");
+
         fl = hardwareMap.get(DcMotor.class, "fl");
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
@@ -33,25 +37,43 @@ public class Teleop2 extends LinearOpMode {
 
         //DOM
         String switchDom = "CLOSE";
+        String switchSub = "CLOSE";
+
         ElapsedTime time = new ElapsedTime();
         while(opModeIsActive()){
-            switch(switchDom) {
+
+            //SUB
+            switch(switchSub) {
                 case "CLOSE":
-                    if(gamepad1.a){
+                    if(gamepad2.b){
                         shoomShoomDom.setPosition(1);
-                        switchDom = "OPEN";
+                        switchSub = "OPEN";
                     }
                     break;
                 case "OPEN":
-                    if(gamepad1.a){
+                    if(gamepad2.b){
                         shoomShoomDom.setPosition(0);
-                        switchDom = "CLOSE";
+                        switchSub = "CLOSE";
                     }
                     break;
                 default:
-                    switchDom = "CLOSE";
+                    switchSub = "CLOSE";
             }
-
+            switch(switchSub) {
+                case "CLOSE":
+                    if(gamepad2.a){
+                        shoomShoomSub.setPosition(1);
+                        switchSub = "OPEN";
+                    }
+                    break;
+                case "OPEN":
+                    if(gamepad2.a){
+                        shoomShoomSub.setPosition(0);
+                        switchSub = "CLOSE";
+                    }
+                    break;
+                default:
+                    switchSub = "CLOSE";
             // DRIVE TRAIN
             double left_stick_x = gamepad1.left_stick_x;
             double left_stick_y = gamepad1.left_stick_y;
@@ -72,7 +94,7 @@ public class Teleop2 extends LinearOpMode {
             }
         }
     }
-    public boolean isPressed(String str, boolean button) {
+    /*public boolean isPressed(String str, boolean button) {
         ElapsedTime time = new ElapsedTime();
         boolean output = false;
         if(!buttons.containsKey(str)) {
@@ -85,6 +107,6 @@ public class Teleop2 extends LinearOpMode {
         }
         buttons.put(str,output);
 
-        return output;
+        return output;*/
     }
 }

@@ -97,7 +97,7 @@ public class DriveTrain {
     public void timeMove(double power, double runtime){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        while(time.milliseconds() < runtime){
+        while(time.seconds() < runtime){
             br.setPower(power);
             bl.setPower(power);
             fr.setPower(power);
@@ -106,19 +106,72 @@ public class DriveTrain {
             opMode.telemetry.update();
         }
 
-            br.setPower(0);
-            bl.setPower(0);
-            fr.setPower(0);
-            fl.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
+        fr.setPower(0);
+        fl.setPower(0);
     }
-    public void timeStrafeLeft(double power, double runtime){
+    public void timeTurnLeft(double power, double runtime) {
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        while(time.milliseconds() < runtime){
+        while (time.seconds() < runtime) {
+            br.setPower(power);
+            bl.setPower(-power);
+            fr.setPower(power);
+            fl.setPower(-power);
+            opMode.telemetry.addData("time", time.seconds());
+            opMode.telemetry.update();
+        }
+        br.setPower(0);
+        bl.setPower(0);
+        fr.setPower(0);
+        fl.setPower(0);
+    }
+    public void timeTurnRight(double power, double runtime) {
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        while (time.seconds() < runtime) {
+            br.setPower(-power);
+            bl.setPower(power);
+            fr.setPower(-power);
+            fl.setPower(power);
+            opMode.telemetry.addData("time", time.seconds());
+            opMode.telemetry.update();
+        }
+        br.setPower(0);
+        bl.setPower(0);
+        fr.setPower(0);
+        fl.setPower(0);
+    }
+
+    public void timeStrafeLeft(double power, double runtime){
+
+
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        while(time.seconds() < runtime){
             br.setPower(-power);
             bl.setPower(power);
             fr.setPower(power);
             fl.setPower(-power);
+            opMode.telemetry.addData("time", time.seconds());
+            opMode.telemetry.update();
+        }
+
+        br.setPower(0);
+        bl.setPower(0);
+        fr.setPower(0);
+        fl.setPower(0);
+    }
+
+    public void timeStrafeRight(double power, double runtime){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        while(time.seconds() < runtime){
+            br.setPower(power);
+            bl.setPower(-power);
+            fr.setPower(-power);
+            fl.setPower(power);
             opMode.telemetry.addData("time", time.seconds());
             opMode.telemetry.update();
         }

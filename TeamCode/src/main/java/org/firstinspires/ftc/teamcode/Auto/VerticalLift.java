@@ -10,11 +10,7 @@ public class VerticalLift {
     public DcMotor verticalLiftRight;
     public DcMotor verticalLiftLeft;
 
-    public double kp, ki, kd;
     public double a;
-    public double prevP;
-    public double target;
-    public ElapsedTime timer = new ElapsedTime();
 
     public VerticalLift(LinearOpMode opMode){
         this.opMode = opMode;
@@ -23,7 +19,7 @@ public class VerticalLift {
 
         verticalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         verticalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        verticalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        verticalLiftRight.setDirection(DcMotorSimple.Direction.FORWARD);
         verticalLiftLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -75,13 +71,12 @@ public class VerticalLift {
         //verticalLiftLeft.setPower(0);
     }
 
-    public void movePID(int position, double kp, double ki, double kd){
+    public void movePIDRight(int position, double kp, double ki, double kd, int time){
         if(position != 0) {
             resetEncoders();
         }
 
         ElapsedTime timer = new ElapsedTime();
-
         double p;
         double i = 0;
         double d;
@@ -97,7 +92,7 @@ public class VerticalLift {
 
         timer.reset();
 
-        while(Math.abs(verticalLiftRight.getCurrentPosition() - position) > 10 && opMode.opModeIsActive()){
+        while(Math.abs(Math.abs(verticalLiftRight.getCurrentPosition()) - position) > 5 && opMode.opModeIsActive() && timer.seconds() < time){
 
             p = verticalLiftRight.getCurrentPosition() - position;
 
@@ -122,6 +117,67 @@ public class VerticalLift {
             opMode.telemetry.addData("d :: ", d * kd);
             opMode.telemetry.addData("power", power);
             opMode.telemetry.addData("Current Position", verticalLiftRight.getCurrentPosition());
+            opMode.telemetry.addData("Target Position", position);
+            opMode.telemetry.update();
+        }
+    }
+    public void movePIDLeft(int position, double kp, double ki, double kd, int time){
+        if(position != 0) {
+            resetEncoders();
+        }
+
+        ElapsedTime timer = new ElapsedTime();
+        double p;
+        double i = 0;
+        double d;
+        double a = .5;
+        double prevP = 0;
+        double power;
+        double iLimit = .25/ki;
+
+        double currFilterEst;
+        double prevFilterEst = 0;
+
+        //int currPos = verticalLiftRight.getCurrentPosition();
+
+        timer.reset();
+
+        while(Math.abs(Math.abs(verticalLiftLeft.getCurrentPosition()) - position) > 5 && opMode.opModeIsActive() && timer.seconds() < time){
+
+            // Calculates the error (distance between desired and current position)
+            // Slows motor down so prevent overshooting
+            p = verticalLiftLeft.getCurrentPosition() - position;
+
+            // Calculates the area under the curve
+            // Adds additional power to overcome outside forces like friction preventing undershooting
+            i += (p - prevP) * timer.seconds();
+
+            // Sets limit on integral to prevent integral windup
+            if (Math.abs(i) > iLimit) {
+                i = Math.signum(i) * iLimit;
+            }
+
+            // Low pass filter used to filter noise for d
+            currFilterEst = (a * prevFilterEst) + (1 - a) * (p - prevP);
+            prevFilterEst = currFilterEst;
+
+            // Calculates change in error
+            // Tune to reduce oscillations
+            d = currFilterEst/timer.seconds();
+
+            // Calculates and sets power
+            power = p * kp + i * ki + d * kd;
+            verticalLiftLeft.setPower(power);
+
+            prevP = p;
+
+            timer.reset();
+
+            opMode.telemetry.addData("p :: ", p * kp);
+            opMode.telemetry.addData("i :: ", i * ki);
+            opMode.telemetry.addData("d :: ", d * kd);
+            opMode.telemetry.addData("power", power);
+            opMode.telemetry.addData("Current Position", verticalLiftLeft.getCurrentPosition());
             opMode.telemetry.addData("Target Position", position);
             opMode.telemetry.update();
         }
