@@ -31,7 +31,7 @@ public class Intake {
     public void deliverPurple(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        linac.setPower(1);
+        //linac.setPower(-1);
         while(time.seconds() < 2){
         }
 
@@ -42,7 +42,7 @@ public class Intake {
         while(time.seconds() < sec){
         }
 
-        linac.setPower(0);
+        //linac.setPower(0);
         rollers.setPower(0);
         intake.setPower(0);
     }
