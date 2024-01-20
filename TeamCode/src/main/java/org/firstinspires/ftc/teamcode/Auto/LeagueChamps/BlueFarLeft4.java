@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.Auto.LeagueChamps;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -9,17 +9,20 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityC
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueRight4")
-public class BlueRightRight4 extends LinearOpMode {
+@Autonomous(group = "Auto", name = "BlueFarLeft4")
+public class BlueFarLeft4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-40, 70, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
@@ -31,77 +34,40 @@ public class BlueRightRight4 extends LinearOpMode {
 
         ));
 
-        // BLUE RIGHT RIGHT
-
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .strafeRight(7)
-                .forward(20)
-
-
-                /*.turn(Math.toRadians(90))
-                .forward(55)
-                .lineToLinearHeading(new Pose2d(45, 27, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))
-                .back(10)*/
+                .strafeTo(new Vector2d(-34, 32))
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
-
-                .strafeLeft(9)
-                .forward(32)
+                .back(5)
                 .turn(Math.toRadians(-95))
+                // *** TEST TURN WHILE STRAFE ***
+                .strafeTo(new Vector2d(-51.5,-70))
                 .back(55)
-                .strafeTo(new Vector2d(49, 40))
-                .back(2)
-
-                /*.turn(Math.toRadians(90))
-                .forward(55)
-                .lineToLinearHeading(new Pose2d(45, 27, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))
-                .back(10)*/
+                // **** TEST ****
+                .strafeTo(new Vector2d(45, 40))
+                .back(3)
                 .build();
+
         TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-
                 .strafeTo(new Vector2d(43, 18))
-
-                //.lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))
                 .back(5)
                 .build();
 
-    Intake intake = new Intake(this);
-    VerticalLift vl = new VerticalLift(this);
-    Flip flip = new Flip(this);
+        Intake intake = new Intake(this);
+        VerticalLift vl = new VerticalLift(this);
+        Flip flip = new Flip(this);
 
         waitForStart();
 
         if (!isStopRequested())
             drive.followTrajectorySequence(trajSeq1);
-            //intake.deliverPurple(5);
-            drive.followTrajectorySequence(trajSeq2);
-            //vl.movePIDLeft(-1000, 0.003,0.005,0.0005, 1);
-            //flip.lflip();
-            drive.followTrajectorySequence(trajSeq3);
-
-        // BLUE RIGHT MIDDLE
-        /*RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepmeep)
-                .setConstraints(60, 60, Math.toRadians(100), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-40,62,Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(-34,34, Math.toRadians(270)))
-                                .back(4)
-                                .strafeRight(18)
-                                .turn(Math.toRadians(-90))
-                                .strafeLeft(25)
-                                .back(80)
-                                .lineToLinearHeading(new Pose2d(45, 35, Math.toRadians(180)))
-                                //.lineToLinearHeading(new Pose2d(38, 12, Math.toRadians(180)))
-                                //.forward(90)
-                                .forward(2)
-                                .lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))
-                                .back(10)
-                                .build()
-                );*/
+        //intake.deliverPurple(5);
+        drive.followTrajectorySequence(trajSeq2);
+        //vl.movePIDLeft(-1000, 0.003,0.005,0.0005, 1);
+        //flip.lflip();
+        drive.followTrajectorySequence(trajSeq3);
 
         // BLUE RIGHT LEFT
         /*RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepmeep)

@@ -1,12 +1,15 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.Auto.Random;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Auto.VerticalLift;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.DriveTrain;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 
-@Autonomous(group = "Auto", name = "BlueLeft3")
-public class BlueLeft3 extends LinearOpMode {
+@Autonomous(group = "Auto", name = "RedRight3")
+public class RedRight3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -20,8 +23,7 @@ public class BlueLeft3 extends LinearOpMode {
         sleep(1000);
 
         dt.timeMove(-.3,2);
-        dt.timeStrafeLeft(.5,3);
-
+        dt.timeStrafeRight(.5,3);
         intake.deliverPurple(5);
 
         sleep(1000);

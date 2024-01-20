@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.Auto.Random;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.TrapMotionProfileRight;
 
 @Autonomous(group = "Auto", name = "TrapTest")
 

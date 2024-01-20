@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.OpenCV;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Auto.DriveTrain;
-import org.firstinspires.ftc.teamcode.Auto.Flip;
-import org.firstinspires.ftc.teamcode.Auto.VerticalLift;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.DriveTrain;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 
 @Autonomous(group = "Auto", name = "TestingAutoFarRed")
 public class TestingAutoFarRed extends LinearOpMode {
