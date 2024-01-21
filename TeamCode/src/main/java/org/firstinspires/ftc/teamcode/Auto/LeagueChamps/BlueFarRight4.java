@@ -54,13 +54,13 @@ public class BlueFarRight4 extends LinearOpMode {
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
 
-                .strafeLeft(9)
+                .strafeLeft(11)
                 .turn(Math.toRadians(-95))
                 .strafeLeft(32)
-                .back(55)
+                .back(100)
                 // *****CHANGE******
-                .strafeTo(new Vector2d(49, 40))
-                .back(2)
+                .strafeTo(new Vector2d(49, 31))
+                .back(7)
 
                 /*.turn(Math.toRadians(90))
                 .forward(55)
@@ -70,25 +70,30 @@ public class BlueFarRight4 extends LinearOpMode {
                 .build();
         TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
                 // *****CHANGE******
-                .strafeTo(new Vector2d(43, 18))
+                .strafeTo(new Vector2d(45, 18))
 
                 //.lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))
-                .back(5)
+                .back(7)
                 .build();
 
     Intake intake = new Intake(this);
     VerticalLift vl = new VerticalLift(this);
     Flip flip = new Flip(this);
 
-        waitForStart();
+    waitForStart();
+    if (!isStopRequested()) {
+        drive.followTrajectorySequence(trajSeq1);
+        intake.deliverPurple(5);
+        drive.followTrajectorySequence(trajSeq2);
+        vl.movePIDLeft(2000, 0.01, 0.000, 0.000, 2);
 
-        if (!isStopRequested())
-            drive.followTrajectorySequence(trajSeq1);
-            //intake.deliverPurple(5);
-            drive.followTrajectorySequence(trajSeq2);
-            //vl.movePIDLeft(-1000, 0.003,0.005,0.0005, 1);
-            //flip.lflip();
-            drive.followTrajectorySequence(trajSeq3);
+        flip.lflip();
+
+
+        //vl.movePIDLeft(0, 0.02,0.0005,0.0005, 2);
+        drive.followTrajectorySequence(trajSeq3);
+    }
+
 
         // BLUE RIGHT MIDDLE
         /*RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepmeep)

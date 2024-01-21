@@ -31,7 +31,7 @@ public class Intake {
     public void deliverPurple(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        //linac.setPower(-1);
+        //linac.setPower(1);
         while(time.seconds() < 2){
         }
 

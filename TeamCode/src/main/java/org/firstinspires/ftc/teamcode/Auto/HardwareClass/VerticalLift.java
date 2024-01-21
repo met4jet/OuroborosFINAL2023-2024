@@ -166,7 +166,7 @@ public class VerticalLift {
             d = currFilterEst/timer.seconds();
 
             // Calculates and sets power
-            power = p * kp + i * ki + d * kd;
+            power =- p * kp + i * ki + d * kd;
             verticalLiftLeft.setPower(power);
 
             prevP = p;
@@ -181,5 +181,7 @@ public class VerticalLift {
             opMode.telemetry.addData("Target Position", position);
             opMode.telemetry.update();
         }
+
+        opMode.sleep(1500);
     }
 }

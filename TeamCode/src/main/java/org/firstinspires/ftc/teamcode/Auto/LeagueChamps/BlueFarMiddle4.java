@@ -35,24 +35,23 @@ public class BlueFarMiddle4 extends LinearOpMode {
         ));
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .forward(20)
+                .forward(29)
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
                 .strafeRight(18)
-                .forward(25)
+                .forward(23)
                 .turn(Math.toRadians(-95))
-                .strafeLeft(28)
-                .back(55)
+                .back(100)
                 // **** CHANGE ****
-                .strafeTo(new Vector2d(45, 35))
+                .strafeTo(new Vector2d(49, 35))
                 .back(3)
                 .build();
 
         TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
                 .strafeTo(new Vector2d(43, 18))
-                .back(5)
+                .back(6)
                 .build();
 
         Intake intake = new Intake(this);
@@ -61,13 +60,14 @@ public class BlueFarMiddle4 extends LinearOpMode {
 
         waitForStart();
 
-        if (!isStopRequested())
+        if (!isStopRequested()) {
             drive.followTrajectorySequence(trajSeq1);
-        //intake.deliverPurple(5);
-        drive.followTrajectorySequence(trajSeq2);
-        //vl.movePIDLeft(-1000, 0.003,0.005,0.0005, 1);
-        //flip.lflip();
-        drive.followTrajectorySequence(trajSeq3);
+            intake.deliverPurple(5);
+            drive.followTrajectorySequence(trajSeq2);
+            vl.movePIDLeft(2000, 0.01, 0.000, 0.000, 2);
+            flip.lflip();
+            drive.followTrajectorySequence(trajSeq3);
+        }
 
         // BLUE RIGHT LEFT
         /*RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepmeep)

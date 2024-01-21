@@ -35,16 +35,20 @@ public class BlueFarLeft4 extends LinearOpMode {
         ));
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .strafeTo(new Vector2d(-34, 32))
+                .forward(25)
+                .turn(Math.toRadians(90))
+                .forward(3)
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
-                .back(5)
+                .back(8)
+                .turn(Math.toRadians(90))
+
                 .turn(Math.toRadians(-95))
                 // *** TEST TURN WHILE STRAFE ***
                 .strafeTo(new Vector2d(-51.5,-70))
-                .back(55)
+                .back(100)
                 // **** TEST ****
                 .strafeTo(new Vector2d(45, 40))
                 .back(3)
@@ -61,13 +65,18 @@ public class BlueFarLeft4 extends LinearOpMode {
 
         waitForStart();
 
-        if (!isStopRequested())
+        if (!isStopRequested()) {
             drive.followTrajectorySequence(trajSeq1);
-        //intake.deliverPurple(5);
-        drive.followTrajectorySequence(trajSeq2);
-        //vl.movePIDLeft(-1000, 0.003,0.005,0.0005, 1);
-        //flip.lflip();
-        drive.followTrajectorySequence(trajSeq3);
+            intake.deliverPurple(5);
+            drive.followTrajectorySequence(trajSeq2);
+            //vl.movePIDLeft(2000, 0.01,0.000,0.000, 2);
+
+            //flip.lflip();
+
+
+            //vl.movePIDLeft(0, 0.02,0.0005,0.0005, 2);
+            drive.followTrajectorySequence(trajSeq3);
+        }
 
         // BLUE RIGHT LEFT
         /*RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepmeep)
