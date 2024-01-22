@@ -37,18 +37,19 @@ public class BlueFarLeft4 extends LinearOpMode {
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 .forward(25)
                 .turn(Math.toRadians(90))
-                .forward(3)
+                .forward(2)
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
                 .back(8)
-                .turn(Math.toRadians(90))
+                .strafeRight(28)
+                .turn(Math.toRadians(180))
 
-                .turn(Math.toRadians(-95))
+                //.turn(Math.toRadians(-95))
                 // *** TEST TURN WHILE STRAFE ***
-                .strafeTo(new Vector2d(-51.5,-70))
-                .back(100)
+                //.strafeTo(new Vector2d(-51.5,-70))
+                .back(70)
                 // **** TEST ****
                 .strafeTo(new Vector2d(45, 40))
                 .back(3)

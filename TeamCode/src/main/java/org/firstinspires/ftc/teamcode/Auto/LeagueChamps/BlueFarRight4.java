@@ -85,7 +85,7 @@ public class BlueFarRight4 extends LinearOpMode {
         drive.followTrajectorySequence(trajSeq1);
         intake.deliverPurple(5);
         drive.followTrajectorySequence(trajSeq2);
-        vl.movePIDLeft(2000, 0.01, 0.000, 0.000, 2);
+        vl.movePIDLeft(1000, 0.02, 0.005, 0.005, 2);
 
         flip.lflip();
 
