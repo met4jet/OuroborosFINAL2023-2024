@@ -57,12 +57,13 @@ public class BlueCloseLeft4 extends LinearOpMode {
 
         waitForStart();
 
-        if (!isStopRequested())
+        if (!isStopRequested()) {
         drive.followTrajectorySequence(trajSeq1);
-        //intake.deliverPurple(5);
-        drive.followTrajectorySequence(trajSeq2);
-        //vl.movePIDRight(-1000, 0.003,0.005,0.0005, 1);
-        //flip.lflip();
-        drive.followTrajectorySequence(trajSeq3);
+            //intake.deliverPurple(5);
+            drive.followTrajectorySequence(trajSeq2);
+            //vl.movePIDRight(-1000, 0.003,0.005,0.0005, 1);
+            //flip.lflip();
+            drive.followTrajectorySequence(trajSeq3);
+        }
     }
 }
