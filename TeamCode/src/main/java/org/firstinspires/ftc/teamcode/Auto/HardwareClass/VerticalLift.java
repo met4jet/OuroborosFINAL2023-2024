@@ -120,6 +120,7 @@ public class VerticalLift {
             opMode.telemetry.addData("Target Position", position);
             opMode.telemetry.update();
         }
+        opMode.sleep(500);
     }
     public void movePIDLeft(int position, double kp, double ki, double kd, int time){
         if(position != 0) {

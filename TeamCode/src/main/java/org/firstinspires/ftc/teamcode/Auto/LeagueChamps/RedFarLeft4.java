@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "RedFarRight4") // rename it to RedFarLeft4
-public class RedFarRight4 extends LinearOpMode {
+@Autonomous(group = "Auto", name = "RedFarLeft4") // rename it to RedFarLeft4
+public class RedFarLeft4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -39,9 +39,7 @@ public class RedFarRight4 extends LinearOpMode {
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 // *** TEST *** *** CHANGE***
-                .forward(29)
-                .turn(Math.toRadians(-90))
-                .forward(6)
+                .strafeTo(new Vector2d(-48, -42))
                 //.strafeRight(7)
                 //.forward(20)
 
@@ -55,9 +53,10 @@ public class RedFarRight4 extends LinearOpMode {
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .setVelConstraint(fastConstraint)
-                .back(8)
-                .strafeLeft(21)
-                .turn(Math.toRadians(180))
+
+                .strafeRight(11)
+                .forward(32)
+                .turn(Math.toRadians(90))
                 //.strafeLeft(32)
                 .back(80)
                 // *****CHANGE******
@@ -87,9 +86,9 @@ public class RedFarRight4 extends LinearOpMode {
             drive.followTrajectorySequence(trajSeq1);
             intake.deliverPurple(5);
             drive.followTrajectorySequence(trajSeq2);
-            //vl.movePIDRight(1000, 0.021,0.0005,0.0003, 1);
-            //flip.rflip();
-            //vl.movePIDRight(-1000, 0.021,0.0005,0.0003, 2);
+            vl.movePIDRight(1000, 0.021,0.0005,0.0003, 1);
+            flip.rflip();
+            vl.movePIDRight(-1000, 0.021,0.0005,0.0003, 2);
 
 
             //vl.movePIDLeft(0, 0.02,0.0005,0.0005, 2);

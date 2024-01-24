@@ -21,6 +21,8 @@ import java.util.HashMap;
 public abstract class ThreadTelelib extends OpMode {
     // Difficulty: EASY
     // All: Create your motors and servos
+    boolean sub = false;
+    boolean dom = false;
     double hPower = 1;
     double position = 0;
     boolean halfToggle = false;
@@ -193,6 +195,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             shoomShoomDom.setPosition(.50);
+            dom = false;
         }
     });
     Thread shoom_dom_return = new Thread(new Runnable() {
@@ -204,6 +207,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             shoomShoomDom.setPosition(.22);
+            dom = true;
         }
     });
     Thread shoom_sub_return = new Thread(new Runnable() {
@@ -215,6 +219,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             shoomShoomSub.setPosition(0);
+            sub = true;
         }
     });
 
@@ -227,6 +232,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             shoomShoomSub.setPosition(1);
+            sub = false;
         }
     });
 
@@ -391,7 +397,7 @@ public abstract class ThreadTelelib extends OpMode {
             }
             box.setPosition(1);
             sleep(1000);
-            box.setPosition(0);
+            box.setPosition(.22);
 
         }
     });
@@ -436,6 +442,34 @@ public abstract class ThreadTelelib extends OpMode {
         linac.setPower(-1);
         }
     });
+    Thread transferMacro = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 100){
+
+            }
+            box.setPosition(1);
+            sleep(500);
+            box.setPosition(.75);
+            sleep(300);
+            box.setPosition(1);
+            sleep(300);
+            box.setPosition(.22);
+            sleep(500);
+
+            shoomShoomDom.setPosition(.22);
+            sleep(500);
+            shoomShoomDom.setPosition(1);
+            shoomShoomDom.setPosition(.5);
+            sleep(500);
+            shoomShoomSub.setPosition(0);
+            sleep(500);
+            shoomShoomSub.setPosition(1);
+            sleep(100);
+        }
+    });
 
 
 
@@ -454,24 +488,28 @@ public abstract class ThreadTelelib extends OpMode {
 
         return output;
     }
-    public void shoomShoom(){
-        if(isPressed("left_bumper", gamepad1.left_bumper)){
+     public void shoomShoom(){
+        if(isPressed("left_bumper1", gamepad1.left_bumper) && shoomShoomSub.getPosition() != 0){
             th_shoomSub.queue(shoom_sub_return);
+            dom = false;
             telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
         }
-        else{
+        else if(isPressed("left_bumper1", gamepad1.left_bumper) && shoomShoomSub.getPosition() != 1){
             th_shoomSub.queue(shoom_sub_dep);
+            dom = true;
             telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
         }
-        if(isPressed("right_bumper1", gamepad1.right_bumper)) {
+        if(isPressed("right_bumper1", gamepad1.right_bumper) && shoomShoomDom.getPosition() != 1) {
             th_shoomDom.queue(shoom_dom_return); //rest
+            sub = false;
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }
-        else {
+        else if(isPressed("left_bumper1", gamepad1.right_bumper) && shoomShoomDom.getPosition() != 0.5){
             th_shoomDom.queue(shoom_dom_dep); //deliver
+            sub = true;
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }
@@ -570,6 +608,11 @@ public abstract class ThreadTelelib extends OpMode {
         else {
             intake.setPower(0);
             rollers.setPower(0);
+        }
+    }
+    public void tMacro(){
+        if(gamepad2.dpad_down){
+            th_box.queue(transferMacro);
         }
     }
     public void arcadeDrive(){
