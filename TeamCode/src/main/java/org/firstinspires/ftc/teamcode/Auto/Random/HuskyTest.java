@@ -34,15 +34,16 @@ public class HuskyTest extends LinearOpMode {
 
         ElapsedTime t = new ElapsedTime();
         while(!opModeIsActive()) {
-            if (hl.getPos() > 45 && hl.getPos() <= 200 ) {
+            int position = hl.getPos();
+            if (position > 45 && position <= 200 ) {
                 telemetry.addData("MIDDLE", hl.getPos());
                 telemetry.update();
                 pos = "MIDDLE";
-            } else if (hl.getPos() > 200) {
+            } else if (position > 200) {
                 telemetry.addData("RIGHT", hl.getPos());
                 telemetry.update();
                 pos = "RIGHT";
-            } else if(hl.getPos() < 46 ){
+            } else {
                 telemetry.addData("LEFT", hl.getPos());
                 telemetry.update();
                 pos = "LEFT";
@@ -102,15 +103,15 @@ public class HuskyTest extends LinearOpMode {
 
         } else if (pos.equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .strafeTo(new Vector2d(-30, 25))
+                    .back(48)
                     //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    .strafeRight(14)
-                    .forward(23)
-                    .turn(Math.toRadians(-90))
-                    .back(100)
+                    //.strafeRight(14)
+                    //.forward(23)
+                    .turn(Math.toRadians(90))
+                    .back(75)
                     // **** CHANGE ****
                     .strafeTo(new Vector2d(49, 34))
                     .back(3)

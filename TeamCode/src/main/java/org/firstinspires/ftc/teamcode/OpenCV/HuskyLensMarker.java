@@ -25,8 +25,12 @@ public class HuskyLensMarker {
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
 
         for(HuskyLens.Block b : huskyLens.blocks()){
+
             if(b.id == 1){
                 cx = b.x;
+            }
+            else {
+                cx = 0;
             }
         }
 
