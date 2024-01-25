@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 public class HuskyLensDetection {
     int cx = 0;
+    int cy = 0;
     private BNO055IMU imu;
     HuskyLens huskyLens;
     public LinearOpMode opMode;
@@ -67,10 +68,15 @@ public class HuskyLensDetection {
             if(b.id == 1) {
                 cx = b.x;
             }
+            else {
+                cx = 0;
+            }
         }
 
         return cx;
     }
+
+
     public void findPt(){
         while(opMode.opModeIsActive()) {
             opMode.telemetry.addData("Current cx :: ", getPos());

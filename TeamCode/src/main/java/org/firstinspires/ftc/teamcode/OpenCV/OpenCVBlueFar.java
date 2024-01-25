@@ -4,10 +4,18 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Core;
@@ -25,11 +33,12 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-@Autonomous(group = "Auto", name = "OpenCVBlue")
+@Autonomous(group = "Auto", name = "OpenCVBlueFar")
 
-public class OpenCVBlue extends LinearOpMode {
+public class OpenCVBlueFar extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
@@ -47,12 +56,36 @@ public class OpenCVBlue extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
 
+        Intake intake = new Intake(this);
+        VerticalLift vl = new VerticalLift(this);
+        Flip flip = new Flip(this);
+
+        // IGNORE, FOR ERROR PURPOSES
+        TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                .strafeTo(new Vector2d(-47, 42))
+                .build();
+        TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
+                .strafeTo(new Vector2d(-47, 42))
+                .build();;
+        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)
+                .strafeTo(new Vector2d(-47, 42))
+                .build();;
+
         drive.setPoseEstimate(startPose);
+
+        TrajectoryVelocityConstraint fastConstraint = new MinVelocityConstraint(Arrays.asList(
+
+                new TranslationalVelocityConstraint(60),
+
+                new AngularVelocityConstraint(1)
+
+        ));
 
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
+        HuskyLensMarker hl = new HuskyLensMarker(this);
 
 
         sleep(300);
@@ -62,31 +95,98 @@ public class OpenCVBlue extends LinearOpMode {
 
         sleep(3000);
 
-        TrajectorySequence trajSeq;
-
-        if(getPos().equals("LEFT")){
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .forward(28)
-                    .build();
-        }
-        else if(getPos().equals("MIDDLE")){
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .back(28)
-                    .build();
-        }
-        else{
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .splineTo(new Vector2d(5,5),Math.toRadians(180))
-                    .build();
-        }
-
         // The OpenCV pipeline automatically processes frames and handles detection
+
+        if (getPos().equals("LEFT")) {
+            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                    .forward(25)
+                    .turn(Math.toRadians(90))
+                    .forward(2)
+                    .build();
+            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+                    .setVelConstraint(fastConstraint)
+                    .back(8)
+                    .strafeRight(28)
+                    .turn(Math.toRadians(180))
+                    .back(70)
+                    .strafeTo(new Vector2d(45, 40))
+                    .back(3)
+                    .build();
+            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+                    .strafeTo(new Vector2d(43, 18))
+                    .back(5)
+                    .build();
+
+        } else if (getPos().equals("MIDDLE")) {
+            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                    .strafeTo(new Vector2d(-30, 25))
+            //.forward(29)
+                    .build();
+            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+                    .setVelConstraint(fastConstraint)
+                    .strafeRight(14)
+                    .forward(23)
+                    .turn(Math.toRadians(-90))
+                    .back(100)
+                    // **** CHANGE ****
+                    .strafeTo(new Vector2d(49, 34))
+                    .back(3)
+                    .build();
+            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+                    .strafeTo(new Vector2d(43, 18))
+                    .back(6)
+                    .build();
+        } else {
+            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                    .strafeTo(new Vector2d(-47, 42))
+                    .build();
+            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+                    .setVelConstraint(fastConstraint)
+                    .strafeLeft(11)
+                    .turn(Math.toRadians(-95))
+                    .strafeLeft(32)
+                    .back(100)
+                    // *****CHANGE******
+                    .strafeTo(new Vector2d(49, 31))
+                    .back(7)
+                    .build();
+            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+                    .strafeTo(new Vector2d(45, 18))
+                    .back(7)
+                    .build();
+        }
 
         waitForStart();
 
-        if (!isStopRequested())
-            drive.followTrajectorySequence(trajSeq);
-
+        if (!isStopRequested()) {
+            if(getPos().equals("LEFT")){
+                drive.followTrajectorySequence(trajSeq1);
+                intake.deliverPurple(5);
+                drive.followTrajectorySequence(trajSeq2);
+                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
+                flip.lflip();
+                vl.movePIDLeft(-2000, 0.01,0.000,0.000, 2);
+                drive.followTrajectorySequence(trajSeq3);
+            }
+            else if (getPos().equals("MIDDLE")) {
+                drive.followTrajectorySequence(trajSeq1);
+                intake.deliverPurple(5);
+                drive.followTrajectorySequence(trajSeq2);
+                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
+                flip.lflip();
+                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+                drive.followTrajectorySequence(trajSeq3);
+            }
+            else {
+                drive.followTrajectorySequence(trajSeq1);
+                intake.deliverPurple(5);
+                drive.followTrajectorySequence(trajSeq2);
+                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
+                flip.lflip();
+                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+                drive.followTrajectorySequence(trajSeq3);
+            }
+        }
 
         // Release resources
         controlHubCam.stopStreaming();
@@ -109,20 +209,23 @@ public class OpenCVBlue extends LinearOpMode {
     }
 
     public String getPos(){
+        HuskyLensMarker hl = new HuskyLensMarker(this);
 
         String output = "";
 
-        if(cX < 150){
-            output = "LEFT";
-        }
-        else if(cX < 400){
+        if(hl.getPos() > 45 && hl.getPos() <= 200) {
             output = "MIDDLE";
         }
-        else{
+        else if(hl.getPos() > 200){
             output = "RIGHT";
         }
-        telemetry.addData("Coordinate", "(" + (int) cX + ")");
+        else{
+            output = "LEFT";
+        }
+        /*telemetry.addData("Coordinate", "(" + (int) cX + ")");
         telemetry.addData("Output", "(" + (int) cX + ", " + (int) cY + ")");
+        telemetry.addData("Output :: ", output);*/
+        telemetry.addData("cX", hl.getPos());
         telemetry.update();
         return output;
     }

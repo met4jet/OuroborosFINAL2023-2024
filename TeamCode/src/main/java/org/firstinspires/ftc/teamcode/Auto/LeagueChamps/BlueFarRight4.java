@@ -57,7 +57,7 @@ public class BlueFarRight4 extends LinearOpMode {
                 .strafeLeft(11)
                 .turn(Math.toRadians(-95))
                 .strafeLeft(32)
-                .back(100)
+                .back(80)
                 // *****CHANGE******
                 .strafeTo(new Vector2d(49, 31))
                 .back(7)
