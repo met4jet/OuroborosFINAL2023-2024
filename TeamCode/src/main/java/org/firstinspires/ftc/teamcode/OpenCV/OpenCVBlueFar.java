@@ -119,7 +119,7 @@ public class OpenCVBlueFar extends LinearOpMode {
 
         } else if (getPos().equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .strafeTo(new Vector2d(-30, 25))
+                    .back(48)
             //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())

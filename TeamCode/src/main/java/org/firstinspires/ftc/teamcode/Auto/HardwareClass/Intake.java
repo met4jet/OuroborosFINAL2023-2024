@@ -32,8 +32,7 @@ public class Intake {
         ElapsedTime time = new ElapsedTime();
         time.reset();
         //linac.setPower(1);
-        while(time.seconds() < 2){
-        }
+
 
         rollers.setPower(1);
         intake.setPower(1);

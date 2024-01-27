@@ -39,12 +39,11 @@ public class BlueFarRight4 extends LinearOpMode {
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 // *** TEST *** *** CHANGE***
-                .strafeTo(new Vector2d(-47, 42))
-                //.strafeRight(7)
+                .strafeRight(7)
                 //.forward(20)
 
 
-                /*.turn(Math.toRadians(90))
+                /*.turn(Math.toRadians(9;0))
                 .forward(55)
                 .lineToLinearHeading(new Pose2d(45, 27, Math.toRadians(180)))
                 .lineToLinearHeading(new Pose2d(43,12, Math.toRadians(180)))

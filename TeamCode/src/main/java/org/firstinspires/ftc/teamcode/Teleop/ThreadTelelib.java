@@ -196,6 +196,8 @@ public abstract class ThreadTelelib extends OpMode {
             }
             shoomShoomDom.setPosition(.50);
             dom = false;
+            sleep(300);
+
         }
     });
     Thread shoom_dom_return = new Thread(new Runnable() {
@@ -203,11 +205,14 @@ public abstract class ThreadTelelib extends OpMode {
         public void run() {
             ElapsedTime time = new ElapsedTime();
             time.reset();
-            while(time.milliseconds() < 150){
+            while(time.milliseconds() < 200){
 
             }
             shoomShoomDom.setPosition(.22);
             dom = true;
+            sleep(300);
+            shoomShoomDom.setPosition(.5);
+
         }
     });
     Thread shoom_sub_return = new Thread(new Runnable() {
@@ -220,6 +225,8 @@ public abstract class ThreadTelelib extends OpMode {
             }
             shoomShoomSub.setPosition(0);
             sub = true;
+            sleep(300);
+
         }
     });
 
@@ -228,11 +235,12 @@ public abstract class ThreadTelelib extends OpMode {
         public void run() {
             ElapsedTime time = new ElapsedTime();
             time.reset();
-            while(time.milliseconds() < 150){
+            while(time.milliseconds() < 200){
 
             }
+            shoomShoomSub.setPosition(0);
+            sleep(300);
             shoomShoomSub.setPosition(1);
-            sub = false;
         }
     });
 
@@ -348,6 +356,9 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             drone.setPosition(1);
+            telemetry.addData("DronePos", drone.getPosition());
+            telemetry.update();
+
         }
     });
 
@@ -360,6 +371,9 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             drone.setPosition(0);
+            telemetry.addData("DronePos", drone.getPosition());
+            telemetry.update();
+
         }
     });
     Thread intake_in = new Thread(new Runnable() {
@@ -489,30 +503,30 @@ public abstract class ThreadTelelib extends OpMode {
         return output;
     }
      public void shoomShoom(){
-        if(isPressed("left_bumper1", gamepad1.left_bumper) && shoomShoomSub.getPosition() != 0){
-            th_shoomSub.queue(shoom_sub_return);
+        if(gamepad1.left_bumper) /*&& shoomShoomSub.getPosition() != 0*/{
+            th_shoomSub.queue(shoom_sub_dep);
             dom = false;
             telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
         }
-        else if(isPressed("left_bumper1", gamepad1.left_bumper) && shoomShoomSub.getPosition() != 1){
+        /*else if(isPressed("left_bumper1", gamepad1.left_bumper) && shoomShoomSub.getPosition() != 1){
             th_shoomSub.queue(shoom_sub_dep);
             dom = true;
             telemetry.addData("lbumper", gamepad1.left_bumper);
             //sleep(250);
-        }
-        if(isPressed("right_bumper1", gamepad1.right_bumper) && shoomShoomDom.getPosition() != 1) {
+        }*/
+        if(gamepad1.right_bumper /*&& shoomShoomDom.getPosition() != 1*/) {
             th_shoomDom.queue(shoom_dom_return); //rest
             sub = false;
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
         }
-        else if(isPressed("left_bumper1", gamepad1.right_bumper) && shoomShoomDom.getPosition() != 0.5){
+        /*else if(isPressed("right_bumper1", gamepad1.right_bumper) && shoomShoomDom.getPosition() != 0.5){
             th_shoomDom.queue(shoom_dom_dep); //deliver
             sub = true;
             telemetry.addLine("Pos:" + shoomShoomDom.getPosition());
             //sleep(250);
-        }
+        }*/
     }
     public void horizontal_lift(){
         if(gamepad2.left_stick_x < -.25){

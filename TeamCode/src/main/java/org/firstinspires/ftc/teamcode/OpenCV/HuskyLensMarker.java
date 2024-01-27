@@ -36,6 +36,21 @@ public class HuskyLensMarker {
 
         return cx;
     }
+    public int getPosRed(){
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
+
+        for(HuskyLens.Block b : huskyLens.blocks()){
+
+            if(b.id == 2){
+                cx = b.x;
+            }
+            else {
+                cx = 0;
+            }
+        }
+
+        return cx;
+    }
     public void findPt(){
         while(opMode.opModeIsActive()) {
             opMode.telemetry.addData("Current cx :: ", getPos());

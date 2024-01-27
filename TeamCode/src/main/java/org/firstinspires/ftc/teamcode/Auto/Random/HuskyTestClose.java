@@ -22,9 +22,9 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "HuskyTest")
+@Autonomous(group = "Auto", name = "HuskyTestClose")
 
-public class HuskyTest extends LinearOpMode {
+public class HuskyTestClose extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,7 +49,7 @@ public class HuskyTest extends LinearOpMode {
                 pos = "LEFT";
             }
         }*/
-        
+
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         while(time.seconds() < 2){
@@ -71,7 +71,7 @@ public class HuskyTest extends LinearOpMode {
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose =new Pose2d(14,62,Math.toRadians(90));
+        Pose2d startPose =new Pose2d(14,-62,Math.toRadians(270));
 
         Intake intake = new Intake(this);
         VerticalLift vl = new VerticalLift(this);
@@ -103,16 +103,11 @@ public class HuskyTest extends LinearOpMode {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .back(25)
                     .turn(Math.toRadians(-90))
-                    .forward(5)
+                    .forward(7)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    .back(11)
-                    .strafeRight(28)
-                    .turn(Math.toRadians(180))
-                    .back(70)
-                    .strafeTo(new Vector2d(45, 40))
-                    .back(7)
+                    .back(50)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
                     .strafeTo(new Vector2d(43, 18))
@@ -121,45 +116,37 @@ public class HuskyTest extends LinearOpMode {
 
         } else if (pos.equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .back(48)
+                    .back(46)
                     //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    //.strafeRight(14)
-                    //.forward(23)
-                    .turn(Math.toRadians(90))
-                    .back(75)
-                    // **** CHANGE ****
-                    .strafeTo(new Vector2d(49, 34))
-                    .back(3)
+                    .back(2)
+                    .turn(Math.toRadians(-90))
+                    .back(6)
+                    .strafeTo(new Vector2d(43,-35))
+                    .back(10)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
+                    .strafeTo(new Vector2d(45, -35))
                     .back(6)
                     .build();
         } else {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     //.lineToLinearHeading(new Pose2d(-47, 37, Math.toRadians(270)))
                     .turn(Math.toRadians(180))
-                    .strafeTo(new Vector2d(-45,37))
+                    .strafeTo(new Vector2d(20,-34))
                     .back(4)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    .back(4)
-                    .strafeLeft(11)
-                    //.forward(4)
-                    .turn(Math.toRadians(-90))
-                    .strafeLeft(38)
-                    .back(70)
-                    // *****CHANGE******
-                    .strafeTo(new Vector2d(49, 31))
-                    .back(10)
+                    .back(7)
+                    .turn(Math.toRadians(90))
+                    .strafeTo(new Vector2d(45, -35))
+                    .back(8)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(45, 15))
-                    .back(7)
+                    .strafeTo(new Vector2d(43,-60))
+                    .back(15)
                     .build();
         }
 
@@ -170,9 +157,9 @@ public class HuskyTest extends LinearOpMode {
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(5);
                 drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
+                vl.movePIDRight(4000, 0.01,0.000,0.000, 3);
                 flip.lflip();
-                vl.movePIDLeft(-2000, 0.01,0.000,0.000, 2);
+                vl.movePIDRight(-2000, 0.01,0.000,0.000, 2);
                 drive.followTrajectorySequence(trajSeq3);
             }
             else if (pos.equals("MIDDLE")) {
@@ -190,8 +177,8 @@ public class HuskyTest extends LinearOpMode {
                 drive.followTrajectorySequence(trajSeq2);
                 vl.movePIDLeft(4000, 0.01, 0, 0, 3);
                 flip.lflip();
-                //vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
-                //drive.followTrajectorySequence(trajSeq3);
+                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+                drive.followTrajectorySequence(trajSeq3);
             }
         }
 
