@@ -151,7 +151,7 @@ public class HuskyTestClose extends LinearOpMode {
         }
 
         waitForStart();
-
+        //change for push
         if (!isStopRequested()) {
             if(pos.equals("LEFT")){
                 drive.followTrajectorySequence(trajSeq1);
