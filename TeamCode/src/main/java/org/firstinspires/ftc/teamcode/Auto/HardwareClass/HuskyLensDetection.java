@@ -40,7 +40,7 @@ public class HuskyLensDetection {
 
         iLimit = .25/ki;
 
-        huskyLens = (HuskyLens) opMode.hardwareMap.i2cDevice.get("huskylens");
+        huskyLens = opMode.hardwareMap.get(HuskyLens.class, "huskylens");
 
         br = opMode.hardwareMap.dcMotor.get("br");
         bl = opMode.hardwareMap.dcMotor.get("bl");
@@ -68,9 +68,6 @@ public class HuskyLensDetection {
             if(b.id == 1) {
                 cx = b.x;
             }
-            else {
-                cx = 0;
-            }
         }
 
         return cx;
@@ -78,14 +75,30 @@ public class HuskyLensDetection {
 
 
     public void findPt(){
-        while(opMode.opModeIsActive()) {
-            opMode.telemetry.addData("Current cx :: ", getPos());
-            opMode.telemetry.update();
-        }
+        opMode.telemetry.addData("Current cx :: ", getPos());
+        opMode.telemetry.update();
     }
-    public void huskyPID(){
-        int CONSTANT_DESTINATION = 0;
-        double power = pid(getPos(), CONSTANT_DESTINATION);
+    public void huskyPID1(){
+        int CONSTANT_DESTINATION = 63;
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+
+        while(getPos() == 0){
+            br.setPower(.3);
+            bl.setPower(-.3);
+            fr.setPower(-.3);
+            fl.setPower(.3);
+        }
+
+        while(CONSTANT_DESTINATION - getPos() > 2 && time.seconds() < 3) {
+            double power = pid(CONSTANT_DESTINATION, getPos());
+            br.setPower(power);
+            bl.setPower(-power);
+            fr.setPower(-power);
+            fl.setPower(power);
+
+            findPt();
+        }
     }
 
     public double pid(double target, double current) {
