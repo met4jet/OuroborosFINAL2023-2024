@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto.Random;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -13,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
-import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.OpenCV.HuskyLensMarker;
@@ -22,9 +19,9 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "HuskyTestClose")
+@Autonomous(group = "Auto", name = "HuskyRedClose")
 
-public class HuskyTestClose extends LinearOpMode {
+public class HuskyRedClose extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -110,26 +107,25 @@ public class HuskyTestClose extends LinearOpMode {
                     .back(50)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
-                    .back(5)
+                    .strafeTo(new Vector2d(43, -16))
+                    .back(10)
                     .build();
 
         } else if (pos.equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .back(46)
+                    .turn(Math.toRadians(180))
+                    .forward(33)
                     //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    .back(2)
-                    .turn(Math.toRadians(-90))
-                    .back(6)
-                    .strafeTo(new Vector2d(43,-35))
-                    .back(10)
+                    .back(8)
+                    .turn(Math.toRadians(90))
+                    .strafeTo(new Vector2d(52,-35))
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(45, -35))
-                    .back(6)
+                    .strafeTo(new Vector2d(43, -16))
+                    .back(10)
                     .build();
         } else {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
@@ -145,7 +141,7 @@ public class HuskyTestClose extends LinearOpMode {
                     .back(8)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43,-60))
+                    .strafeTo(new Vector2d(43, -16))
                     .back(15)
                     .build();
         }

@@ -13,7 +13,7 @@ public class TrapTest extends LinearOpMode {
         waitForStart();
 
         TrapMotionProfileRight trapRight = new TrapMotionProfileRight(this);
-
-        trapRight.motion_profile_PID(10, 2781.1, 100);
+        // max velocity (tics/sec) :: 2781.1
+        trapRight.motion_profile_PID(2500, 2650, 2500);
     }
 }

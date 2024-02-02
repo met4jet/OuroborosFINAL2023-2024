@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto.Random;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -13,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
-import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.OpenCV.HuskyLensMarker;
@@ -22,9 +19,9 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "HuskyTest")
+@Autonomous(group = "Auto", name = "HuskyBlueClose")
 
-public class HuskyTest extends LinearOpMode {
+public class HuskyBlueClose extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,23 +46,23 @@ public class HuskyTest extends LinearOpMode {
                 pos = "LEFT";
             }
         }*/
-        
+
         waitForStart();
         ElapsedTime time = new ElapsedTime();
         while(time.seconds() < 2){
             int position = hl.getPos();
-            if (position > 45 && position <= 200 ) {
+            if (position > 100 && position <= 235 ) {
                 telemetry.addData("MIDDLE", hl.getPos());
                 telemetry.update();
                 pos = "MIDDLE";
-            } else if (position > 200) {
-                telemetry.addData("RIGHT", hl.getPos());
-                telemetry.update();
-                pos = "RIGHT";
-            } else {
+            } else if (position <= 100) {
                 telemetry.addData("LEFT", hl.getPos());
                 telemetry.update();
                 pos = "LEFT";
+            } else {
+                telemetry.addData("RIGHT", hl.getPos());
+                telemetry.update();
+                pos = "RIGHT";
             }
         }
 
@@ -99,99 +96,81 @@ public class HuskyTest extends LinearOpMode {
         ));
 
 
-        if (pos.equals("LEFT")) {
+        if (pos.equals("RIGHT")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .back(25)
-                    .turn(Math.toRadians(-90))
-                    .forward(5)
+                    .turn(Math.toRadians(90))
+                    .forward(6)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    .back(11)
-                    .strafeRight(28)
-                    .turn(Math.toRadians(180))
-                    .back(70)
-                    .strafeTo(new Vector2d(45, 40))
-                    .back(7)
+                    .back(50)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
+                    .strafeTo(new Vector2d(43, 60))
                     .back(5)
                     .build();
 
         } else if (pos.equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .back(48)
-                    //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
-                    //.strafeRight(14)
-                    //.forward(23)
+                    .back(2)
                     .turn(Math.toRadians(90))
-                    .back(75)
-                    // **** CHANGE ****
-                    .strafeTo(new Vector2d(49, 34))
-                    .back(3)
+                    .back(6)
+                    .strafeTo(new Vector2d(43,25))
+                    .back(13)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
+                    .strafeTo(new Vector2d(45, 60))
                     .back(6)
                     .build();
         } else {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    //.lineToLinearHeading(new Pose2d(-47, 37, Math.toRadians(270)))
                     .turn(Math.toRadians(180))
-                    .strafeTo(new Vector2d(-45,37))
-                    .back(4)
+                    .forward(33)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    .back(4)
-                    .strafeLeft(11)
-                    //.forward(4)
+                    .back(8)
                     .turn(Math.toRadians(-90))
-                    .strafeLeft(38)
-                    .back(70)
-                    // *****CHANGE******
-                    .strafeTo(new Vector2d(49, 31))
-                    .back(10)
+                    .strafeTo(new Vector2d(52,35))
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(45, 15))
-                    .back(7)
+                    .strafeTo(new Vector2d(43, 16))
+                    .back(10)
                     .build();
         }
 
         waitForStart();
-
         if (!isStopRequested()) {
             if(pos.equals("LEFT")){
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(5);
                 drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
-                flip.lflip();
-                vl.movePIDLeft(-2000, 0.01,0.000,0.000, 2);
+                vl.movePIDRight(4000, 0.01,0.000,0.000, 3);
+                flip.rflip();
+                vl.movePIDRight(-2000, 0.01,0.000,0.000, 2);
                 drive.followTrajectorySequence(trajSeq3);
             }
             else if (pos.equals("MIDDLE")) {
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(5);
                 drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
-                flip.lflip();
-                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+                vl.movePIDRight(4000, 0.01,0.000,0.000, 3);
+                flip.rflip();
+                vl.movePIDRight(-2000, 0.01,0.000,0.000, 2);
                 drive.followTrajectorySequence(trajSeq3);
             }
             else {
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(2);
                 drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
-                flip.lflip();
-                //vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
-                //drive.followTrajectorySequence(trajSeq3);
+                vl.movePIDRight(4000, 0.01,0.000,0.000, 3);
+                flip.rflip();
+                vl.movePIDRight(-2000, 0.01,0.000,0.000, 2);
+                drive.followTrajectorySequence(trajSeq3);
             }
         }
 

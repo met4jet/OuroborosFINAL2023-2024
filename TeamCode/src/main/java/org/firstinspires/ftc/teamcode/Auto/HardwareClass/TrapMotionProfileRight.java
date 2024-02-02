@@ -78,14 +78,19 @@ public class TrapMotionProfileRight {
             return distance;
 
         // if we're accelerating
-        if (elapsed_time < acceleration_dt)
+        if (elapsed_time < acceleration_dt) {
             // use the kinematic equation for acceleration
-            return 0.5 * max_acceleration * Math.pow(elapsed_time,2);
+            opMode.telemetry.addData("accel", 0.5 * max_acceleration * Math.pow(elapsed_time, 2));
+            opMode.telemetry.update();
+            return 0.5 * max_acceleration * Math.pow(elapsed_time, 2);
+        }
 
-            // if we're cruising
+        // if we're cruising
         else if (elapsed_time < deceleration_time) {
             acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
             cruise_current_dt = elapsed_time - acceleration_dt;
+            opMode.telemetry.addData("cruise", acceleration_distance + max_velocity * cruise_current_dt);
+            opMode.telemetry.update();
 
             // use the kinematic equation for constant velocity
             return acceleration_distance + max_velocity * cruise_current_dt;
@@ -96,6 +101,8 @@ public class TrapMotionProfileRight {
             acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
             cruise_distance = max_velocity * cruise_dt;
             deceleration_time = elapsed_time - deceleration_time;
+            opMode.telemetry.addData("decel", acceleration_distance + cruise_distance + max_velocity * deceleration_time - 0.5 * max_acceleration * Math.pow(deceleration_time,2));
+            opMode.telemetry.update();
 
             // use the kinematic equations to calculate the instantaneous desired position
             return acceleration_distance + cruise_distance + max_velocity * deceleration_time - 0.5 * max_acceleration * Math.pow(deceleration_time,2);
@@ -123,6 +130,9 @@ public class TrapMotionProfileRight {
 
         timerPID.reset();
 
+        opMode.telemetry.addLine("right lift pos:" + verticalLiftRight.getCurrentPosition());
+        opMode.telemetry.update();
+
         return power;
 
     }
@@ -133,10 +143,10 @@ public class TrapMotionProfileRight {
 
         ElapsedTime elapsed_time = new ElapsedTime();
 
-        while(distance - verticalLiftRight.getCurrentPosition() > 5 && opMode.opModeIsActive()){
+        while(Math.abs(Math.abs(verticalLiftRight.getCurrentPosition()) - distance) > 5 && opMode.opModeIsActive()){
             double instantTargetPosition = motion_profile_position(max_acceleration, max_velocity, distance, elapsed_time.seconds());
 
-            double motorPower = movePIDRight(instantTargetPosition, 0.003, 0.005, 0.0005);
+            double motorPower = movePIDRight(instantTargetPosition, 0.0045, 0.0053, 0.0005);
 
             verticalLiftRight.setPower(motorPower);
         }
