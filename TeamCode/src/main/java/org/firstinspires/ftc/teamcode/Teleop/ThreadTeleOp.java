@@ -17,8 +17,8 @@ public class ThreadTeleOp extends ThreadTelelib{
         box();
         linac();
         intake();
-        arcadeDrive();
         tMacro();
+        drivetrain();
     }
     @Override
     public void kill(){

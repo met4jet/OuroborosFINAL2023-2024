@@ -103,7 +103,7 @@ public class HuskyTestClose extends LinearOpMode {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .back(25)
                     .turn(Math.toRadians(-90))
-                    .forward(7)
+                    .forward(8)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
@@ -157,7 +157,7 @@ public class HuskyTestClose extends LinearOpMode {
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(5);
                 drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDRight(4000, 0.01,0.000,0.000, 3);
+                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
                 flip.lflip();
                 vl.movePIDRight(-2000, 0.01,0.000,0.000, 2);
                 drive.followTrajectorySequence(trajSeq3);

@@ -53,39 +53,39 @@ public class OpenCVBlueFar extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
-
-        Intake intake = new Intake(this);
-        VerticalLift vl = new VerticalLift(this);
-        Flip flip = new Flip(this);
-
-        // IGNORE, FOR ERROR PURPOSES
-        TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .strafeTo(new Vector2d(-47, 42))
-                .build();
-        TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
-                .strafeTo(new Vector2d(-47, 42))
-                .build();;
-        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)
-                .strafeTo(new Vector2d(-47, 42))
-                .build();;
-
-        drive.setPoseEstimate(startPose);
-
-        TrajectoryVelocityConstraint fastConstraint = new MinVelocityConstraint(Arrays.asList(
-
-                new TranslationalVelocityConstraint(60),
-
-                new AngularVelocityConstraint(1)
-
-        ));
+//        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+//        Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
+//
+//        Intake intake = new Intake(this);
+//        VerticalLift vl = new VerticalLift(this);
+//        Flip flip = new Flip(this);
+//
+//        // IGNORE, FOR ERROR PURPOSES
+//        TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+//                .strafeTo(new Vector2d(-47, 42))
+//                .build();
+//        TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
+//                .strafeTo(new Vector2d(-47, 42))
+//                .build();;
+//        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)
+//                .strafeTo(new Vector2d(-47, 42))
+//                .build();;
+//
+//        drive.setPoseEstimate(startPose);
+//
+//        TrajectoryVelocityConstraint fastConstraint = new MinVelocityConstraint(Arrays.asList(
+//
+//                new TranslationalVelocityConstraint(60),
+//
+//                new AngularVelocityConstraint(1)
+//
+//        ));
 
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
-        HuskyLensMarker hl = new HuskyLensMarker(this);
+//        HuskyLensMarker hl = new HuskyLensMarker(this);
 
 
         sleep(300);
@@ -93,100 +93,100 @@ public class OpenCVBlueFar extends LinearOpMode {
         telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
         telemetry.update();
 
-        sleep(3000);
+//        if (getPos().equals("LEFT")) {
+//            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+//                    .forward(25)
+//                    .turn(Math.toRadians(90))
+//                    .forward(2)
+//                    .build();
+//            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+//                    .setVelConstraint(fastConstraint)
+//                    .back(8)
+//                    .strafeRight(28)
+//                    .turn(Math.toRadians(180))
+//                    .back(70)
+//                    .strafeTo(new Vector2d(45, 40))
+//                    .back(3)
+//                    .build();
+//            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+//                    .strafeTo(new Vector2d(43, 18))
+//                    .back(5)
+//                    .build();
+//
+//        } else if (getPos().equals("MIDDLE")) {
+//            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+//                    .back(48)
+//                    //.forward(29)
+//                    .build();
+//            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+//                    .setVelConstraint(fastConstraint)
+//                    .strafeRight(14)
+//                    .forward(23)
+//                    .turn(Math.toRadians(-90))
+//                    .back(100)
+//                    // **** CHANGE ****
+//                    .strafeTo(new Vector2d(49, 34))
+//                    .back(3)
+//                    .build();
+//            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+//                    .strafeTo(new Vector2d(43, 18))
+//                    .back(6)
+//                    .build();
+//        } else {
+//            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+//                    .strafeTo(new Vector2d(-47, 42))
+//                    .build();
+//            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
+//                    .setVelConstraint(fastConstraint)
+//                    .strafeLeft(11)
+//                    .turn(Math.toRadians(-95))
+//                    .strafeLeft(32)
+//                    .back(100)
+//                    // *****CHANGE******
+//                    .strafeTo(new Vector2d(49, 31))
+//                    .back(7)
+//                    .build();
+//            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+//                    .strafeTo(new Vector2d(45, 18))
+//                    .back(7)
+//                    .build();
+//        }
+//        sleep(3000);
 
         // The OpenCV pipeline automatically processes frames and handles detection
 
-        if (getPos().equals("LEFT")) {
-            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .forward(25)
-                    .turn(Math.toRadians(90))
-                    .forward(2)
-                    .build();
-            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    .back(8)
-                    .strafeRight(28)
-                    .turn(Math.toRadians(180))
-                    .back(70)
-                    .strafeTo(new Vector2d(45, 40))
-                    .back(3)
-                    .build();
-            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
-                    .back(5)
-                    .build();
-
-        } else if (getPos().equals("MIDDLE")) {
-            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .back(48)
-            //.forward(29)
-                    .build();
-            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    .strafeRight(14)
-                    .forward(23)
-                    .turn(Math.toRadians(-90))
-                    .back(100)
-                    // **** CHANGE ****
-                    .strafeTo(new Vector2d(49, 34))
-                    .back(3)
-                    .build();
-            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
-                    .back(6)
-                    .build();
-        } else {
-            trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .strafeTo(new Vector2d(-47, 42))
-                    .build();
-            trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    .strafeLeft(11)
-                    .turn(Math.toRadians(-95))
-                    .strafeLeft(32)
-                    .back(100)
-                    // *****CHANGE******
-                    .strafeTo(new Vector2d(49, 31))
-                    .back(7)
-                    .build();
-            trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(45, 18))
-                    .back(7)
-                    .build();
-        }
 
         waitForStart();
-
-        if (!isStopRequested()) {
-            if(getPos().equals("LEFT")){
-                drive.followTrajectorySequence(trajSeq1);
-                intake.deliverPurple(5);
-                drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
-                flip.lflip();
-                vl.movePIDLeft(-2000, 0.01,0.000,0.000, 2);
-                drive.followTrajectorySequence(trajSeq3);
-            }
-            else if (getPos().equals("MIDDLE")) {
-                drive.followTrajectorySequence(trajSeq1);
-                intake.deliverPurple(5);
-                drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
-                flip.lflip();
-                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
-                drive.followTrajectorySequence(trajSeq3);
-            }
-            else {
-                drive.followTrajectorySequence(trajSeq1);
-                intake.deliverPurple(5);
-                drive.followTrajectorySequence(trajSeq2);
-                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
-                flip.lflip();
-                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
-                drive.followTrajectorySequence(trajSeq3);
-            }
-        }
+//
+//        if (!isStopRequested()) {
+//            if(getPos().equals("LEFT")){
+//                drive.followTrajectorySequence(trajSeq1);
+//                intake.deliverPurple(5);
+//                drive.followTrajectorySequence(trajSeq2);
+//                vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
+//                flip.lflip();
+//                vl.movePIDLeft(-2000, 0.01,0.000,0.000, 2);
+//                drive.followTrajectorySequence(trajSeq3);
+//            }
+//            else if (getPos().equals("MIDDLE")) {
+//                drive.followTrajectorySequence(trajSeq1);
+//                intake.deliverPurple(5);
+//                drive.followTrajectorySequence(trajSeq2);
+//                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
+//                flip.lflip();
+//                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+//                drive.followTrajectorySequence(trajSeq3);
+//            }
+//            else {
+//                drive.followTrajectorySequence(trajSeq1);
+//                intake.deliverPurple(5);
+//                drive.followTrajectorySequence(trajSeq2);
+//                vl.movePIDLeft(4000, 0.01, 0, 0, 3);
+//                flip.lflip();
+//                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+//                drive.followTrajectorySequence(trajSeq3);
+//            }
+//        }
 
         // Release resources
         controlHubCam.stopStreaming();

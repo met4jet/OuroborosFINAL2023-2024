@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
+import org.firstinspires.ftc.teamcode.Loop;
 import org.firstinspires.ftc.teamcode.OpenCV.HuskyLensMarker;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -26,8 +27,24 @@ import java.util.Arrays;
 
 public class HuskyTest extends LinearOpMode {
 
+    VerticalLift vl_thd;
+
+    Thread move_vl = new Thread(new Runnable(){
+        @Override
+        public void run(){
+            vl_thd.movePIDLeft(4000, 0.001, 0, 0, 3);
+        }
+    });
+
+    Loop loop_liftVL = new Loop();
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        vl_thd = new VerticalLift(this);
+        //dt.encoderMove(.5, 3, 3, false, false);
+        loop_liftVL.add(move_vl);
+
         HuskyLensMarker hl = new HuskyLensMarker(this);
 
         String pos = "";
@@ -169,6 +186,7 @@ public class HuskyTest extends LinearOpMode {
             if(pos.equals("LEFT")){
                 drive.followTrajectorySequence(trajSeq1);
                 intake.deliverPurple(5);
+                loop_liftVL.run();
                 drive.followTrajectorySequence(trajSeq2);
                 vl.movePIDLeft(4000, 0.01,0.000,0.000, 3);
                 flip.lflip();
@@ -190,7 +208,7 @@ public class HuskyTest extends LinearOpMode {
                 drive.followTrajectorySequence(trajSeq2);
                 vl.movePIDLeft(4000, 0.01, 0, 0, 3);
                 flip.lflip();
-                //vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
+                vl.movePIDLeft(-2000, 0.01, 0, 0, 2);
                 //drive.followTrajectorySequence(trajSeq3);
             }
         }

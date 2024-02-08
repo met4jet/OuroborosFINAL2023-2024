@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 public class BlueCloseLeft4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+        HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(14,62,Math.toRadians(270));
 
@@ -46,7 +48,7 @@ public class BlueCloseLeft4 extends LinearOpMode {
                 .back(3)
                 .build();
 
-        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
+        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .strafeTo(new Vector2d(43,60))
                 .back(10)
                 .build();
@@ -61,6 +63,7 @@ public class BlueCloseLeft4 extends LinearOpMode {
         drive.followTrajectorySequence(trajSeq1);
             //intake.deliverPurple(5);
             drive.followTrajectorySequence(trajSeq2);
+            husky.huskyPID1();
             //vl.movePIDRight(-1000, 0.003,0.005,0.0005, 1);
             //flip.lflip();
             drive.followTrajectorySequence(trajSeq3);

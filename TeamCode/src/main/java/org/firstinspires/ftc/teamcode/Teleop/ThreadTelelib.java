@@ -7,6 +7,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gam
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,12 +17,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ThreadHandler;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import java.util.HashMap;
 
 public abstract class ThreadTelelib extends OpMode {
     // Difficulty: EASY
     // All: Create your motors and servos
+    public boolean drive_select_field = false;
+    public boolean yes = false;
+
+    public SampleMecanumDrive drive;
     boolean sub = false;
     boolean dom = false;
     double hPower = 1;
@@ -66,6 +73,9 @@ public abstract class ThreadTelelib extends OpMode {
     public void init(){
         // Difficulty: EASY
         // All: Hardware map your motors and servos
+        drive = new SampleMecanumDrive(hardwareMap);
+        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.setPoseEstimate(PoseStorage.currentPose);
 
         th_horiLift = new ThreadHandler();
         th_arcadeDrive = new ThreadHandler();
@@ -322,6 +332,28 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 50) {
             }
             verticalLiftLeft.setPower(1);
+        }
+    });
+    Thread drive_arcade = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            drive_select_field = false;
+        }
+    });
+    Thread drive_field = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while(time.milliseconds() < 300){
+
+            }
+            drive_select_field = true;
         }
     });
     Thread full_speed = new Thread(new Runnable() {
@@ -679,5 +711,56 @@ public abstract class ThreadTelelib extends OpMode {
     public void kill(){
         horizontalLiftRight.setPower(0);
         horizontalLiftLeft.setPower(0);
+    }
+    public void fieldDrive(){
+
+        // Read pose
+        Pose2d poseEstimate = drive.getPoseEstimate();
+
+// Create a vector from the gamepad x/y inputs
+// Then, rotate that vector by the inverse of that heading
+        Vector2d input = new Vector2d(
+                /*-*/gamepad1.left_stick_y,
+                /*-*/gamepad1.left_stick_x
+        ).rotated(/*-*/poseEstimate.getHeading());
+
+// Pass in the rotated input + right stick value for rotation
+// Rotation is not part of the rotated input thus must be passed in separately
+        drive.setWeightedDrivePower(
+                new Pose2d(
+                        input.getX(),
+                        input.getY(),
+                        /*-*/gamepad1.right_stick_x
+                )
+        );
+        drive.update();
+
+        // Print pose to telemetry
+        telemetry.addData("x", poseEstimate.getX());
+        telemetry.addData("y", poseEstimate.getY());
+        telemetry.addData("heading", poseEstimate.getHeading());
+        telemetry.update();
+    }
+    public void drivetrain(){
+        if(gamepad1.y && !yes){
+            yes = true;
+        }
+        else if (gamepad1.y && yes){
+            yes = false;
+        }
+
+        if(yes){
+            th_arcadeDrive.queue(drive_arcade);
+        }
+        else if(!yes) {
+            th_arcadeDrive.queue(drive_field);
+        }
+
+        if(drive_select_field){
+            fieldDrive();
+        }
+        else {
+            arcadeDrive();
+        }
     }
 }

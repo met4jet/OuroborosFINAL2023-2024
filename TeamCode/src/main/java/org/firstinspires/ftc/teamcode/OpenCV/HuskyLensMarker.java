@@ -10,12 +10,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import java.util.Arrays;
+
 public class HuskyLensMarker {
     int cx = 0;
     HuskyLens huskyLens;
     public LinearOpMode opMode;
 
-    public double a = .8;
+    public String detection = "NOT DETECTED";
 
     public HuskyLensMarker(LinearOpMode opMode){
         this.opMode = opMode;
@@ -26,13 +28,20 @@ public class HuskyLensMarker {
 
         for(HuskyLens.Block b : huskyLens.blocks()){
 
+            opMode.telemetry.addData("Blocks Array :: ",b);
+            opMode.telemetry.update();
             if(b.id == 1){
                 cx = b.x;
-            }
-            else {
-                cx = 0;
+                detection = "DETECTED";
             }
         }
+
+        opMode.telemetry.addData("huskyLens.blocks(1) :: ", huskyLens.blocks(1));
+        opMode.telemetry.update();
+
+
+        opMode.telemetry.addData("Blocks Array :: ", huskyLens.blocks());
+        opMode.telemetry.update();
 
         return cx;
     }
