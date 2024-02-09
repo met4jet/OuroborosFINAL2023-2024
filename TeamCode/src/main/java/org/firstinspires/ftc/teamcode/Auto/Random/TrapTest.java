@@ -16,6 +16,7 @@ public class TrapTest extends LinearOpMode {
 
         // max velocity (tics/sec) :: 2781.1
 
+        // max velocity (tics/sec) :: 2781.1
         trapRight.motion_profile_PID(2500, 2650, 2500);
     }
 }

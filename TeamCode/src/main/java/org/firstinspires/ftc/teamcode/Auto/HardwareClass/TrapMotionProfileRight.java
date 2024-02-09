@@ -85,7 +85,7 @@ public class TrapMotionProfileRight {
             return 0.5 * max_acceleration * Math.pow(elapsed_time, 2);
         }
 
-            // if we're cruising
+        // if we're cruising
         else if (elapsed_time < deceleration_time) {
             acceleration_distance = 0.5 * max_acceleration * Math.pow(acceleration_dt, 2);
             cruise_current_dt = elapsed_time - acceleration_dt;

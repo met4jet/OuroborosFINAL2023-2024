@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto.Random;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -13,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
-import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.Loop;
@@ -23,9 +20,9 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "HuskyTest")
+@Autonomous(group = "Auto", name = "HuskyFarBlue")
 
-public class HuskyTest extends LinearOpMode {
+public class HuskyFarBlue extends LinearOpMode {
 
     VerticalLift vl_thd;
 
@@ -88,7 +85,7 @@ public class HuskyTest extends LinearOpMode {
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose =new Pose2d(14,62,Math.toRadians(90));
+        Pose2d startPose =new Pose2d(-40,62,Math.toRadians(90));
 
         Intake intake = new Intake(this);
         VerticalLift vl = new VerticalLift(this);
@@ -118,41 +115,42 @@ public class HuskyTest extends LinearOpMode {
 
         if (pos.equals("LEFT")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .back(25)
+                    .back(27)
                     .turn(Math.toRadians(-90))
-                    .forward(5)
+                    .forward(7)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                     .setVelConstraint(fastConstraint)
                     .back(11)
-                    .strafeRight(28)
+                    .strafeRight(22)
                     .turn(Math.toRadians(180))
                     .back(70)
                     .strafeTo(new Vector2d(45, 40))
                     .back(7)
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
+                    .strafeTo(new Vector2d(43, 13))
                     .back(5)
                     .build();
 
         } else if (pos.equals("MIDDLE")) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .back(48)
+                    .turn(Math.toRadians(180))
+                    .forward(36)
                     //.forward(29)
                     .build();
             trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                    .setVelConstraint(fastConstraint)
-                    //.strafeRight(14)
-                    //.forward(23)
-                    .turn(Math.toRadians(90))
-                    .back(75)
-                    // **** CHANGE ****
+                    .back(3)
+                    .turn(Math.toRadians(-90))
+                    .forward(11)
+                    .strafeLeft(18)
+                    .back(70)
                     .strafeTo(new Vector2d(49, 34))
                     .back(3)
+
                     .build();
             trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                    .strafeTo(new Vector2d(43, 18))
+                    .strafeTo(new Vector2d(43, 13))
                     .back(6)
                     .build();
         } else {
@@ -166,11 +164,9 @@ public class HuskyTest extends LinearOpMode {
                     .setVelConstraint(fastConstraint)
                     .back(4)
                     .strafeLeft(11)
-                    //.forward(4)
                     .turn(Math.toRadians(-90))
-                    .strafeLeft(38)
+                    .strafeLeft(33)
                     .back(70)
-                    // *****CHANGE******
                     .strafeTo(new Vector2d(49, 31))
                     .back(10)
                     .build();
