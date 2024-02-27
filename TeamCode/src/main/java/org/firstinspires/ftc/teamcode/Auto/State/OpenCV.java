@@ -161,7 +161,7 @@ public class OpenCV extends LinearOpMode
 
         /*
          * Working variables
-         */
+         *///
         Mat region1_Cb, region2_Cb, region3_Cb;
         Mat YCrCb = new Mat();
         Mat Cb = new Mat();
