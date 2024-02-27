@@ -14,13 +14,13 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 14)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(14,62,Math.toRadians(90)))
-                                .turn(Math.toRadians(180))
-                                .forward(33)
+                        drive.trajectorySequenceBuilder(new Pose2d(14,62,Math.toRadians(270)))
+                                .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(180)), Math.toRadians(270))
                                 .back(8)
-                                .turn(Math.toRadians(-90))
-                                .strafeTo(new Vector2d(52,35))
-                                .strafeTo(new Vector2d(43, 16))
+                                .strafeTo(new Vector2d(48,35))
+                                .back(8)
+                                .strafeTo(new Vector2d(38, 55))
+                                .strafeTo(new Vector2d(43,60))
                                 .back(10)
                                 .build()
                 );
@@ -42,13 +42,13 @@ public class MeepMeepTesting {
         .back(10)
 
         RED CLOSE MIDDLE
-        .turn(Math.toRadians(180))
-        .forward(33)
-        .back(8)
-        .turn(Math.toRadians(90))
-        .strafeTo(new Vector2d(52,-35))
-        .strafeTo(new Vector2d(43, -16))
-        .back(10)
+            `.turn(Math.toRadians(180))
+            .forward(33)
+            .back(8)
+            .turn(Math.toRadians(90))
+            .strafeTo(new Vector2d(52,-35))
+            .strafeTo(new Vector2d(43, -16))
+            .back(10)`
 
         RED CLOSE RIGHT
         .turn(Math.toRadians(180))
