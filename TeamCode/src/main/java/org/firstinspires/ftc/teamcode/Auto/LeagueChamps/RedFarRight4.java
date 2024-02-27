@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "RedFarRight4") // rename it to RedFarLeft4
+//@Autonomous(group = "Auto", name = "RedFarRight4") // rename it to RedFarLeft4
 public class RedFarRight4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

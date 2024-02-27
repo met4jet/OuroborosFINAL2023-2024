@@ -2,13 +2,6 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import static android.os.SystemClock.sleep;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,17 +10,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ThreadHandler;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import java.util.HashMap;
 
 public abstract class ThreadTelelib extends OpMode {
     // Difficulty: EASY
     // All: Create your motors and servos
-    public boolean drive_select_field = false;
-    public boolean yes = false;
-
-    public SampleMecanumDrive drive;
     boolean sub = false;
     boolean dom = false;
     double hPower = 1;
@@ -39,15 +27,15 @@ public abstract class ThreadTelelib extends OpMode {
     public DcMotor bl;
     public DcMotor br;
 
-    public CRServo intake;
-    public CRServo rollers;
+    public DcMotor intake;
+    //public CRServo rollers;
     public Servo rflip;
     public Servo lflip;
     public Servo linearAct;
     public Servo shoomShoomDom;
     public Servo shoomShoomSub;
-    public Servo box;
-    public CRServo linac;
+    //public Servo box;
+    //public CRServo linac;
     public Servo drone;
     public ThreadHandler th_horiLift;
     public ThreadHandler th_arcadeDrive;
@@ -59,24 +47,24 @@ public abstract class ThreadTelelib extends OpMode {
     public ThreadHandler th_rightFlip;
     public ThreadHandler th_verticalLiftLeft;
     public ThreadHandler th_verticalLiftRight;
-    public ThreadHandler th_box;
+    /*public ThreadHandler th_box;
     public ThreadHandler th_linac;
-    public ThreadHandler th_linac_down;
+    public ThreadHandler th_linac_down;*/
     public ThreadHandler th_intake;
 
 
-    public DcMotor horizontalLiftRight;
-    public DcMotor horizontalLiftLeft;
+    /*public DcMotor horizontalLiftRight;
+    public DcMotor horizontalLiftLeft;*/
     public DcMotor verticalLiftRight;
     public DcMotor verticalLiftLeft;
+    public Servo axon;
+    public ThreadHandler th_axon;
 
     public void init(){
         // Difficulty: EASY
         // All: Hardware map your motors and servos
-        drive = new SampleMecanumDrive(hardwareMap);
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        drive.setPoseEstimate(PoseStorage.currentPose);
 
+        th_axon = new ThreadHandler();
         th_horiLift = new ThreadHandler();
         th_arcadeDrive = new ThreadHandler();
         th_planeLauncher = new ThreadHandler();
@@ -87,34 +75,31 @@ public abstract class ThreadTelelib extends OpMode {
         th_rightFlip = new ThreadHandler();
         th_verticalLiftLeft = new ThreadHandler();;
         th_verticalLiftRight = new ThreadHandler();
-        th_box = new ThreadHandler();
+        /*th_box = new ThreadHandler();
         th_linac = new ThreadHandler();
-        th_linac_down = new ThreadHandler();
+        th_linac_down = new ThreadHandler();*/
         th_intake = new ThreadHandler();
-
-
-        halfToggle = false;
 
         //linac = hardwareMap.get(Servo.class, "linac");
 
         rflip = hardwareMap.get(Servo.class, "rflip");
         lflip = hardwareMap.get(Servo.class, "lflip");
-        intake = hardwareMap.get(CRServo.class, "intake");
         shoomShoomDom = hardwareMap.get(Servo.class, "shoomShoomDom");
         shoomShoomSub = hardwareMap.get(Servo.class, "shoomShoomSub");
         drone = hardwareMap.get(Servo.class, "drone");
-        box = hardwareMap.get(Servo.class, "box");
-        rollers = hardwareMap.get(CRServo.class, "rollers");
-        linac = hardwareMap.get(CRServo.class, "linac");
+        axon = hardwareMap.get(Servo.class, "axon");
+        //box = hardwareMap.get(Servo.class, "box");
+        //rollers = hardwareMap.get(CRServo.class, "rollers");
+        //linac = hardwareMap.get(CRServo.class, "linac");
 
-
+        intake = hardwareMap.get(DcMotor.class, "intake");
         fl = hardwareMap.get(DcMotor.class, "fl");
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
 
-        horizontalLiftRight = hardwareMap.get(DcMotor.class, "hlr");
-        horizontalLiftLeft = hardwareMap.get(DcMotor.class, "hll");
+        /*horizontalLiftRight = hardwareMap.get(DcMotor.class, "hlr");
+        horizontalLiftLeft = hardwareMap.get(DcMotor.class, "hll");*/
 
         verticalLiftRight = hardwareMap.get(DcMotor.class, "vlr");
         verticalLiftLeft = hardwareMap.get(DcMotor.class, "vll");
@@ -127,8 +112,8 @@ public abstract class ThreadTelelib extends OpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        horizontalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        horizontalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        /*horizontalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        horizontalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);*/
 
         verticalLiftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         verticalLiftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -140,14 +125,36 @@ public abstract class ThreadTelelib extends OpMode {
         fr.setDirection(DcMotorSimple.Direction.REVERSE); //f
         br.setDirection(DcMotorSimple.Direction.REVERSE); //r
 
-        horizontalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        horizontalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        /*horizontalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        horizontalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);*/
 
         verticalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
         verticalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
     }
+    Thread axon_intake = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 150){
 
+            }
+            axon.setPosition(.475);
+        }
+    });
+
+    Thread axon_outtake = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 150){
+
+            }
+            axon.setPosition(.32);
+        }
+    });
     Thread right_flip_out = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -218,10 +225,10 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomDom.setPosition(.22);
+            shoomShoomDom.setPosition(1);
             dom = true;
             sleep(300);
-            shoomShoomDom.setPosition(.5);
+            shoomShoomDom.setPosition(.72);
 
         }
     });
@@ -248,44 +255,44 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomSub.setPosition(0);
-            sleep(300);
             shoomShoomSub.setPosition(1);
+            sleep(300);
+            shoomShoomSub.setPosition(.45);
         }
     });
 
-    Thread horizontal_lift_out = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            //resetEncoders();
+//    Thread horizontal_lift_out = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            ElapsedTime time = new ElapsedTime();
+//            time.reset();
+//            //resetEncoders();
+//
+//            while(time.milliseconds() < 50){
+//            }
+//
+//            horizontalLiftLeft.setPower(.75);
+//            horizontalLiftRight.setPower(.75);
+//
+//        }
+//    });
 
-            while(time.milliseconds() < 50){
-            }
 
-            horizontalLiftLeft.setPower(.75);
-            horizontalLiftRight.setPower(.75);
-
-        }
-    });
-
-
-    Thread horizontal_lift_in = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            //resetEncoders();
-
-            while(time.milliseconds() < 50){
-            }
-
-            horizontalLiftLeft.setPower(-.75);
-            horizontalLiftRight.setPower(-.75);
-
-        }
-    });
+    //    Thread horizontal_lift_in = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            ElapsedTime time = new ElapsedTime();
+//            time.reset();
+//            //resetEncoders();
+//
+//            while(time.milliseconds() < 50){
+//            }
+//
+//            horizontalLiftLeft.setPower(-.75);
+//            horizontalLiftRight.setPower(-.75);
+//
+//        }
+//    });
     Thread vertical_right_up = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -332,28 +339,6 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 50) {
             }
             verticalLiftLeft.setPower(1);
-        }
-    });
-    Thread drive_arcade = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            while(time.milliseconds() < 300){
-
-            }
-            drive_select_field = false;
-        }
-    });
-    Thread drive_field = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            while(time.milliseconds() < 300){
-
-            }
-            drive_select_field = true;
         }
     });
     Thread full_speed = new Thread(new Runnable() {
@@ -417,7 +402,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             intake.setPower(-1);
-            rollers.setPower(-1);
+            //rollers.setPower(-1);
         }
     });
 
@@ -430,25 +415,25 @@ public abstract class ThreadTelelib extends OpMode {
 
             }
             intake.setPower(1);
-            rollers.setPower(1);
+            //rollers.setPower(1);
         }
     });
-    Thread box_dep = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            while(time.milliseconds() < 200){
+//    Thread box_dep = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            ElapsedTime time = new ElapsedTime();
+//            time.reset();
+//            while(time.milliseconds() < 200){
+//
+//            }
+//            box.setPosition(1);
+//            sleep(1000);
+//            box.setPosition(.22);
+//
+//        }
+//    });
 
-            }
-            box.setPosition(1);
-            sleep(1000);
-            box.setPosition(.22);
-
-        }
-    });
-
-    Thread linac_up = new Thread(new Runnable() {
+    /*Thread linac_up = new Thread(new Runnable() {
         @Override
         public void run() {
             ElapsedTime time = new ElapsedTime();
@@ -462,33 +447,33 @@ public abstract class ThreadTelelib extends OpMode {
             }
             else {
                 linac.setPosition(position);
-                position += .01;*/
+                position += .01;
             linac.setPower(1);
             }
 
-    });
+    });*/
 
-    Thread linac_down = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            ElapsedTime time = new ElapsedTime();
-            time.reset();
-            while(time.milliseconds() < 150){
-
-            }
-            /*if(position <= .25){
-                linac.setPosition(.25);
-                position = .25;
-            }
-            else {
-                linac.setPosition(position);
-                position -= .01;
-
-            }*/
-        linac.setPower(-1);
-        }
-    });
-    Thread transferMacro = new Thread(new Runnable() {
+//    Thread linac_down = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            ElapsedTime time = new ElapsedTime();
+//            time.reset();
+//            while(time.milliseconds() < 150){
+//
+//            }
+//            /*if(position <= .25){
+//                linac.setPosition(.25);
+//                position = .25;
+//            }
+//            else {
+//                linac.setPosition(position);
+//                position -= .01;
+//
+//            }*/
+//        linac.setPower(-1);
+//        }
+//    });
+    /*Thread transferMacro = new Thread(new Runnable() {
         @Override
         public void run() {
             ElapsedTime time = new ElapsedTime();
@@ -515,7 +500,7 @@ public abstract class ThreadTelelib extends OpMode {
             shoomShoomSub.setPosition(1);
             sleep(100);
         }
-    });
+    });*/
 
 
 
@@ -534,7 +519,7 @@ public abstract class ThreadTelelib extends OpMode {
 
         return output;
     }
-     public void shoomShoom(){
+    public void shoomShoom(){
         if(gamepad1.left_bumper) /*&& shoomShoomSub.getPosition() != 0*/{
             th_shoomSub.queue(shoom_sub_dep);
             dom = false;
@@ -560,7 +545,7 @@ public abstract class ThreadTelelib extends OpMode {
             //sleep(250);
         }*/
     }
-    public void horizontal_lift(){
+    /*public void horizontal_lift(){
         if(gamepad2.left_stick_x < -.25){
             th_horiLift.queue(horizontal_lift_out);
             telemetry.addData("EncoderPosLeft: ", horizontalLiftLeft.getCurrentPosition());
@@ -579,11 +564,14 @@ public abstract class ThreadTelelib extends OpMode {
             horizontalLiftLeft.setPower(0);
         }
 
-    }
+    }*/
     public void rflip(){
         if(gamepad2.right_bumper) {
             th_rightFlip.queue(right_flip);
         }
+        /*else{
+            rflip.setPosition(0);
+        }*/
     }
     public void lflip(){
         if(gamepad2.left_bumper){
@@ -591,30 +579,40 @@ public abstract class ThreadTelelib extends OpMode {
             telemetry.addData("lbumper2", gamepad2.left_bumper);
             telemetry.addData("lbumper2", lflip.getDirection());
         }
+        /*else{
+            lflip.setPosition(1);
+        }*/
     }
     public void drone(){
-        if(isPressed("Y", gamepad2.y)){
+        if(gamepad2.y){
             th_planeLauncher.queue(plane_launcher_hold);
+            telemetry.addData("DronePos", drone.getPosition());
         }
         else {
             th_planeLauncher.queue(plane_launcher_launch);
+            telemetry.addData("DronePos", drone.getPosition());
+            telemetry.update();
         }
     }
-    public void box(){
+    /*public void box(){
         if(gamepad2.x){
             th_box.queue(box_dep);
         }
         /*else {
             th_box.queue(box_dep);
-        }*/
-    }
+        }
+    }*/
     public void vertical_lift_left(){
         if (gamepad2.left_stick_y > .2) {
             th_verticalLiftLeft.queue(vertical_left_up);
+            if(!gamepad2.left_bumper)
+                lflip.setPosition(.8);
             telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
             telemetry.update();
         } else if (gamepad2.left_stick_y < -.2) {
             th_verticalLiftLeft.queue(vertical_left_down);
+            if(!gamepad2.left_bumper)
+                lflip.setPosition(.8);
             telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
             telemetry.update();
         }
@@ -624,15 +622,19 @@ public abstract class ThreadTelelib extends OpMode {
     }
     public void vertical_lift_right(){
         if (gamepad2.right_stick_y > .2) {
-            th_verticalLiftLeft.queue(vertical_right_up);
+            th_verticalLiftRight.queue(vertical_right_up);
+            if(!gamepad2.right_bumper)
+                rflip.setPosition(.3);
         } else if (gamepad2.right_stick_y < -.2) {
-            th_verticalLiftLeft.queue(vertical_right_down);
+            th_verticalLiftRight.queue(vertical_right_down);
+            if(!gamepad2.right_bumper)
+                rflip.setPosition(.3);
         }
         else {
             verticalLiftRight.setPower(0);
         }
     }
-    public void linac(){
+    /*public void linac(){
         if (gamepad2.a) {
             th_linac.queue(linac_up);
             telemetry.addData("Position Linac", position);
@@ -644,6 +646,20 @@ public abstract class ThreadTelelib extends OpMode {
             linac.setPower(0);
 
         }
+    }*/
+    public void axon_linac(){
+        if (gamepad2.a) {
+            th_axon.queue(axon_intake);
+            telemetry.addData("Position Axon", axon.getPosition());
+        } else if (gamepad2.b) {
+            th_axon.queue(axon_outtake);
+            telemetry.addData("Position Axon", axon.getPosition());
+        }
+        else {
+            axon.setPosition(.32);
+            telemetry.addData("Position Axon", axon.getPosition());
+
+        }
     }
     public void intake(){
         if (gamepad2.right_trigger > .2) {
@@ -653,37 +669,28 @@ public abstract class ThreadTelelib extends OpMode {
         }
         else {
             intake.setPower(0);
-            rollers.setPower(0);
+            //rollers.setPower(0);
         }
     }
-    public void tMacro(){
+    /*public void tMacro(){
         if(gamepad2.dpad_down){
             th_box.queue(transferMacro);
         }
-    }
+    }*/
     public void arcadeDrive(){
         if(gamepad1.right_trigger > .5){
-            th_arcadeDrive.queue(half_speed);
+            //th_arcadeDrive.queue(half_speed);
+            halfToggle = true;
         }
         if(gamepad1.left_trigger > .5) {
-            th_arcadeDrive.queue(full_speed);
+            //th_arcadeDrive.queue(full_speed);
+            halfToggle= false;
         }
         double left_stick_x = gamepad1.left_stick_x;
         double left_stick_y = gamepad1.left_stick_y;
         double right_stick_x = gamepad1.right_stick_x;
 
-        if (halfToggle && Math.abs(left_stick_x) > 0.1 ||
-                Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1){
-            fr.setPower(((left_stick_y + left_stick_x) + right_stick_x));
-            fl.setPower(((left_stick_y - left_stick_x) - right_stick_x));
-            br.setPower(((left_stick_y - left_stick_x) + right_stick_x));
-            bl.setPower(((left_stick_y + left_stick_x) - right_stick_x));
-            telemetry.addData("fr:", fr.getPower());
-            telemetry.addData("br:", br.getPower());
-            telemetry.addData("fl:", fl.getPower());
-            telemetry.addData("bl:", bl.getPower());
-
-        } else if(!halfToggle && Math.abs(left_stick_x) > 0.1 ||
+        if(halfToggle && Math.abs(left_stick_x) > 0.1 ||
                 Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1) {
             fr.setPower(((left_stick_y + left_stick_x) + right_stick_x));
             fl.setPower(((left_stick_y - left_stick_x) - right_stick_x));
@@ -693,6 +700,17 @@ public abstract class ThreadTelelib extends OpMode {
             telemetry.addData("br:", br.getPower());
             telemetry.addData("fl:", fl.getPower());
             telemetry.addData("bl:", bl.getPower());
+        } else if (!halfToggle && Math.abs(left_stick_x) > 0.1 ||
+                Math.abs(left_stick_y) >.1|| Math.abs(right_stick_x) > 0.1){
+            fr.setPower(.5 * ((left_stick_y + left_stick_x) + right_stick_x));
+            fl.setPower(.5 * ((left_stick_y - left_stick_x) - right_stick_x));
+            br.setPower(.5 * ((left_stick_y - left_stick_x) + right_stick_x));
+            bl.setPower(.5 * ((left_stick_y + left_stick_x) - right_stick_x));
+            telemetry.addData("fr:", fr.getPower());
+            telemetry.addData("br:", br.getPower());
+            telemetry.addData("fl:", fl.getPower());
+            telemetry.addData("bl:", bl.getPower());
+
         }
         else{
             fl.setPower(0);
@@ -709,58 +727,7 @@ public abstract class ThreadTelelib extends OpMode {
     public void loop(){}
 
     public void kill(){
-        horizontalLiftRight.setPower(0);
-        horizontalLiftLeft.setPower(0);
-    }
-    public void fieldDrive(){
-
-        // Read pose
-        Pose2d poseEstimate = drive.getPoseEstimate();
-
-// Create a vector from the gamepad x/y inputs
-// Then, rotate that vector by the inverse of that heading
-        Vector2d input = new Vector2d(
-                /*-*/gamepad1.left_stick_y,
-                /*-*/gamepad1.left_stick_x
-        ).rotated(/*-*/poseEstimate.getHeading());
-
-// Pass in the rotated input + right stick value for rotation
-// Rotation is not part of the rotated input thus must be passed in separately
-        drive.setWeightedDrivePower(
-                new Pose2d(
-                        input.getX(),
-                        input.getY(),
-                        /*-*/gamepad1.right_stick_x
-                )
-        );
-        drive.update();
-
-        // Print pose to telemetry
-        telemetry.addData("x", poseEstimate.getX());
-        telemetry.addData("y", poseEstimate.getY());
-        telemetry.addData("heading", poseEstimate.getHeading());
-        telemetry.update();
-    }
-    public void drivetrain(){
-        if(gamepad1.y && !yes){
-            yes = true;
-        }
-        else if (gamepad1.y && yes){
-            yes = false;
-        }
-
-        if(yes){
-            th_arcadeDrive.queue(drive_arcade);
-        }
-        else if(!yes) {
-            th_arcadeDrive.queue(drive_field);
-        }
-
-        if(drive_select_field){
-            fieldDrive();
-        }
-        else {
-            arcadeDrive();
-        }
+        /*horizontalLiftRight.setPower(0);
+        horizontalLiftLeft.setPower(0);*/
     }
 }

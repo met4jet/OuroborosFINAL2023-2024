@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueRight")
+//@Autonomous(group = "Auto", name = "BlueRight")
 
 public class BlueRight extends LinearOpMode {
     @Override

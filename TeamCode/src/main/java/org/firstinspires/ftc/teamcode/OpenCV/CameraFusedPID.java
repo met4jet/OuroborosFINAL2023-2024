@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Cone Tracker")
+//@TeleOp(name = "Cone Tracker")
 
 public class CameraFusedPID extends LinearOpMode {
     double integralSum = 0;

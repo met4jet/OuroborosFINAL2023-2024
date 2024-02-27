@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 
-@Autonomous(group = "Auto", name = "TestingAutoClose")
+//@Autonomous(group = "Auto", name = "TestingAutoClose")
 public class TestingAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

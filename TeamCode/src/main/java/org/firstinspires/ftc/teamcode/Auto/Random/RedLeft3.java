@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Auto.HardwareClass.DriveTrain;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 
-@Autonomous(group = "Auto", name = "RedLeft3")
+//@Autonomous(group = "Auto", name = "RedLeft3")
 public class RedLeft3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

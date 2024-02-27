@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@TeleOp(name = "Static Heading")
+//@TeleOp(name = "Static Heading")
 public class StaticHeading extends LinearOpMode {
     double integralSum = 0;
     double Kp = PIDConstants.Kp;

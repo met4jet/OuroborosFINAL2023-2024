@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueFarRight4")
+//@Autonomous(group = "Auto", name = "BlueFarRight4")
 public class BlueFarRight4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

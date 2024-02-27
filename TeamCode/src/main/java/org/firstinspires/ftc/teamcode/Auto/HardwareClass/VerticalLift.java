@@ -70,7 +70,32 @@ public class VerticalLift {
         verticalLiftRight.setPower(0);
         //verticalLiftLeft.setPower(0);
     }
+    public void moveRightTime(double seconds){
+        ElapsedTime time = new ElapsedTime();
+        verticalLiftRight.setPower(-1);
+        while(time.seconds() < seconds){
 
+        }
+        verticalLiftRight.setPower(0);
+    }
+    public void moveLeftTime(double seconds){
+        ElapsedTime time = new ElapsedTime();
+        verticalLiftLeft.setPower(1);
+        while(time.seconds() < seconds){
+
+        }
+        verticalLiftLeft.setPower(0);
+    }
+    public void moveBothTime(double seconds) {
+        ElapsedTime time = new ElapsedTime();
+        verticalLiftLeft.setPower(1);
+        verticalLiftRight.setPower(-1);
+        while(time.seconds() < seconds){
+
+        }
+        verticalLiftLeft.setPower(0);
+        verticalLiftRight.setPower(0);
+    }
     public void movePIDRight(int position, double kp, double ki, double kd, int time){
         if(position != 0) {
             resetEncoders();

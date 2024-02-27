@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
 
-@Autonomous(group = "Auto", name = "HuskyPID")
+//@Autonomous(group = "Auto", name = "HuskyPID")
 public class HuskyPIDTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

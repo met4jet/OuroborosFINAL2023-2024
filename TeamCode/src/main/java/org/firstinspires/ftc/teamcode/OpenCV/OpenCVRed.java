@@ -26,7 +26,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(group = "Auto", name = "OpenCVTest")
+//@Autonomous(group = "Auto", name = "OpenCVTest")
 
 public class OpenCVRed extends LinearOpMode {
 

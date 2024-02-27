@@ -7,18 +7,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class ThreadTeleOp extends ThreadTelelib{
     @Override
     public void loop() {
-        horizontal_lift();
         shoomShoom();
         rflip();
         lflip();
         vertical_lift_left();
         vertical_lift_right();
         drone();
-        box();
-        linac();
         intake();
-        tMacro();
-        drivetrain();
+        arcadeDrive();
+        axon_linac();
     }
     @Override
     public void kill(){

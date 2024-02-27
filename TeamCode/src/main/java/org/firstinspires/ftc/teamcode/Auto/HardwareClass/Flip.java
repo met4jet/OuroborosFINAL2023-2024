@@ -16,10 +16,10 @@ public class Flip {
     }
 
     public void lflip(){
-        lflip.setPosition(.8);
-        opMode.sleep(1000);
+        lflip.setPosition(.7);
+        opMode.sleep(500);
         lflip.setPosition(.2);
-        opMode.sleep(1000);
+        opMode.sleep(500);
     }
 
     public void rflip(){
