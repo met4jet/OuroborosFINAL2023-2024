@@ -26,7 +26,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Autonomous(group = "Auto", name = "OpenCVTest")
+@Autonomous(group = "Auto", name = "OpenCVTestRED")
 
 public class OpenCVRed extends LinearOpMode {
 
@@ -43,11 +43,6 @@ public class OpenCVRed extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-40, 62, Math.toRadians(270));
-
-        drive.setPoseEstimate(startPose);
-
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
@@ -60,32 +55,6 @@ public class OpenCVRed extends LinearOpMode {
         telemetry.update();
 
         sleep(3000);
-
-        TrajectorySequence trajSeq;
-
-        if(getPos().equals("LEFT")){
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .forward(28)
-                    .build();
-        }
-        else if(getPos().equals("MIDDLE")){
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .back(28)
-                    .build();
-        }
-        else{
-            trajSeq = drive.trajectorySequenceBuilder(startPose)
-
-                    .build();
-        }
-
-        // The OpenCV pipeline automatically processes frames and handles detection
-
-        waitForStart();
-
-        if (!isStopRequested())
-            drive.followTrajectorySequence(trajSeq);
-
 
         // Release resources
         controlHubCam.stopStreaming();

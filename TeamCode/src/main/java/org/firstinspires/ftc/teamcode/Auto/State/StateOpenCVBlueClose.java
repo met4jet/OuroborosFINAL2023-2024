@@ -1,34 +1,17 @@
-/*
- * Copyright (c) 2020 OpenFTC Team
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package org.firstinspires.ftc.teamcode.Auto.State;
+
+
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -36,13 +19,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-/*
- * This sample demonstrates a basic (but battle-tested and essentially
- * 100% accurate) method of detecting the skystone when lined up with
- * the sample regions over the first 3 stones.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 @TeleOp
-public class OpenCV extends LinearOpMode
+public class StateOpenCVBlueClose extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
     SkystoneDeterminationPipeline pipeline;
@@ -89,6 +70,10 @@ public class OpenCV extends LinearOpMode
         while (opModeIsActive())
         {
             telemetry.addData("Analysis", pipeline.getAnalysis());
+
+            telemetry.addData("left", SkystoneDeterminationPipeline.avg1);
+            telemetry.addData("middle", SkystoneDeterminationPipeline.avg2);
+
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -98,6 +83,7 @@ public class OpenCV extends LinearOpMode
 
     public static class SkystoneDeterminationPipeline extends OpenCvPipeline
     {
+        static public int avg1, avg2, avg3;
         /*
          * An enum to define the skystone position
          */
@@ -117,11 +103,11 @@ public class OpenCV extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(109,98);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(181,98);
-        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(253,98);
-        static final int REGION_WIDTH = 20;
-        static final int REGION_HEIGHT = 20;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,0);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(140,0);
+        //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(200,70);
+        static final int REGION_WIDTH = 140;
+        static final int REGION_HEIGHT = 240;
 
         /*
          * Points which actually define the sample region rectangles, derived from above values
@@ -152,21 +138,21 @@ public class OpenCV extends LinearOpMode
         Point region2_pointB = new Point(
                 REGION2_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
                 REGION2_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
-        Point region3_pointA = new Point(
-                REGION3_TOPLEFT_ANCHOR_POINT.x,
-                REGION3_TOPLEFT_ANCHOR_POINT.y);
-        Point region3_pointB = new Point(
-                REGION3_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
-                REGION3_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
+//        Point region3_pointA = new Point(
+//                REGION3_TOPLEFT_ANCHOR_POINT.x,
+//                REGION3_TOPLEFT_ANCHOR_POINT.y);
+//        Point region3_pointB = new Point(
+//                REGION3_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
+//                REGION3_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
 
         /*
          * Working variables
-         *///
+         */
         Mat region1_Cb, region2_Cb, region3_Cb;
         Mat YCrCb = new Mat();
         Mat Cb = new Mat();
-        int avg1, avg2, avg3;
-//
+        //int avg1, avg2, avg3;
+
         // Volatile since accessed by OpMode thread w/o synchronization
         private volatile SkystonePosition position = SkystonePosition.LEFT;
 
@@ -201,12 +187,45 @@ public class OpenCV extends LinearOpMode
              */
             region1_Cb = Cb.submat(new Rect(region1_pointA, region1_pointB));
             region2_Cb = Cb.submat(new Rect(region2_pointA, region2_pointB));
-            region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
+//            region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
+        }
+
+        private Mat preprocessFrame(Mat frame) {
+            Mat hsvFrame = new Mat();
+            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
+
+            Scalar lowerYellow = new Scalar(0, 50, 100);
+            Scalar upperYellow = new Scalar(30, 255, 255);
+
+            //0-30 PERFECT
+            //30-60 detect light blue
+            //120-125, yellow to red
+            //sat 120-255
+
+            // 105-125
+
+
+            Mat yellowMask = new Mat();
+            Core.inRange(hsvFrame, lowerYellow, upperYellow, yellowMask);
+
+            Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+            Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_OPEN, kernel);
+            Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_CLOSE, kernel);
+
+            return yellowMask;
         }
 
         @Override
         public Mat processFrame(Mat input)
         {
+
+            Mat yellowMask = preprocessFrame(input);
+
+            // Find contours of the detected yellow regions
+            List<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
             /*
              * Overview of what we're doing:
              *
@@ -245,7 +264,7 @@ public class OpenCV extends LinearOpMode
             /*
              * Get the Cb channel of the input frame after conversion to YCrCb
              */
-            inputToCb(input);
+            //inputToCb(input);
 
             /*
              * Compute the average pixel value of each submat region. We're
@@ -255,8 +274,11 @@ public class OpenCV extends LinearOpMode
              * at index 2 here.
              */
             avg1 = (int) Core.mean(region1_Cb).val[0];
-            avg2 = (int) Core.mean(region2_Cb).val[0];
-            avg3 = (int) Core.mean(region3_Cb).val[0];
+            avg2 = (int) Core.mean(region2_Cb).val[0] + 2;
+//            avg3 = (int) Core.mean(region3_Cb).val[0];
+//            avg1 = 0;
+//            avg2 = 0;
+            avg3 = 0;
 
             /*
              * Draw a rectangle showing sample region 1 on the screen.
@@ -284,25 +306,31 @@ public class OpenCV extends LinearOpMode
              * Draw a rectangle showing sample region 3 on the screen.
              * Simply a visual aid. Serves no functional purpose.
              */
-            Imgproc.rectangle(
-                    input, // Buffer to draw on
-                    region3_pointA, // First point which defines the rectangle
-                    region3_pointB, // Second point which defines the rectangle
-                    BLUE, // The color the rectangle is drawn in
-                    2); // Thickness of the rectangle lines
+//            Imgproc.rectangle(
+//                    input, // Buffer to draw on
+//                    region3_pointA, // First point which defines the rectangle
+//                    region3_pointB, // Second point which defines the rectangle
+//                    BLUE, // The color the rectangle is drawn in
+//                    2); // Thickness of the rectangle lines
 
 
             /*
              * Find the max of the 3 averages
              */
-            int maxOneTwo = Math.max(avg1, avg2);
-            int max = Math.max(maxOneTwo, avg3);
+            int max = Math.max(avg1, avg2);
+
+            //int max = Math.max(maxOneTwo, avg3);
 
             /*
              * Now that we found the max, we actually need to go and
              * figure out which sample region that value was from
              */
-            if(max == avg1) // Was it from region 1?
+
+            if(Math.abs(Math.abs(avg1) - Math.abs(avg2)) < 2){
+                position = SkystonePosition.RIGHT;
+            }
+
+            else if(max == avg1) // Was it from region 1?
             {
                 position = SkystonePosition.LEFT; // Record our analysis
 
@@ -317,7 +345,7 @@ public class OpenCV extends LinearOpMode
                         GREEN, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
-            else if(max == avg2) // Was it from region 2?
+            else /*if (max == avg2)*/ // Was it from region 2?
             {
                 position = SkystonePosition.CENTER; // Record our analysis
 
@@ -332,21 +360,22 @@ public class OpenCV extends LinearOpMode
                         GREEN, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
-            else if(max == avg3) // Was it from region 3?
-            {
-                position = SkystonePosition.RIGHT; // Record our analysis
 
-                /*
-                 * Draw a solid rectangle on top of the chosen region.
-                 * Simply a visual aid. Serves no functional purpose.
-                 */
-                Imgproc.rectangle(
-                        input, // Buffer to draw on
-                        region3_pointA, // First point which defines the rectangle
-                        region3_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
-                        -1); // Negative thickness means solid fill
-            }
+//            else if(max == avg3) // Was it from region 3?
+//            {
+//                position = SkystonePosition.RIGHT; // Record our analysis
+//
+//                /*
+//                 * Draw a solid rectangle on top of the chosen region.
+//                 * Simply a visual aid. Serves no functional purpose.
+//                 */
+//                Imgproc.rectangle(
+//                input, // Buffer to draw on
+//                region3_pointA, // First point which defines the rectangle
+//                region3_pointB, // Second point which defines the rectangle
+//                GREEN, // The color the rectangle is drawn in
+//                -1); // Negative thickness means solid fill
+//        }
 
             /*
              * Render the 'input' buffer to the viewport. But note this is not
