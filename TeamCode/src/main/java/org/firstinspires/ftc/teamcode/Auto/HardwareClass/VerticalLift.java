@@ -78,6 +78,14 @@ public class VerticalLift {
         }
         verticalLiftRight.setPower(0);
     }
+    public void moveDownRightTime(double seconds){
+        ElapsedTime time = new ElapsedTime();
+        verticalLiftRight.setPower(1);
+        while(time.seconds() < seconds){
+
+        }
+        verticalLiftRight.setPower(0);
+    }
     public void moveLeftTime(double seconds){
         ElapsedTime time = new ElapsedTime();
         verticalLiftLeft.setPower(1);

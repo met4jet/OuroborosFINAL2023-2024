@@ -58,6 +58,8 @@ public abstract class ThreadTelelib extends OpMode {
     public DcMotor verticalLiftRight;
     public DcMotor verticalLiftLeft;
     public Servo axon;
+
+    public Servo deposit;
     public ThreadHandler th_axon;
 
     public void init(){
@@ -519,6 +521,14 @@ public abstract class ThreadTelelib extends OpMode {
 
         return output;
     }
+    public void deposit(){
+        if(gamepad1.dpad_down){
+            deposit.setPosition(1);
+        }
+        if(gamepad1.dpad_up){
+            deposit.setPosition(0);
+        }
+    }
     public void shoomShoom(){
         if(gamepad1.left_bumper) /*&& shoomShoomSub.getPosition() != 0*/{
             th_shoomSub.queue(shoom_sub_dep);
@@ -634,6 +644,7 @@ public abstract class ThreadTelelib extends OpMode {
             verticalLiftRight.setPower(0);
         }
     }
+
     /*public void linac(){
         if (gamepad2.a) {
             th_linac.queue(linac_up);
