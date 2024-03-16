@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
-@Autonomous(group = "Auto", name = "TestAuto")
+@Autonomous(group = "Auto", name = "Myra")
 public class Myra extends LinearOpMode {
     //NOTES FOR MYRA!!!!!!
 

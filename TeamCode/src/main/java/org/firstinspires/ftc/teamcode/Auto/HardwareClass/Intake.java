@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Intake {
     public LinearOpMode opMode;
     public DcMotor intake;
-//    public Servo axon;
+    public Servo axon;
     public CRServo rollers;
     public ColorRangeSensor colorSensor;
 
@@ -20,7 +20,7 @@ public class Intake {
         this.opMode = opMode;
 
         intake = opMode.hardwareMap.get(DcMotor.class, "intake");
-//        axon = opMode.hardwareMap.get(Servo.class, "axon");
+        axon = opMode.hardwareMap.get(Servo.class, "axon");
         colorSensor = opMode.hardwareMap.get(ColorRangeSensor.class, "color");
     }
 //    public void axonUp (double sec){
@@ -38,7 +38,7 @@ public class Intake {
         ElapsedTime time = new ElapsedTime();
         time.reset();
 
-//        axon.setPosition(0);
+        axon.setPosition(0);
         time.reset();
         while(time.seconds() < sec){
         }
@@ -48,10 +48,7 @@ public class Intake {
     public void axonUp (double sec){
         ElapsedTime time = new ElapsedTime();
 
-//        axon.setPosition(.7);
-        time.reset();
-        while(time.seconds() < sec){
-        }
+        axon.setPosition(.7);
 
     }
 
@@ -119,17 +116,29 @@ public class Intake {
     public void getWhite2(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        while(colorSensor.getDistance(DistanceUnit.CM) < 2) {
+        axon.setPosition(.3);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4) {
 //            axon.setPosition(.475);
+            intake.setPower(.75);
+            opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+        }
+        intake.setPower(-.75);
+        opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+        opMode.telemetry.update();
+        while(time.seconds() < sec){
+
+        }
+    }
+    public void getWhite2new(double sec){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        axon.setPosition(.3);
+        intake.setPower(.75);
+        while(time.seconds() < sec){
             intake.setPower(.75);
         }
         intake.setPower(.75);
-//
-        time.reset();
-        while(time.seconds() < sec){
-        }
-
-        intake.setPower(0);
     }
     public void backIntake(double sec){
         ElapsedTime time = new ElapsedTime();

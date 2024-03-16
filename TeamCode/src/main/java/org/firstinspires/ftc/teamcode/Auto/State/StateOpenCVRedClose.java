@@ -103,10 +103,10 @@ public class StateOpenCVRedClose extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,0);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(160,0);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(40,0);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(180,0);
         //static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(200,70);
-        static final int REGION_WIDTH = 160;
+        static final int REGION_WIDTH = 140;
         static final int REGION_HEIGHT = 240;
 
         /*

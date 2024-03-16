@@ -142,7 +142,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.475);
+            axon.setPosition(.7);
         }
     });
 
@@ -154,7 +154,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.32);
+            axon.setPosition(.1);
         }
     });
     Thread right_flip_out = new Thread(new Runnable() {
@@ -202,7 +202,7 @@ public abstract class ThreadTelelib extends OpMode {
             }
             lflip.setPosition(0);
             sleep(1000);
-            lflip.setPosition(1);
+            lflip.setPosition(.8);
         }
     });
     Thread shoom_dom_dep = new Thread(new Runnable() {
@@ -227,7 +227,7 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomDom.setPosition(1);
+            shoomShoomDom.setPosition(.3);
             dom = true;
             sleep(300);
             shoomShoomDom.setPosition(.72);
@@ -257,9 +257,9 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomSub.setPosition(1);
-            sleep(300);
             shoomShoomSub.setPosition(.45);
+            sleep(300);
+            shoomShoomSub.setPosition(1);
         }
     });
 
@@ -615,14 +615,10 @@ public abstract class ThreadTelelib extends OpMode {
     public void vertical_lift_left(){
         if (gamepad2.left_stick_y > .2) {
             th_verticalLiftLeft.queue(vertical_left_up);
-            if(!gamepad2.left_bumper)
-                lflip.setPosition(.8);
             telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
             telemetry.update();
         } else if (gamepad2.left_stick_y < -.2) {
             th_verticalLiftLeft.queue(vertical_left_down);
-            if(!gamepad2.left_bumper)
-                lflip.setPosition(.8);
             telemetry.addData("vLeft encoders", verticalLiftLeft.getCurrentPosition());
             telemetry.update();
         }
@@ -633,12 +629,8 @@ public abstract class ThreadTelelib extends OpMode {
     public void vertical_lift_right(){
         if (gamepad2.right_stick_y > .2) {
             th_verticalLiftRight.queue(vertical_right_up);
-            if(!gamepad2.right_bumper)
-                rflip.setPosition(.3);
         } else if (gamepad2.right_stick_y < -.2) {
             th_verticalLiftRight.queue(vertical_right_down);
-            if(!gamepad2.right_bumper)
-                rflip.setPosition(.3);
         }
         else {
             verticalLiftRight.setPower(0);

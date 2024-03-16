@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto.Random;
 import static android.os.SystemClock.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -13,13 +14,13 @@ public abstract class TelelibOutake extends OpMode {
     public Servo rflip;
     public Servo lflip;
     public Servo shoomShoomSub;
-    public Servo pixelServo;
+    public CRServo pixelServo;
 
     public void init(){
         rflip = hardwareMap.get(Servo.class, "rflip");
 //        lflip = hardwareMap.get(Servo.class, "lflip");
         shoomShoomSub = hardwareMap.get(Servo.class, "shoomShoomSub");
-        pixelServo = hardwareMap.get(Servo.class, "pixelServo");
+        pixelServo = hardwareMap.get(CRServo.class, "pixelServo");
 
 
 //        verticalLiftRight = hardwareMap.get(DcMotor.class, "vlr");
@@ -63,10 +64,20 @@ public abstract class TelelibOutake extends OpMode {
     public void deposit()
     {
         if (gamepad2.a) {
-            pixelServo.setPosition(0);
+            pixelServo.setPower(-.2);
             //sleep(500);
             //pixelServo.setPosition(1);
-            telemetry.addData("Pos", pixelServo.getPosition());
+            telemetry.addData("Pwr", pixelServo.getPower());
+            telemetry.update();
+
+        } else if (gamepad2.b){
+            pixelServo.setPower(.2);
+            telemetry.addData("Pwr", pixelServo.getPower());
+            telemetry.update();
+
+        }
+        else{
+            pixelServo.setPower(0);
         }
     }
     public void vertical_lift_left(){

@@ -17,6 +17,9 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 14)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(14,62,Math.toRadians(270)))
+
+
+
                                 /*//BLUE FAR MIDDLE
                                 //UNDER TRUSS
                                 .splineToLinearHeading(new Pose2d(-47, 26, Math.toRadians(180)), Math.toRadians(270))
@@ -106,7 +109,7 @@ public class MeepMeepTesting {
                                 .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
                                 .back(10)*/
 
-                               /*//BLUE CLOSE MIDDLE
+                               //BLUE CLOSE MIDDLE
                                //new Pose2d(14,62,Math.toRadians(270))
                                //UNDER GATE
                                 .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(0)), Math.toRadians(270))
@@ -120,7 +123,7 @@ public class MeepMeepTesting {
                                 .splineTo(new Vector2d(51, 35), Math.toRadians(0))
                                .forward(1)
                                .splineToLinearHeading(new Pose2d(43,60, Math.toRadians(180)), Math.toRadians(180))
-                               .back(10)*/
+                               .back(10)
                                /*// UNDER TRUSS
                                .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(180)), Math.toRadians(270))
                                .back(2)
@@ -184,7 +187,7 @@ public class MeepMeepTesting {
 
 
 
-                                //BLUE LEFT CLOSE
+                                /*//BLUE LEFT CLOSE
                                 //UNDER GATE
                                 .splineToLinearHeading(new Pose2d(32, 38, Math.toRadians(0)), Math.toRadians(0))
                                 .lineToLinearHeading(new Pose2d(49,30, Math.toRadians(180)))
@@ -200,7 +203,7 @@ public class MeepMeepTesting {
                                //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                                .forward(1)
                                .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
-                               .back(10)
+                               .back(10)*/
 
                                 /*
                                 //UNDER TRUSS
