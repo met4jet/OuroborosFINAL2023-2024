@@ -13,6 +13,6 @@ public class IntakeTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         waitForStart();
         Intake intake = new Intake(this);
-        intake.getWhite2new(30);
+        intake.getWhite2(30);
     }
 }

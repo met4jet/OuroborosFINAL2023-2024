@@ -85,12 +85,19 @@ public class RedCloseState extends LinearOpMode {
             pos = pipeline.getAnalysis();
             telemetry.addData("Pos", pipeline.getAnalysis());
             telemetry.update();}
-        pos = StateOpenCVRedClose.SkystoneDeterminationPipeline.SkystonePosition.LEFT;
+        pos = StateOpenCVRedClose.SkystoneDeterminationPipeline.SkystonePosition.CENTER;
         waitForStart();
         if (pos == StateOpenCVRedClose.SkystoneDeterminationPipeline.SkystonePosition.RIGHT) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .splineToLinearHeading(new Pose2d(36, -45, Math.toRadians(0)), Math.toRadians(90))
-                    .splineToLinearHeading(new Pose2d(31.00, -36, Math.toRadians(0.00)), Math.toRadians(270))
+                    .splineToLinearHeading(new Pose2d(22, -41, Math.toRadians(270)), Math.toRadians(74.30))
+                    .addSpatialMarker((new Vector2d(23, -40)), () -> {
+                        intake.deposit();
+                    })
+                    .waitSeconds(.3)
+                    .forward(5)
+                    .addDisplacementMarker(() -> {
+                        intake.killDeposit();
+                    })
                     .lineToLinearHeading(new Pose2d(49, -46, Math.toRadians(180)))
                     .back(5, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
                             SampleMecanumDrive.getAccelerationConstraint(7))
@@ -125,11 +132,16 @@ public class RedCloseState extends LinearOpMode {
         }
         else if (pos == StateOpenCVRedClose.SkystoneDeterminationPipeline.SkystonePosition.CENTER){
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .splineToLinearHeading(new Pose2d(28,-30, Math.toRadians(0)), Math.toRadians(90))
-                    .splineToLinearHeading(new Pose2d(22, -30, Math.toRadians(0)), Math.toRadians(90))
+                    .splineToLinearHeading(new Pose2d(29, -20, Math.toRadians(0)), Math.toRadians(270))
+                    .splineToLinearHeading(new Pose2d(22, -22.2, Math.toRadians(0)), Math.toRadians(0))
                     .back(2)
-                    .waitSeconds(1)
+                    .addSpatialMarker((new Vector2d(22,21.2)), () -> {
+                        intake.deposit();
+                    })
                     .splineToLinearHeading(new Pose2d(47,-40, Math.toRadians(180)), Math.toRadians(0))
+                    .addDisplacementMarker(() -> {
+                        intake.killDeposit();
+                    })
                     .back(5, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
                             SampleMecanumDrive.getAccelerationConstraint(7))
                     .forward(1)

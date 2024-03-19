@@ -142,7 +142,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.7);
+            axon.setPosition(.55);
         }
     });
 
@@ -154,7 +154,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.1);
+            axon.setPosition(0);
         }
     });
     Thread right_flip_out = new Thread(new Runnable() {
@@ -259,7 +259,7 @@ public abstract class ThreadTelelib extends OpMode {
             }
             shoomShoomSub.setPosition(.45);
             sleep(300);
-            shoomShoomSub.setPosition(1);
+            shoomShoomSub.setPosition(.76);
         }
     });
 
@@ -654,13 +654,18 @@ public abstract class ThreadTelelib extends OpMode {
         if (gamepad2.a) {
             th_axon.queue(axon_intake);
             telemetry.addData("Position Axon", axon.getPosition());
+            telemetry.update();
         } else if (gamepad2.b) {
             th_axon.queue(axon_outtake);
             telemetry.addData("Position Axon", axon.getPosition());
+            telemetry.update();
+
         }
         else {
             axon.setPosition(.32);
             telemetry.addData("Position Axon", axon.getPosition());
+            telemetry.update();
+
 
         }
     }

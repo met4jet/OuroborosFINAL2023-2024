@@ -13,11 +13,12 @@ public class Intake {
     public LinearOpMode opMode;
     public DcMotor intake;
     public Servo axon;
-    public CRServo rollers;
+    public CRServo pixelServo;
     public ColorRangeSensor colorSensor;
 
     public Intake(LinearOpMode opMode){
         this.opMode = opMode;
+        pixelServo = opMode.hardwareMap.get(CRServo.class, "pixelServo");
 
         intake = opMode.hardwareMap.get(DcMotor.class, "intake");
         axon = opMode.hardwareMap.get(Servo.class, "axon");
@@ -48,7 +49,7 @@ public class Intake {
     public void axonUp (double sec){
         ElapsedTime time = new ElapsedTime();
 
-        axon.setPosition(.7);
+        axon.setPosition(1);
 
     }
 
@@ -116,24 +117,43 @@ public class Intake {
     public void getWhite2(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.3);
-        while(colorSensor.getDistance(DistanceUnit.CM) > 4) {
+        axon.setPosition(.6);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4 && time.seconds() < sec) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
             opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
         }
+
+        //intake.setPower(-.75);
+        opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+        opMode.telemetry.update();
+    }
+    public void getWhite2low(double sec){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        axon.setPosition(.55);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4 && time.seconds() < sec) {
+//            axon.setPosition(.475);
+            intake.setPower(.75);
+            opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+        }
+
         intake.setPower(-.75);
         opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
         opMode.telemetry.update();
-        while(time.seconds() < sec){
-
-        }
+    }
+    public void deposit(){
+        pixelServo.setPower(-.2);
+    }
+    public void killDeposit(){
+        pixelServo.setPower(0);
     }
     public void getWhite2new(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.3);
+        axon.setPosition(.7);
         intake.setPower(.75);
         while(time.seconds() < sec){
             intake.setPower(.75);
@@ -143,6 +163,9 @@ public class Intake {
     public void backIntake(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
+        intake.setPower(-1);
+    }
+    public void inIntake(){
         intake.setPower(1);
     }
     public void reverseIntake(double sec){
