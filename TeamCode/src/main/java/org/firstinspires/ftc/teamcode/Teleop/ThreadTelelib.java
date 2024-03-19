@@ -126,6 +126,7 @@ public abstract class ThreadTelelib extends OpMode {
         bl.setDirection(DcMotorSimple.Direction.FORWARD); //r
         fr.setDirection(DcMotorSimple.Direction.REVERSE); //f
         br.setDirection(DcMotorSimple.Direction.REVERSE); //r
+        axon.setDirection(Servo.Direction.REVERSE);
 
         /*horizontalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
         horizontalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);*/
@@ -142,7 +143,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.55);
+            axon.setPosition(.7);
         }
     });
 
