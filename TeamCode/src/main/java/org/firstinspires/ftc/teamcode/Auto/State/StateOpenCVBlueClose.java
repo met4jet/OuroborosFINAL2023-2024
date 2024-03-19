@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.Auto.State;
 
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -18,6 +20,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 @TeleOp
 public class StateOpenCVBlueClose extends LinearOpMode
 {
-    OpenCvInternalCamera phoneCam;
+    OpenCvWebcam phoneCam;
     SkystoneDeterminationPipeline pipeline;
 
     @Override
@@ -38,34 +41,43 @@ public class StateOpenCVBlueClose extends LinearOpMode
          * webcam counterpart, {@link WebcamExample} first.
          */
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+       /* int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvWebcam.CameraDirection.BACK, cameraMonitorViewId);
+        pipeline = new SkystoneDeterminationPipeline();
+        phoneCam.setPipeline(pipeline);
+*/
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "identifyier","teamcode");
+        phoneCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SkystoneDeterminationPipeline();
         phoneCam.setPipeline(pipeline);
 
-        // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
-        // out when the RC activity is in portrait. We do our actual image processing assuming
-        // landscape orientation, though.
-        phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+        phoneCam.setMillisecondsPermissionTimeout(5000);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+
+                phoneCam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
             public void onError(int errorCode)
             {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
+
+
+
             }
         });
 
+        FtcDashboard.getInstance().startCameraStream(phoneCam, 0);
+
         waitForStart();
+
+
+
+        phoneCam.stopStreaming();
 
         while (opModeIsActive())
         {
@@ -272,35 +284,34 @@ public class StateOpenCVBlueClose extends LinearOpMode
              * we need is at index 0. We could have also taken the average
              * pixel value of the 3-channel image, and referenced the value
              * at index 2 here.
-             */
-            avg1 = (int) Core.mean(region1_Cb).val[0];
-            avg2 = (int) Core.mean(region2_Cb).val[0] + 2;
+//             */
+//            avg1 = (int) Core.mean(region1_Cb).val[0];
+//            avg2 = (int) Core.mean(region2_Cb).val[0] + 2;
 //            avg3 = (int) Core.mean(region3_Cb).val[0];
 //            avg1 = 0;
 //            avg2 = 0;
-            avg3 = 0;
 
             /*
              * Draw a rectangle showing sample region 1 on the screen.
              * Simply a visual aid. Serves no functional purpose.
              */
-            Imgproc.rectangle(
-                    input, // Buffer to draw on
-                    region1_pointA, // First point which defines the rectangle
-                    region1_pointB, // Second point which defines the rectangle
-                    BLUE, // The color the rectangle is drawn in
-                    2); // Thickness of the rectangle lines
-
-            /*
-             * Draw a rectangle showing sample region 2 on the screen.
-             * Simply a visual aid. Serves no functional purpose.
-             */
-            Imgproc.rectangle(
-                    input, // Buffer to draw on
-                    region2_pointA, // First point which defines the rectangle
-                    region2_pointB, // Second point which defines the rectangle
-                    BLUE, // The color the rectangle is drawn in
-                    2); // Thickness of the rectangle lines
+//            Imgproc.rectangle(
+//                    input, // Buffer to draw on
+//                    region1_pointA, // First point which defines the rectangle
+//                    region1_pointB, // Second point which defines the rectangle
+//                    BLUE, // The color the rectangle is drawn in
+//                    2); // Thickness of the rectangle lines
+//
+//            /*
+//             * Draw a rectangle showing sample region 2 on the screen.
+//             * Simply a visual aid. Serves no functional purpose.
+//             */
+//            Imgproc.rectangle(
+//                    input, // Buffer to draw on
+//                    region2_pointA, // First point which defines the rectangle
+//                    region2_pointB, // Second point which defines the rectangle
+//                    BLUE, // The color the rectangle is drawn in
+//                    2); // Thickness of the rectangle lines
 
             /*
              * Draw a rectangle showing sample region 3 on the screen.
@@ -317,7 +328,8 @@ public class StateOpenCVBlueClose extends LinearOpMode
             /*
              * Find the max of the 3 averages
              */
-            int max = Math.max(avg1, avg2);
+//            int max = Math.max(avg1, avg2);
+            int max = Math.max((int) Core.mean(region1_Cb).val[0], (int) Core.mean(region2_Cb).val[0] + 2);
 
             //int max = Math.max(maxOneTwo, avg3);
 
@@ -326,11 +338,11 @@ public class StateOpenCVBlueClose extends LinearOpMode
              * figure out which sample region that value was from
              */
 
-            if(Math.abs(Math.abs(avg1) - Math.abs(avg2)) < 2){
+            if(Math.abs(Math.abs(Core.mean(region1_Cb).val[0]) - Core.mean(region2_Cb).val[0] + 2) < 2){
                 position = SkystonePosition.RIGHT;
             }
 
-            else if(max == avg1) // Was it from region 1?
+            else if(max == (int) Core.mean(region1_Cb).val[0]) // Was it from region 1?
             {
                 position = SkystonePosition.LEFT; // Record our analysis
 
@@ -338,12 +350,12 @@ public class StateOpenCVBlueClose extends LinearOpMode
                  * Draw a solid rectangle on top of the chosen region.
                  * Simply a visual aid. Serves no functional purpose.
                  */
-                Imgproc.rectangle(
-                        input, // Buffer to draw on
-                        region1_pointA, // First point which defines the rectangle
-                        region1_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
-                        -1); // Negative thickness means solid fill
+//                Imgproc.rectangle(
+//                        input, // Buffer to draw on
+//                        region1_pointA, // First point which defines the rectangle
+//                        region1_pointB, // Second point which defines the rectangle
+//                        GREEN, // The color the rectangle is drawn in
+//                        -1); // Negative thickness means solid fill
             }
             else /*if (max == avg2)*/ // Was it from region 2?
             {
@@ -353,12 +365,12 @@ public class StateOpenCVBlueClose extends LinearOpMode
                  * Draw a solid rectangle on top of the chosen region.
                  * Simply a visual aid. Serves no functional purpose.
                  */
-                Imgproc.rectangle(
-                        input, // Buffer to draw on
-                        region2_pointA, // First point which defines the rectangle
-                        region2_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
-                        -1); // Negative thickness means solid fill
+//                Imgproc.rectangle(
+//                        input, // Buffer to draw on
+//                        region2_pointA, // First point which defines the rectangle
+//                        region2_pointB, // Second point which defines the rectangle
+//                        GREEN, // The color the rectangle is drawn in
+//                        -1); // Negative thickness means solid fill
             }
 
 //            else if(max == avg3) // Was it from region 3?
@@ -376,12 +388,18 @@ public class StateOpenCVBlueClose extends LinearOpMode
 //                GREEN, // The color the rectangle is drawn in
 //                -1); // Negative thickness means solid fill
 //        }
+            /*region1_Cb.release();
+            region2_Cb.release();
+            Cb.release();
+            YCrCb.release();*/
+            hierarchy.release();
 
             /*
              * Render the 'input' buffer to the viewport. But note this is not
              * simply rendering the raw camera feed, because we called functions
              * to add some annotations to this buffer earlier up.
              */
+
             return input;
         }
 

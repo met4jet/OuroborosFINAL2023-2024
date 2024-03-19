@@ -117,7 +117,7 @@ public class Intake {
     public void getWhite2(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.6);
+        axon.setPosition(.65);
         while(colorSensor.getDistance(DistanceUnit.CM) > 4 && time.seconds() < sec) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
@@ -133,12 +133,14 @@ public class Intake {
         ElapsedTime time = new ElapsedTime();
         time.reset();
         axon.setPosition(.55);
-        while(colorSensor.getDistance(DistanceUnit.CM) > 4 && time.seconds() < sec) {
+        while(//colorSensor.getDistance(DistanceUnit.CM) > 4 &&
+         time.seconds() < sec) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
             opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
         }
+        axon.setPosition(0);
 
         intake.setPower(-.75);
         opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));

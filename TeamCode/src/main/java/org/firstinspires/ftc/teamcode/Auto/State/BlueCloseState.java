@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.ShoomShoom;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.TrapMotionProfileRight;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
-import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensMarker;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -27,8 +25,8 @@ import java.util.Arrays;
 @Autonomous(group = "Auto", name = "BlueCloseState")
 public class BlueCloseState extends LinearOpMode {
     OpenCvInternalCamera phoneCam;
-    StateOpenCVBlueClose.SkystoneDeterminationPipeline pipeline;
-    StateOpenCVBlueClose.SkystoneDeterminationPipeline.SkystonePosition pos;
+    StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline pipeline;
+    StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline.SkystonePosition pos;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -40,13 +38,11 @@ public class BlueCloseState extends LinearOpMode {
         ShoomShoom shoom = new ShoomShoom(this);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new StateOpenCVBlueClose.SkystoneDeterminationPipeline();
+        pipeline = new StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline();
         phoneCam.setPipeline(pipeline);
 
-        HuskyLensMarker hl = new HuskyLensMarker(this);
 
-
-        pos = StateOpenCVBlueClose.SkystoneDeterminationPipeline.SkystonePosition.LEFT;
+        pos = StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline.SkystonePosition.LEFT;
 
 
         Intake intake = new Intake(this);
@@ -85,9 +81,8 @@ public class BlueCloseState extends LinearOpMode {
         pos = pipeline.getAnalysis();
         telemetry.addData("Pos", pipeline.getAnalysis());
         telemetry.update();}
-        pos = StateOpenCVBlueClose.SkystoneDeterminationPipeline.SkystonePosition.LEFT;
         waitForStart();
-        if (pos == StateOpenCVBlueClose.SkystoneDeterminationPipeline.SkystonePosition.LEFT) {
+        if (pos == StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline.SkystonePosition.LEFT) {
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .splineToLinearHeading(new Pose2d(23, 39, Math.toRadians(90)), Math.toRadians(-74.30))
                     .addSpatialMarker((new Vector2d(23, 39)), () -> {
@@ -137,7 +132,7 @@ public class BlueCloseState extends LinearOpMode {
                 .back(10)
                 .build();
         }
-        else if (pos == StateOpenCVBlueClose.SkystoneDeterminationPipeline.SkystonePosition.CENTER){
+        else if (pos == StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline.SkystonePosition.CENTER){
             trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .splineToLinearHeading(new Pose2d(29, 20, Math.toRadians(0)), Math.toRadians(270))
                     .splineToLinearHeading(new Pose2d(22, 22.2, Math.toRadians(0)), Math.toRadians(0))
