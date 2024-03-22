@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueCloseRegionals")
+//@Autonomous(group = "Auto", name = "BlueCloseRegionals")
 public class BlueClose extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

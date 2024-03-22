@@ -24,7 +24,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "RedCloseState")
+//@Autonomous(group = "Auto", name = "RedCloseState")
 public class RedCloseState extends LinearOpMode {
     OpenCvInternalCamera phoneCam;
     StateOpenCVRedClose.SkystoneDeterminationPipeline pipeline;

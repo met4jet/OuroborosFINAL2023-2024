@@ -117,22 +117,25 @@ public class Intake {
     public void getWhite2(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.65);
-        while(colorSensor.getDistance(DistanceUnit.CM) > 4 && time.seconds() < sec) {
+        axon.setPosition(.7);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
             opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
         }
 
-        //intake.setPower(-.75);
+        intake.setPower(-.75);
         opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
         opMode.telemetry.update();
+        while(time.seconds() < sec){
+
+        }
     }
     public void getWhite2low(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.55);
+        axon.setPosition(.6);
         while(//colorSensor.getDistance(DistanceUnit.CM) > 4 &&
          time.seconds() < sec) {
 //            axon.setPosition(.475);
@@ -140,14 +143,14 @@ public class Intake {
             opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
         }
-        axon.setPosition(0);
+
 
         intake.setPower(-.75);
         opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
         opMode.telemetry.update();
     }
     public void deposit(){
-        pixelServo.setPower(-.2);
+        pixelServo.setPower(-.3);
     }
     public void killDeposit(){
         pixelServo.setPower(0);

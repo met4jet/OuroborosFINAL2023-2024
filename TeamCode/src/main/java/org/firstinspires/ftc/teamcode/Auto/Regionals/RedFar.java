@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "RedFarRegionals")
+//@Autonomous(group = "Auto", name = "RedFarRegionals")
 public class RedFar extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

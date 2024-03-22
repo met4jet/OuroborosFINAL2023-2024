@@ -39,6 +39,7 @@ import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.ShoomShoom;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
 import org.firstinspires.ftc.teamcode.Auto.State.BluePipeline;
+import org.firstinspires.ftc.teamcode.Auto.State.RedPipeline;
 import org.firstinspires.ftc.teamcode.Auto.State.StateOpenCVBlueClose;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -54,8 +55,8 @@ import java.util.Arrays;
  * and then snapshot that value for later use when the START
  * command is issued. The pipeline is re-used from SkystoneDeterminationExample
  */
-@Autonomous(group = "Auto", name = "BlueCloseStateIntegrated")
-public class BlueCloseIntegrate extends LinearOpMode
+@Autonomous(group = "Auto", name = "RedCloseStateIntegrated")
+public class RedCloseIntegrate extends LinearOpMode
 {
     OpenCvWebcam camera;
     StateOpenCVBlueClose.SkystoneDeterminationPipeline pipeline;
@@ -73,7 +74,7 @@ public class BlueCloseIntegrate extends LinearOpMode
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "identifyier","teamcode");
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        BluePipeline detectBlue = new BluePipeline(telemetry);
+        RedPipeline detectBlue = new RedPipeline(telemetry);
         camera.setPipeline(detectBlue);
 
         camera.setMillisecondsPermissionTimeout(5000);
@@ -99,7 +100,7 @@ public class BlueCloseIntegrate extends LinearOpMode
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(14, 62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(14, -62, Math.toRadians(90));
 
         VerticalLift vl = new VerticalLift(this);
         ShoomShoom shoom = new ShoomShoom(this);
@@ -109,7 +110,7 @@ public class BlueCloseIntegrate extends LinearOpMode
 
         // IGNORE, FOR ERROR PURPOSES
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .strafeTo(new Vector2d(-47, 42))
+                .strafeTo(new Vector2d(8, -37))
                 .build();
         TrajectorySequence trajSeqHalf = drive.trajectorySequenceBuilder(startPose)
                 .strafeTo(new Vector2d(-47, 42))
@@ -160,61 +161,30 @@ public class BlueCloseIntegrate extends LinearOpMode
         /*
          * Show that snapshot on the telemetry
          */
-        telemetry.addData("Snapshot post-START analysis", BluePipeline.positionMain);
+        telemetry.addData("Snapshot post-START analysis", RedPipeline.positionMain);
         telemetry.update();
         waitForStart();
         camera.stopStreaming();
 
-        switch (BluePipeline.positionMain)
+        switch (RedPipeline.positionMain)
         {
             case "left":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(23, 40.5, Math.toRadians(90)), Math.toRadians(-74.30))
-                        .addSpatialMarker((new Vector2d(23, 40)), () -> {
+                        .splineToLinearHeading(new Pose2d(8, -39, Math.toRadians(0)), Math.toRadians(175.35))
+                        .addSpatialMarker((new Vector2d(8,-40)), () -> {
                             intake.deposit();
                         })
-                        .waitSeconds(.3)
-                        .forward(5)
+                        .waitSeconds(1)
+                        .lineToLinearHeading(new Pose2d(49,-32, Math.toRadians(180)))
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
-                        })
-                        .lineToLinearHeading(new Pose2d(49, 37, Math.toRadians(180)))
-                        .addDisplacementMarker(()->{
-                            intake.axonUp(1);
                         })
                         .back(5)
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                         .forward(1)
-                        .splineTo(new Vector2d(15, 11), Math.toRadians(180))
-                        .addDisplacementMarker(()->{
-                            intake.axonUp(1);
-                        })
-                        .forward(50)
-                        .addDisplacementMarker(()->{
-                            intake.axonUp(1);
-                        })
-                        .forward(5, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .addDisplacementMarker(() -> {
-                            intake.axonUp(1);
-                        })
-                        .splineToLinearHeading(new Pose2d(-59, 11.7, Math.toRadians(180)), Math.toRadians(180), SampleMecanumDrive.getVelocityConstraint(40, Math.toRadians(120), 15.58),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .forward(1.2, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .build();
-                trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                        .back(5)
-                        .back(75)
-                        .splineTo(new Vector2d(47, 35), Math.toRadians(0))
-                        .back(9, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .build();
-                trajSeq4 = drive.trajectorySequenceBuilder(trajSeq3.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43, 46, Math.toRadians(180)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(43, -55, Math.toRadians(180)), Math.toRadians(180))
                         .back(10)
                         .build();
                 break;
@@ -223,46 +193,21 @@ public class BlueCloseIntegrate extends LinearOpMode
             case "right":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(8.25, 26, Math.toRadians(0)), Math.toRadians(180))
-                        .addSpatialMarker((new Vector2d(8.25,26)), () -> {
+                        .splineToLinearHeading(new Pose2d(22, -42.5, Math.toRadians(270)), Math.toRadians(74.30))
+                        .addSpatialMarker((new Vector2d(22, -43.5)), () -> {
                             intake.deposit();
                         })
                         .waitSeconds(.3)
-                        //.lineToLinearHeading(new Pose2d(49,32, Math.toRadians(180)))
-
-                        .splineToLinearHeading(new Pose2d(47,24, Math.toRadians(180)), Math.toRadians(0))
+                        .forward(5)
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
                         })
-                        .back(10)
+                        .lineToLinearHeading(new Pose2d(49, -44.5, Math.toRadians(180)))
+                        .back(8)
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                         .forward(1)
-                        .splineTo(new Vector2d(15, 11), Math.toRadians(180))
-                        .addDisplacementMarker(() -> {
-                            intake.axonUp(1);
-                        })
-                        .forward(60)
-                        .lineToLinearHeading(new Pose2d(-59, 12, Math.toRadians(180))/*, Math.toRadians(180)*/, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .forward(3, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .back(5)
-                        .back(75)
-                        .splineTo(new Vector2d(47, 35), Math.toRadians(0))
-                        .back(9, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-
-
-                        .build();
-                trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43, 56, Math.toRadians(180)), Math.toRadians(180))
-                        .back(10)
-                        .build();
-                trajSeq4 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43, 56, Math.toRadians(180)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(43, -57, Math.toRadians(180)), Math.toRadians(180))
                         .back(10)
                         .build();
                 break;
@@ -271,45 +216,23 @@ public class BlueCloseIntegrate extends LinearOpMode
             case "middle":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(29, 20, Math.toRadians(0)), Math.toRadians(270))
-                        .splineToLinearHeading(new Pose2d(23, 21.8, Math.toRadians(0)), Math.toRadians(0))
-                        .addSpatialMarker((new Vector2d(22,21.2)), () -> {
+                        //.splineToLinearHeading(new Pose2d(29, -24, Math.toRadians(0)), Math.toRadians(270))
+                        .splineToLinearHeading(new Pose2d(26, -27.5, Math.toRadians(0)), Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(22, -27.5, Math.toRadians(0)), Math.toRadians(0))
+                        .back(2)
+                        .addSpatialMarker((new Vector2d(22,-27.5)), () -> {
                             intake.deposit();
                         })
-                        .waitSeconds(1)
-                        .splineToLinearHeading(new Pose2d(47,30, Math.toRadians(180)), Math.toRadians(0))
+                        .waitSeconds(.3)
+                        .splineToLinearHeading(new Pose2d(47,-40, Math.toRadians(180)), Math.toRadians(0))
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
                         })
-                        .back(8)
-
-//                        .forward(1)
-//                        .splineTo(new Vector2d(15, 11), Math.toRadians(180))
-//                        .addDisplacementMarker(() -> {
-//                            intake.axonUp(1);
-//                        })
-//                        .forward(55)
-//                        .lineToLinearHeading(new Pose2d(-59, 12, Math.toRadians(180))/*, Math.toRadians(180)*/, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-//                                SampleMecanumDrive.getAccelerationConstraint(7))
-//                        .forward(3, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-//                                SampleMecanumDrive.getAccelerationConstraint(7))
+                        .back(5)
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                        .back(5)
-                        .addDisplacementMarker(() -> {
-                            intake.backIntake(1);
-                        })
-                        .back(75)
-                        .splineTo(new Vector2d(47, 35), Math.toRadians(0))
-                        .addDisplacementMarker(() -> {
-                            intake.inIntake();
-                        })
-                        .back(9, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                                SampleMecanumDrive.getAccelerationConstraint(7))
-                        .build();
-                trajSeq4 = drive.trajectorySequenceBuilder(trajSeq1.end())
-
-                        .splineToLinearHeading(new Pose2d(43, 56, Math.toRadians(180)), Math.toRadians(180))
+                        .forward(1)
+                        .splineToLinearHeading(new Pose2d(43, -58, Math.toRadians(180)), Math.toRadians(180))
                         .back(10)
                         .build();
                 break;
@@ -319,27 +242,12 @@ public class BlueCloseIntegrate extends LinearOpMode
 //        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
 //        while (opModeIsActive())
 //        {
-            if (!isStopRequested()) {
-                drive.followTrajectorySequence(trajSeq1);
-                flip.holdRightFlip();
-                vl.moveRightTime(1.3);
-                flip.rflip();
-                /*vl.moveDownRightTime(1);
-                intake.getWhite2new(0.1);
-                intake.axonUp(0.1);
-                drive.followTrajectorySequence(trajSeq2);
-                intake.axonUp(.1);
-                intake.getWhite2(1);
-                intake.getWhite2low(4);
-                sleep(200);
-                drive.followTrajectorySequence(trajSeq3);
-                shoom.transfer();
-                flip.lflipHold();
-                vl.moveBothTime(1);
-                flip.rflipUno();
-                flip.lflip();
-                sleep(100);*/
-                drive.followTrajectorySequence(trajSeq4);
+        if (!isStopRequested()) {
+            drive.followTrajectorySequence(trajSeq1);
+            flip.holdRightFlip();
+            vl.moveRightTime(1.3);
+            flip.rflip();
+            drive.followTrajectorySequence(trajSeq2);
 //
 //            }
 //            // Don't burn CPU cycles busy-looping in this sample

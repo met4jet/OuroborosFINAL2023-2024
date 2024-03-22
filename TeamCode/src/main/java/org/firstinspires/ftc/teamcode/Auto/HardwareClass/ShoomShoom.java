@@ -20,7 +20,8 @@ public class ShoomShoom {
     }
 
     public void transfer(){
-        sub.setPosition(.45);
+        dom.setPosition(.3);
+
 
         ElapsedTime time = new ElapsedTime();
         time.reset();
@@ -28,7 +29,7 @@ public class ShoomShoom {
         while(time.milliseconds() < 500){
         }
 
-        dom.setPosition(.3);
+        sub.setPosition(.45);
 
         sub.setPosition(1);
         time.reset();

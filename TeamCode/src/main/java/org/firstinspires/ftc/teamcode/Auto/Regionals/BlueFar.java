@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueFarRegionals")
+//@Autonomous(group = "Auto", name = "BlueFarRegionals")
 public class BlueFar extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

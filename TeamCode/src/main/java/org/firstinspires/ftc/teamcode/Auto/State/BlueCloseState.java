@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueCloseState")
+//@Autonomous(group = "Auto", name = "BlueCloseState")
 public class BlueCloseState extends LinearOpMode {
     OpenCvInternalCamera phoneCam;
     StateOpenCVBlueCloseTest.SkystoneDeterminationPipeline pipeline;
@@ -233,6 +233,7 @@ public class BlueCloseState extends LinearOpMode {
             intake.getWhite2low(2);
             sleep(200);
             drive.followTrajectorySequence(trajSeq3);
+            intake.backIntake(.1);
             shoom.transfer();
             flip.lflipHold();
             vl.moveBothTime(1);

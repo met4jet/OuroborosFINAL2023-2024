@@ -18,7 +18,7 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(14,-62,Math.toRadians(90)))
 
-                                .splineToLinearHeading(new Pose2d(23, -40, Math.toRadians(270)), Math.toRadians(74.30))
+                                //.splineToLinearHeading(new Pose2d(23, -40, Math.toRadians(270)), Math.toRadians(74.30))
 
 
 
@@ -114,7 +114,8 @@ public class MeepMeepTesting {
                                //BLUE CLOSE MIDDLE
                                //new Pose2d(14,62,Math.toRadians(270))
                                //UNDER GATE
-                                .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(0)), Math.toRadians(270))
+
+                                /*.splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(0)), Math.toRadians(270))
                                 .splineToLinearHeading(new Pose2d(47,30, Math.toRadians(180)), Math.toRadians(0))
                                 .back(5)
                                 .forward(1)
@@ -125,7 +126,7 @@ public class MeepMeepTesting {
                                 .splineTo(new Vector2d(51, 35), Math.toRadians(0))
                                .forward(1)
                                .splineToLinearHeading(new Pose2d(43,60, Math.toRadians(180)), Math.toRadians(180))
-                               .back(10)
+                               .back(10)*/
                                /*// UNDER TRUSS
                                .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(180)), Math.toRadians(270))
                                .back(2)
@@ -363,18 +364,16 @@ public class MeepMeepTesting {
                                 .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
                                 .back(10)*/
 
-                                /*//RED FAR RIGHT
+                                //RED FAR RIGHT
                                 //UNDER TRUSS
                                 .splineToLinearHeading(new Pose2d(-33, -34, Math.toRadians(180)), Math.toRadians(0))
-                                .lineToLinearHeading(new Pose2d(-55,-35,Math.toRadians(180)))
-                                .forward(3)
-                                .back(1)
-                                .splineToLinearHeading(new Pose2d(-50,-59, Math.toRadians(180)), Math.toRadians(0))
+                                .splineToLinearHeading(new Pose2d(-40,-59, Math.toRadians(180)), Math.toRadians(0))
                                 .back(60)
                                 .splineTo(new Vector2d(51,-35), Math.toRadians(0))
                                 //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                                 .forward(1)
-                                .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))*/
+                                .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
+                                .build()
 
 
                                 /*//RED FAR MIDDLE
@@ -387,8 +386,8 @@ public class MeepMeepTesting {
                                 .splineTo(new Vector2d(51,-35), Math.toRadians(0))
                                 .forward(1)
                                 .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                                .back(10)*/
-                                .build()
+                                .back(10)
+                                .build()*/
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
