@@ -171,15 +171,16 @@ public class BlueCloseIntegrate extends LinearOpMode
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                         .splineToLinearHeading(new Pose2d(23, 40.5, Math.toRadians(90)), Math.toRadians(-74.30))
+                        .waitSeconds(.4)
                         .addSpatialMarker((new Vector2d(23, 40)), () -> {
                             intake.deposit();
                         })
                         .waitSeconds(.3)
-                        .forward(5)
+                        .forward(8 )
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
                         })
-                        .lineToLinearHeading(new Pose2d(49, 37, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(49, 36, Math.toRadians(180)))
                         .addDisplacementMarker(()->{
                             intake.axonUp(1);
                         })
@@ -214,7 +215,7 @@ public class BlueCloseIntegrate extends LinearOpMode
                         .build();
                 trajSeq4 = drive.trajectorySequenceBuilder(trajSeq3.end())
                         .forward(1)
-                        .splineToLinearHeading(new Pose2d(43, 46, Math.toRadians(180)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(43, 56, Math.toRadians(180)), Math.toRadians(180))
                         .back(10)
                         .build();
                 break;
@@ -277,6 +278,7 @@ public class BlueCloseIntegrate extends LinearOpMode
                             intake.deposit();
                         })
                         .waitSeconds(1)
+                        .forward(3)
                         .splineToLinearHeading(new Pose2d(47,30, Math.toRadians(180)), Math.toRadians(0))
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();

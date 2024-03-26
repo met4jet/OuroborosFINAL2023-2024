@@ -224,6 +224,7 @@ public class RedCloseIntegrate extends LinearOpMode
                             intake.deposit();
                         })
                         .waitSeconds(.3)
+                        .forward(3)
                         .splineToLinearHeading(new Pose2d(47,-40, Math.toRadians(180)), Math.toRadians(0))
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
@@ -245,7 +246,7 @@ public class RedCloseIntegrate extends LinearOpMode
         if (!isStopRequested()) {
             drive.followTrajectorySequence(trajSeq1);
             flip.holdRightFlip();
-            vl.moveRightTime(1.3);
+            vl.moveRightTime(1);
             flip.rflip();
             drive.followTrajectorySequence(trajSeq2);
 //

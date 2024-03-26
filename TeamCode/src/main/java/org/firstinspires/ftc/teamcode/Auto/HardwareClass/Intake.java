@@ -19,10 +19,10 @@ public class Intake {
     public Intake(LinearOpMode opMode){
         this.opMode = opMode;
         pixelServo = opMode.hardwareMap.get(CRServo.class, "pixelServo");
-
         intake = opMode.hardwareMap.get(DcMotor.class, "intake");
         axon = opMode.hardwareMap.get(Servo.class, "axon");
         colorSensor = opMode.hardwareMap.get(ColorRangeSensor.class, "color");
+
     }
 //    public void axonUp (double sec){
 //        ElapsedTime time = new ElapsedTime();
