@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import java.util.Arrays;
 
 @Autonomous(group = "Auto", name = "BlueFarState")
-public class BlueFarState extends LinearOpMode {
+public class BlueFarStateMiddle extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
