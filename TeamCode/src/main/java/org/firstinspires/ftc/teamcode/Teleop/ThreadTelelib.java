@@ -228,7 +228,7 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomDom.setPosition(.3);
+            shoomShoomDom.setPosition(.285);
             dom = true;
             sleep(300);
             shoomShoomDom.setPosition(.72);
@@ -305,7 +305,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             while (time.milliseconds() < 50) {
             }
-            verticalLiftRight.setPower(-1);
+            verticalLiftRight.setPower(1);
         }
     });
     Thread vertical_right_down = new Thread(new Runnable() {
@@ -317,7 +317,7 @@ public abstract class ThreadTelelib extends OpMode {
 
             while (time.milliseconds() < 50) {
             }
-            verticalLiftRight.setPower(1);
+            verticalLiftRight.setPower(-1);
         }
     });
     Thread vertical_left_down = new Thread(new Runnable() {
@@ -589,7 +589,11 @@ public abstract class ThreadTelelib extends OpMode {
             th_leftFlip.queue(left_flip);
             telemetry.addData("lbumper2", gamepad2.left_bumper);
             telemetry.addData("lbumper2", lflip.getDirection());
+            telemetry.addData("lflip", lflip.getPosition());
+            telemetry.update();
         }
+        telemetry.addData("lflip", lflip.getPosition());
+        telemetry.update();
         /*else{
             lflip.setPosition(1);
         }*/
