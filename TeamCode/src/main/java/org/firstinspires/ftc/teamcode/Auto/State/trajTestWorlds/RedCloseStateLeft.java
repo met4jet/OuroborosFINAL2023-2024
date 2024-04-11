@@ -71,6 +71,11 @@ public class RedCloseStateLeft extends LinearOpMode {
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 .splineToLinearHeading(new Pose2d(11, -37, Math.toRadians(0)), Math.toRadians(180))
+                .back(1.4)
+                .addSpatialMarker((new Vector2d(11, -38)), () -> {
+                    intake.deposit();
+                })
+                .waitSeconds(.5)
                 .lineToLinearHeading(new Pose2d(49,-32, Math.toRadians(180)))
                 .forward(1)
                 .splineTo(new Vector2d(15, -10), Math.toRadians(180))

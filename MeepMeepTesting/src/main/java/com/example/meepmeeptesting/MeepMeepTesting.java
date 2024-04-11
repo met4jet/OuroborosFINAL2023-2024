@@ -6,24 +6,38 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import kotlin.math.UMathKt;
-
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(700);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 14)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 18)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(14,-62,Math.toRadians(90)))
+                        drive.trajectorySequenceBuilder(new Pose2d(14, 62,Math.toRadians(270)))
 
-
+                                .splineToLinearHeading(new Pose2d(22, -27, Math.toRadians(0)), Math.toRadians(90))
+                                .splineToLinearHeading(new Pose2d(47,-30, Math.toRadians(180)), Math.toRadians(0))
+                                .back(5)
+                                .forward(1)
+                                .splineTo(new Vector2d(15, -10), Math.toRadians(180))
+                                //.splineToLinearHeading(new Pose2d(15.00, 11.00, Math.toRadians(180.00)), Math.toRadians(180.00))
+                                .forward(50)
+                                .splineTo(new Vector2d(-58, -11), Math.toRadians(180))
+                                .waitSeconds(.1)
+                                .splineToLinearHeading(new Pose2d(-54, -10, Math.toRadians(180)), Math.toRadians(180))
+                                //.splineToLinearHeading(new Pose2d(-58, 10, Math.toRadians(180)), Math.toRadians(0))
+                                .back(65)
+                                .splineTo(new Vector2d(51, -25), Math.toRadians(0))
+                                //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
+                                .forward(1)
+                                .splineToLinearHeading(new Pose2d(43,-50, Math.toRadians(180)), Math.toRadians(180))
+                                .back(10)
 
                                 /*//BLUE FAR MIDDLE
                                 //UNDER TRUSS
                                 .splineToLinearHeading(new Pose2d(-47, 26, Math.toRadians(180)), Math.toRadians(270))
-                                .lineToLinearHeading(new Pose2d(-55,35,Math.toRadians(180)))
+                                .splineToLinearHeading(new Pose2d(-55,35,Math.toRadians(180)), Math.toRadians(180))
                                 .forward(3)
                                 .back(1)
                                 .splineTo(new Vector2d(-35, 58), Math.toRadians(0))
@@ -364,28 +378,41 @@ public class MeepMeepTesting {
 
                                 //RED FAR RIGHT
                                 //UNDER TRUSS
-                                .splineToLinearHeading(new Pose2d(-33, -34, Math.toRadians(180)), Math.toRadians(0))
+                                /*.splineToLinearHeading(new Pose2d(-33, -34, Math.toRadians(180)), Math.toRadians(0))
                                 .splineToLinearHeading(new Pose2d(-40,-59, Math.toRadians(180)), Math.toRadians(0))
                                 .back(60)
                                 .splineTo(new Vector2d(51,-35), Math.toRadians(0))
                                 //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                                 .forward(1)
                                 .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                                .build()
-
-
-                                /*//RED FAR MIDDLE
-                                //UNDER TRUSS
-                                .splineToLinearHeading(new Pose2d(-43, -24, Math.toRadians(180)), Math.toRadians(90))
-                                .forward(14)
-                                .back(1)
-                                .splineToLinearHeading(new Pose2d(-45.45,-59, Math.toRadians(180)), Math.toRadians(0))
-                                .back(45)
-                                .splineTo(new Vector2d(51,-35), Math.toRadians(0))
-                                .forward(1)
-                                .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                                .back(10)
                                 .build()*/
+
+
+                                //RED FAR MIDDLE
+                                //UNDER TRUSS
+                                //.splineToLinearHeading(new Pose2d(-43, -24, Math.toRadians(180)), Math.toRadians(90))
+                                //.forward(14)
+                                //.back(1)
+                                //.splineToLinearHeading(new Pose2d(-45.45,-59, Math.toRadians(180)), Math.toRadians(0))
+                                //.back(45)
+                                //.splineTo(new Vector2d(51,-35), Math.toRadians(0))
+                                //.forward(1)
+                                //.splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
+                                //.back(10)
+
+
+                                /*//PHOENIX AND ELINS ABOMINATION
+                                .splineToLinearHeading(new Pose2d(-45, 27.5, Math.toRadians(180)), Math.toRadians(270))
+                                .lineToLinearHeading(new Pose2d(-57,35.5,Math.toRadians(180)))
+                                .forward(3)
+                                .back(1)
+                                .splineToLinearHeading(new Pose2d(-57,55, Math.toRadians(180)), Math.toRadians(0))
+                                .back(60)
+                                .splineTo(new Vector2d(58,39), Math.toRadians(0))
+                                .forward(3)
+                                .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
+                                .back(10)*/
+                                .build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

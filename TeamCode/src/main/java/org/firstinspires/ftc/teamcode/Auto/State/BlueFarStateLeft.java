@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Auto.State.trajTestWorlds;
+package org.firstinspires.ftc.teamcode.Auto.State;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -6,7 +6,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
@@ -21,13 +20,13 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueCloseStateRight")
-public class BlueCloseStateRight extends LinearOpMode {
+//@Autonomous(group = "Auto", name = "BlueFarStateLeft")
+public class BlueFarStateLeft extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(14,62,Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-38,62,Math.toRadians(270));
         TrapMotionProfileRight trapRight = new TrapMotionProfileRight(this);
         VerticalLift vl = new VerticalLift(this);
         ShoomShoom shoom = new ShoomShoom(this);
@@ -70,26 +69,18 @@ public class BlueCloseStateRight extends LinearOpMode {
         waitForStart();
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(10, 34, Math.toRadians(0)), Math.toRadians(180))
-                .addSpatialMarker((new Vector2d(11, 34)), () -> {
-                    intake.deposit();
-                })
-                .lineToLinearHeading(new Pose2d(49,28, Math.toRadians(180)))
-                .waitSeconds(.3)
-
-                .forward(1)
-                .splineTo(new Vector2d(15, 10), Math.toRadians(180))
-                //.splineToLinearHeading(new Pose2d(15.00, 11.00, Math.toRadians(180.00)), Math.toRadians(180.00))
-                .forward(50)
-                .splineTo(new Vector2d(-58, 11), Math.toRadians(180))
-                .waitSeconds(.1)
-                .splineToLinearHeading(new Pose2d(-54, 10, Math.toRadians(180)), Math.toRadians(180))
-                //.splineToLinearHeading(new Pose2d(-58, 10, Math.toRadians(180)), Math.toRadians(0))
-                .back(65)
-                .splineTo(new Vector2d(51, 25), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-31.5, 34, Math.toRadians(180)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-55,35,Math.toRadians(180)))
+                .forward(3)
+                .back(1)
+                .splineTo(new Vector2d(-40, 55.5), Math.toRadians(0))
+                //.splineToLinearHeading(new Pose2d(-40, 59, Math.toRadians(180)), Math.toRadians(0))
+                .back(70)
+                .splineTo(new Vector2d(51, 38), Math.toRadians(0))
+                .back(5)
                 //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                 .forward(1)
-                .splineToLinearHeading(new Pose2d(43,50, Math.toRadians(180)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
                 .back(10)
                 .build();
         trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())

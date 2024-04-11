@@ -70,7 +70,12 @@ public class RedCloseStateMiddle extends LinearOpMode {
         waitForStart();
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(22, -25, Math.toRadians(0)), Math.toRadians(90))
+                .waitSeconds(.3)
+                .splineToLinearHeading(new Pose2d(22, -27, Math.toRadians(0)), Math.toRadians(90))
+                .addSpatialMarker((new Vector2d(21, -27)), () -> {
+                    intake.deposit();
+                })
+                .waitSeconds(.3)
                 .splineToLinearHeading(new Pose2d(47,-30, Math.toRadians(180)), Math.toRadians(0))
                 .back(5)
                 .forward(1)
