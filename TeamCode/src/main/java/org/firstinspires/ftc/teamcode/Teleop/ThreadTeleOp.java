@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class ThreadTeleOp extends ThreadTelelib{
     @Override
     public void loop() {
-        deposit();
+        //deposit();
+        axon_hangs();
         shoomShoom();
         rflip();
         lflip();
@@ -17,6 +18,7 @@ public class ThreadTeleOp extends ThreadTelelib{
         intake();
         arcadeDrive();
         axon_linac();
+        killHang();
     }
     @Override
     public void kill(){

@@ -58,9 +58,12 @@ public abstract class ThreadTelelib extends OpMode {
     public DcMotor verticalLiftRight;
     public DcMotor verticalLiftLeft;
     public Servo axon;
+    public CRServo axonHangLeft;
+    public CRServo axonHangRight;
 
     public Servo deposit;
     public ThreadHandler th_axon;
+    public ThreadHandler th_axonHang;
 
     public void init(){
         // Difficulty: EASY
@@ -81,6 +84,7 @@ public abstract class ThreadTelelib extends OpMode {
         th_linac = new ThreadHandler();
         th_linac_down = new ThreadHandler();*/
         th_intake = new ThreadHandler();
+        th_axonHang = new ThreadHandler();
 
         //linac = hardwareMap.get(Servo.class, "linac");
 
@@ -90,6 +94,8 @@ public abstract class ThreadTelelib extends OpMode {
         shoomShoomSub = hardwareMap.get(Servo.class, "shoomShoomSub");
         drone = hardwareMap.get(Servo.class, "drone");
         axon = hardwareMap.get(Servo.class, "axon");
+        axonHangLeft = hardwareMap.get(CRServo.class, "axonHangLeft");
+        axonHangRight = hardwareMap.get(CRServo.class, "axonHangRight");
         //box = hardwareMap.get(Servo.class, "box");
         //rollers = hardwareMap.get(CRServo.class, "rollers");
         //linac = hardwareMap.get(CRServo.class, "linac");
@@ -126,7 +132,7 @@ public abstract class ThreadTelelib extends OpMode {
         bl.setDirection(DcMotorSimple.Direction.FORWARD); //r
         fr.setDirection(DcMotorSimple.Direction.REVERSE); //f
         br.setDirection(DcMotorSimple.Direction.REVERSE); //r
-        axon.setDirection(Servo.Direction.REVERSE);
+        axonHangLeft.setDirection(CRServo.Direction.REVERSE);
 
         /*horizontalLiftRight.setDirection(DcMotorSimple.Direction.REVERSE);
         horizontalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);*/
@@ -135,6 +141,32 @@ public abstract class ThreadTelelib extends OpMode {
         verticalLiftLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
     }
+
+    Thread axon_raise_hang = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 150){
+
+            }
+            axonHangLeft.setPower(1);
+            axonHangRight.setPower(1);
+        }
+    });
+
+    Thread axon_lower_hang = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ElapsedTime time = new ElapsedTime();
+            time.reset();
+            while (time.milliseconds() < 150){
+
+            }
+            axonHangLeft.setPower(-1);
+            axonHangRight.setPower(-1);
+        }
+    });
     Thread axon_intake = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -143,7 +175,7 @@ public abstract class ThreadTelelib extends OpMode {
             while (time.milliseconds() < 150){
 
             }
-            axon.setPosition(.9);//.9
+            axon.setPosition(.62);//.9
         }
     });
 
@@ -179,7 +211,7 @@ public abstract class ThreadTelelib extends OpMode {
             }
             rflip.setPosition(1);
             sleep(1000);
-            rflip.setPosition(0);
+            rflip.setPosition(0.02);
         }
     });
     Thread left_flip_out = new Thread(new Runnable() {
@@ -228,7 +260,9 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomDom.setPosition(.285);
+            shoomShoomDom.setPosition(.45);
+            sleep(50);
+            shoomShoomDom.setPosition(.282);
             dom = true;
             sleep(300);
             shoomShoomDom.setPosition(.72);
@@ -258,8 +292,8 @@ public abstract class ThreadTelelib extends OpMode {
             while(time.milliseconds() < 200){
 
             }
-            shoomShoomSub.setPosition(.45);
-            sleep(300);
+            shoomShoomSub.setPosition(.46);
+            sleep(500);
             shoomShoomSub.setPosition(.76);
         }
     });
@@ -522,14 +556,14 @@ public abstract class ThreadTelelib extends OpMode {
 
         return output;
     }
-    public void deposit(){
+    /*public void deposit(){
         if(gamepad1.dpad_down){
             deposit.setPosition(1);
         }
         if(gamepad1.dpad_up){
             deposit.setPosition(0);
         }
-    }
+    }*/
     public void shoomShoom(){
         if(gamepad1.left_bumper) /*&& shoomShoomSub.getPosition() != 0*/{
             th_shoomSub.queue(shoom_sub_dep);
@@ -647,6 +681,40 @@ public abstract class ThreadTelelib extends OpMode {
 
         }
     }*/
+
+    public void axon_hangs(){
+        if (gamepad2.dpad_up)
+        {
+
+            th_axonHang.queue(axon_raise_hang);
+            intake.getController().close();
+            verticalLiftLeft.getController().close();
+            verticalLiftRight.getController().close();
+
+
+        } else if (gamepad2.dpad_down)
+        {
+
+            th_axonHang.queue(axon_lower_hang);
+            intake.getController().close();
+            verticalLiftLeft.getController().close();
+            verticalLiftRight.getController().close();
+
+        } else
+        {
+            /*axonHangLeft.setPower(-0.1);
+            axonHangRight.setPower(-0.05);*/
+            axonHangLeft.setPower(0);
+            axonHangRight.setPower(0);
+        }
+    }
+    public void killHang(){
+        if(gamepad1.dpad_up){
+            lflip.getController().pwmDisable();
+            rflip.getController().pwmDisable();
+            drone.getController().pwmDisable();
+        }
+    }
     public void axon_linac(){
         if (gamepad2.a) {
             th_axon.queue(axon_intake);
@@ -657,10 +725,8 @@ public abstract class ThreadTelelib extends OpMode {
 
         }
         else {
-            axon.setPosition(.19);
+            axon.setPosition(.5);
             telemetry.update();
-
-
         }
     }
     public void intake(){
@@ -721,6 +787,7 @@ public abstract class ThreadTelelib extends OpMode {
         telemetry.addData("lbumper2", gamepad2.left_bumper);
         telemetry.addData("lbumper2", lflip.getDirection());
         telemetry.addData("lflip", lflip.getPosition());
+        telemetry.addData("rflip", rflip.getPosition());
         telemetry.update();
 
     }
