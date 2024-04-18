@@ -22,7 +22,6 @@ package org.firstinspires.ftc.teamcode.Auto.State.OpenCVIntegrate;
  * SOFTWARE.
  */
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -31,7 +30,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
@@ -184,7 +182,9 @@ public class BlueCloseIntegrate extends LinearOpMode
                         .addDisplacementMarker(()->{
                             intake.axonUp(1);
                         })
-                        .back(5)
+                        .back(5,
+                                SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                         .forward(1)
@@ -285,16 +285,16 @@ public class BlueCloseIntegrate extends LinearOpMode
                         })
                         .back(8)
 
-//                        .forward(1)
-//                        .splineTo(new Vector2d(15, 11), Math.toRadians(180))
-//                        .addDisplacementMarker(() -> {
-//                            intake.axonUp(1);
-//                        })
-//                        .forward(55)
-//                        .lineToLinearHeading(new Pose2d(-59, 12, Math.toRadians(180))/*, Math.toRadians(180)*/, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-//                                SampleMecanumDrive.getAccelerationConstraint(7))
-//                        .forward(3, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-//                                SampleMecanumDrive.getAccelerationConstraint(7))
+                        .forward(1)
+                        .splineTo(new Vector2d(15, 11), Math.toRadians(180))
+                        .addDisplacementMarker(() -> {
+                            intake.axonUp(1);
+                        })
+                        .forward(55)
+                        .lineToLinearHeading(new Pose2d(-59, 12, Math.toRadians(180))/*, Math.toRadians(180)*/, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(7))
+                        .forward(3, SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(7))
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                         .back(5)
@@ -323,24 +323,24 @@ public class BlueCloseIntegrate extends LinearOpMode
 //        {
             if (!isStopRequested()) {
                 drive.followTrajectorySequence(trajSeq1);
-                flip.holdRightFlip();
-                vl.moveRightTime(1.3);
-                flip.rflip();
-                /*vl.moveDownRightTime(1);
-                intake.getWhite2new(0.1);
-                intake.axonUp(0.1);
+//                flip.holdRightFlip();
+//                vl.moveRightTime(1.3);
+//                flip.rflip();
+                //vl.moveDownRightTime(1);
+//                intake.getWhite2new(0.1);
+//                intake.axonUp(0.1);
                 drive.followTrajectorySequence(trajSeq2);
-                intake.axonUp(.1);
-                intake.getWhite2(1);
-                intake.getWhite2low(4);
-                sleep(200);
+//                intake.axonUp(.1);
+//                intake.getWhite2(1);
+//                intake.getWhite2low(4);
+//                sleep(200);
                 drive.followTrajectorySequence(trajSeq3);
-                shoom.transfer();
-                flip.lflipHold();
-                vl.moveBothTime(1);
-                flip.rflipUno();
-                flip.lflip();
-                sleep(100);*/
+//                shoom.transfer();
+//                flip.lflipHold();
+//                vl.moveBothTime(1);
+//                flip.rflipUno();
+//                flip.lflip();
+//                sleep(100);
                 drive.followTrajectorySequence(trajSeq4);
 //
 //            }

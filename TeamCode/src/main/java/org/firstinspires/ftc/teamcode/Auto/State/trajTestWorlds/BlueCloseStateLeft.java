@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
@@ -31,7 +30,7 @@ public class BlueCloseStateLeft extends LinearOpMode {
 
         HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(14,62,Math.toRadians(270));
+        Pose2d startPose = new Pose2d(13.9,61.8,Math.toRadians(270));
         TrapMotionProfileRight trapRight = new TrapMotionProfileRight(this);
         VerticalLift vl = new VerticalLift(this);
         ShoomShoom shoom = new ShoomShoom(this);
@@ -74,12 +73,21 @@ public class BlueCloseStateLeft extends LinearOpMode {
         waitForStart();
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(32, 38, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(31, 33, Math.toRadians(0)), Math.toRadians(0))
+                .waitSeconds(.3)
+                .addSpatialMarker((new Vector2d(31,34)), () -> {
+                    intake.deposit();
+                })
+                .waitSeconds(.3)
+                .addDisplacementMarker(() -> {
+                    intake.killDeposit();
+                })
                 .lineToLinearHeading(new Pose2d(49,30, Math.toRadians(180)))
                 .back(3)
                 .waitSeconds(.25)
                 .forward(1)
-                .splineTo(new Vector2d(15, 10), Math.toRadians(180))
+                .splineTo(new Vector2d(10, 17), Math.toRadians(180))
+                .forward(5)
                 .addDisplacementMarker(() -> {
                     intake.axonUp(1);
                 })
@@ -121,6 +129,7 @@ public class BlueCloseStateLeft extends LinearOpMode {
 
         if (!isStopRequested()) {
             intake.axonUp(.1);
+            sleep(500);
             drive.followTrajectorySequence(trajSeq1);
             intake.getWhite2(1);
             intake.getWhite2low(1);

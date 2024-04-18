@@ -71,14 +71,21 @@ public class BlueCloseStateMiddle extends LinearOpMode {
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 .splineToLinearHeading(new Pose2d(22, 25, Math.toRadians(0)), Math.toRadians(270))
+                .waitSeconds(.3)
+                .addSpatialMarker((new Vector2d(21, 25)), () -> {
+                    intake.deposit();
+                })
                 .splineToLinearHeading(new Pose2d(47,30, Math.toRadians(180)), Math.toRadians(0))
                 .back(5)
                 .forward(1)
-                .splineTo(new Vector2d(15, 10), Math.toRadians(180))
+                .splineTo(new Vector2d(12, 10), Math.toRadians(180))
                 //.splineToLinearHeading(new Pose2d(15.00, 11.00, Math.toRadians(180.00)), Math.toRadians(180.00))
-                .forward(50)
+                .forward(45)
+                .splineToLinearHeading(new Pose2d(-41,17 , Math.toRadians(180)), Math.toRadians(0))
                 .splineTo(new Vector2d(-58, 11), Math.toRadians(180))
                 .waitSeconds(.1)
+                .build();
+        trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
                 .splineToLinearHeading(new Pose2d(-54, 10, Math.toRadians(180)), Math.toRadians(180))
                 //.splineToLinearHeading(new Pose2d(-58, 10, Math.toRadians(180)), Math.toRadians(0))
                 .back(65)
@@ -88,23 +95,6 @@ public class BlueCloseStateMiddle extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(43,50, Math.toRadians(180)), Math.toRadians(180))
                 .back(10)
                 .build();
-        trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                .forward(1)
-                .splineTo(new Vector2d(15, 11), Math.toRadians(180))
-                .forward(50)
-                .splineTo(new Vector2d(-58, 10), Math.toRadians(180),SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(120), 14.95),
-                        SampleMecanumDrive.getAccelerationConstraint(30))
-                .addDisplacementMarker(() -> {
-                    intake.getWhite(1);
-                })
-                .back(70)
-                .addDisplacementMarker(()->{
-                    intake.backIntake(1);
-                })
-                .splineTo(new Vector2d(51, 35), Math.toRadians(0))
-                .back(5)
-
-                .build();
         trajSeq3 = drive.trajectorySequenceBuilder(trajSeq2.end())
                 .back(3)
                 .forward(1)
@@ -113,8 +103,11 @@ public class BlueCloseStateMiddle extends LinearOpMode {
                 .build();
 
         if (!isStopRequested()) {
+            intake.getWhite2start(.1);
             drive.followTrajectorySequence(trajSeq1);
-
+            intake.getWhite2(2);
+            intake.getWhite2low(2);
+            drive.followTrajectorySequence(trajSeq2);
         }
     }
 }
