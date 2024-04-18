@@ -182,7 +182,7 @@ public class BlueCloseWorldsIntegrated extends LinearOpMode
                         .addDisplacementMarker(() -> {
                             intake.killDeposit();
                         })
-                        .lineToLinearHeading(new Pose2d(49,30, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(49,31, Math.toRadians(180)))
                         .back(3)
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
@@ -214,7 +214,7 @@ public class BlueCloseWorldsIntegrated extends LinearOpMode
                         .build();
                 trajSeq4 = drive.trajectorySequenceBuilder(trajSeq1.end())
                         .forward(3)
-                        .splineToLinearHeading(new Pose2d(43,56, Math.toRadians(180)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(43,58, Math.toRadians(180)), Math.toRadians(180))
                         .back(10)
                         .build();
                 break;

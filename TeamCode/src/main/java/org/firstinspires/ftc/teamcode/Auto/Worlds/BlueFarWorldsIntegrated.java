@@ -171,24 +171,40 @@ public class BlueFarWorldsIntegrated extends LinearOpMode
             case "left":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(-57,-28, Math.toRadians(180)), Math.toRadians(90))
-                        .back(1)
+                        .splineToLinearHeading(new Pose2d(-57,-28, Math.toRadians(180)), Math.toRadians(90)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .waitSeconds(.3)
                         .addSpatialMarker((new Vector2d(-57, -28)), () -> {
                             intake.deposit();
                         })
-                        .lineToLinearHeading(new Pose2d(-57,-33.5, Math.toRadians(180)))
-                        .splineToLinearHeading(new Pose2d(-45,-55, Math.toRadians(180)), Math.toRadians(0))
+                        .lineToLinearHeading(new Pose2d(-57,-33.5, Math.toRadians(180))
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .splineToLinearHeading(new Pose2d(-45,-55, Math.toRadians(180)), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .back(60,
                                 SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
                                 SampleMecanumDrive.getAccelerationConstraint(55))
-                        .splineTo(new Vector2d(51,-35), Math.toRadians(0))
+                        .splineTo(new Vector2d(51,-35), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                        .back(10)
+                        .forward(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(10
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .build();
                 break;
             }
@@ -196,24 +212,42 @@ public class BlueFarWorldsIntegrated extends LinearOpMode
             case "right":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(-33, -27, Math.toRadians(180)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(-55,-34, Math.toRadians(180)))
+                        .splineToLinearHeading(new Pose2d(-33, -27, Math.toRadians(180)), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .lineToLinearHeading(new Pose2d(-55,-34, Math.toRadians(180))
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .waitSeconds(1)
                         .addSpatialMarker((new Vector2d(-55, -34)), () -> {
                             intake.deposit();
                         })
-                        .back(1)
-                        .splineToLinearHeading(new Pose2d(-40,-57, Math.toRadians(180)), Math.toRadians(180))
+                        .back(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .splineToLinearHeading(new Pose2d(-40,-57, Math.toRadians(180)), Math.toRadians(180)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .back(60,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
                                 SampleMecanumDrive.getAccelerationConstraint(55))
-                        .splineTo(new Vector2d(51,-35), Math.toRadians(0))
-                        .back(5)
+                        .splineTo(new Vector2d(51,-35), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(5
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                        .back(10)
+                        .forward(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(10
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .build();
                 break;
             }
@@ -221,26 +255,42 @@ public class BlueFarWorldsIntegrated extends LinearOpMode
             case "middle":
             {
                 trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                        .splineToLinearHeading(new Pose2d(-43, -20, Math.toRadians(180)), Math.toRadians(90))
-                        .lineToLinearHeading(new Pose2d(-57.5, -20, Math.toRadians(180)))
-                        .back(1)
+                        .splineToLinearHeading(new Pose2d(-43, -20, Math.toRadians(180)), Math.toRadians(90)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .lineToLinearHeading(new Pose2d(-57.5, -20, Math.toRadians(180))
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .waitSeconds(.5)
                         .addSpatialMarker((new Vector2d(-57.5, -20)), () -> {
                             intake.deposit();
                         })
-                        .splineToLinearHeading(new Pose2d(-50,-57, Math.toRadians(180)), Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(-50,-57, Math.toRadians(180)), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .back(45,
                                 SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
                                 SampleMecanumDrive.getAccelerationConstraint(55))
-                        .splineTo(new Vector2d(51,-35), Math.toRadians(0))
+                        .splineTo(new Vector2d(51,-35), Math.toRadians(0)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .back(2,
                                 SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
                                 SampleMecanumDrive.getAccelerationConstraint(55))
                         .build();
                 trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())
-                        .forward(1)
-                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
-                        .back(10)
+                        .forward(1
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180)
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
+                        .back(10
+                                ,SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                                SampleMecanumDrive.getAccelerationConstraint(55))
                         .build();
                 break;
             }
