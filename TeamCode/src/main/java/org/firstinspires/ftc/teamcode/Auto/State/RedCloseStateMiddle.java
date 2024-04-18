@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-//@Autonomous(group = "Auto", name = "BlueFarStateMiddle")
-public class BlueFarStateMiddle extends LinearOpMode {
+//@Autonomous(group = "Auto", name = "RedCloseStateMiddle")
+public class RedCloseStateMiddle extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
@@ -63,25 +63,24 @@ public class BlueFarStateMiddle extends LinearOpMode {
                 new TranslationalVelocityConstraint(20),
 
                 new AngularVelocityConstraint(Math.toRadians(80))
-
         ));
 
 
         waitForStart();
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-47, 26, Math.toRadians(180)), Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-55,35,Math.toRadians(180)), Math.toRadians(180))
-                .forward(3)
-                .back(1)
-                .splineTo(new Vector2d(-35, 56), Math.toRadians(0))
-                //.splineToLinearHeading(new Pose2d(-44,59, Math.toRadians(180)), Math.toRadians(0))
-                .back(35)
-                .splineTo(new Vector2d(51, 35), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(22, -25, Math.toRadians(0)), Math.toRadians(90))
+                .back(2)
+                .splineToLinearHeading(new Pose2d(47,-30, Math.toRadians(180)), Math.toRadians(0))
                 .back(5)
-                //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
                 .forward(1)
-                .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
+                .splineTo(new Vector2d(15, -11), Math.toRadians(180))
+                .forward(55)
+                .splineTo(new Vector2d(-58, -10), Math.toRadians(180))
+                .back(70)
+                .splineTo(new Vector2d(51, -35), Math.toRadians(0))
+                .forward(1)
+                .splineToLinearHeading(new Pose2d(43,-58, Math.toRadians(180)), Math.toRadians(180))
                 .back(10)
                 .build();
         trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())

@@ -20,13 +20,13 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-//@Autonomous(group = "Auto", name = "BlueFarStateMiddle")
-public class BlueFarStateMiddle extends LinearOpMode {
+//@Autonomous(group = "Auto", name = "RedFarStateMiddle")
+public class RedFarStateMiddle extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         HuskyLensDetection husky = new HuskyLensDetection(this, 0, 0, 0);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-38,62,Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-38,-60,Math.toRadians(90));
         TrapMotionProfileRight trapRight = new TrapMotionProfileRight(this);
         VerticalLift vl = new VerticalLift(this);
         ShoomShoom shoom = new ShoomShoom(this);
@@ -70,18 +70,17 @@ public class BlueFarStateMiddle extends LinearOpMode {
         waitForStart();
 
         trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-47, 26, Math.toRadians(180)), Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-55,35,Math.toRadians(180)), Math.toRadians(180))
-                .forward(3)
+                .splineToLinearHeading(new Pose2d(-43, -20, Math.toRadians(180)), Math.toRadians(90))
+                .lineToLinearHeading(new Pose2d(-57.5, -20, Math.toRadians(180)))
                 .back(1)
-                .splineTo(new Vector2d(-35, 56), Math.toRadians(0))
-                //.splineToLinearHeading(new Pose2d(-44,59, Math.toRadians(180)), Math.toRadians(0))
-                .back(35)
-                .splineTo(new Vector2d(51, 35), Math.toRadians(0))
-                .back(5)
-                //.splineToLinearHeading(new Pose2d(51,35, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-45.45,-57, Math.toRadians(180)), Math.toRadians(0))
+                .back(45)
+                .splineTo(new Vector2d(51,-35), Math.toRadians(0))
+                .back(5,
+                        SampleMecanumDrive.getVelocityConstraint(55, Math.toRadians(180), 14.95),
+                        SampleMecanumDrive.getAccelerationConstraint(55))
                 .forward(1)
-                .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(43,-13, Math.toRadians(180)), Math.toRadians(180))
                 .back(10)
                 .build();
         trajSeq2 = drive.trajectorySequenceBuilder(trajSeq1.end())

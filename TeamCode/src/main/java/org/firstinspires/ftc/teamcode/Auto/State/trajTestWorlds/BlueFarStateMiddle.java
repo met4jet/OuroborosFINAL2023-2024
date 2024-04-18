@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Auto.State;
+package org.firstinspires.ftc.teamcode.Auto.State.trajTestWorlds;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-//@Autonomous(group = "Auto", name = "BlueFarStateMiddle")
+@Autonomous(group = "Auto", name = "BlueFarStateMiddle")
 public class BlueFarStateMiddle extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

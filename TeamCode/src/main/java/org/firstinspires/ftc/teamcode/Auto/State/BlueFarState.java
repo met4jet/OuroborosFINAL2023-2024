@@ -6,23 +6,21 @@ import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TranslationalVelocityConstraint;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Flip;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensDetection;
+import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensMarker;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.Intake;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.ShoomShoom;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.TrapMotionProfileRight;
 import org.firstinspires.ftc.teamcode.Auto.HardwareClass.VerticalLift;
-import org.firstinspires.ftc.teamcode.Auto.HardwareClass.HuskyLensMarker;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.Arrays;
 
-@Autonomous(group = "Auto", name = "BlueFarState")
+//@Autonomous(group = "Auto", name = "BlueFarStateRight")
 public class BlueFarState extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -76,10 +74,11 @@ public class BlueFarState extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-57,35,Math.toRadians(180)))
                 .forward(3)
                 .back(1)
-                .splineToLinearHeading(new Pose2d(-57,55, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-57,56, Math.toRadians(180)), Math.toRadians(0))
                 .back(60)
-                .splineTo(new Vector2d(58,39), Math.toRadians(0))
-                .forward(3)
+                .splineTo(new Vector2d(51,35), Math.toRadians(0))
+                .back(5)
+                .forward(1)
                 .splineToLinearHeading(new Pose2d(43,13, Math.toRadians(180)), Math.toRadians(180))
                 .back(10)
                 .build();

@@ -48,9 +48,10 @@ public class Intake {
 
     public void axonUp (double sec){
         ElapsedTime time = new ElapsedTime();
-
+        time.reset();
         axon.setPosition(1);
-
+        opMode.telemetry.addData("axon", axon.getPosition());
+        opMode.telemetry.update();
     }
 
     public void deliverPurple(double sec){
@@ -114,11 +115,31 @@ public class Intake {
         intake.setPower(0);
 //        axon.setPower(0);
     }
+    public void getWhite2start(double sec){
+        ElapsedTime time = new ElapsedTime();
+        time.reset();
+        axon.setPosition(.5);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4 &&
+                time.seconds() < sec) {
+//            axon.setPosition(.475);
+            intake.setPower(.75);
+            opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+        }
+
+        intake.setPower(.75);
+        opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
+        opMode.telemetry.update();
+        while(time.seconds() < sec){
+
+        }
+    }
     public void getWhite2(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.7);
-        while(colorSensor.getDistance(DistanceUnit.CM) > 4) {
+        axon.setPosition(.5);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4 &&
+                time.seconds() < sec) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
             opMode.telemetry.addData("Distance", colorSensor.getDistance(DistanceUnit.CM));
@@ -135,8 +156,8 @@ public class Intake {
     public void getWhite2low(double sec){
         ElapsedTime time = new ElapsedTime();
         time.reset();
-        axon.setPosition(.6);
-        while(//colorSensor.getDistance(DistanceUnit.CM) > 4 &&
+        axon.setPosition(.45);
+        while(colorSensor.getDistance(DistanceUnit.CM) > 4 &&
          time.seconds() < sec) {
 //            axon.setPosition(.475);
             intake.setPower(.75);
